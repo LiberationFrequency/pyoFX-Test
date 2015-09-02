@@ -11,10 +11,10 @@ s.start()
 
 instr = Input(chnl=0)
 
-cho = Chorus(instr, depth=0.2, feedback=0.3, bal=0.5, mul=0.6).out()
-cho.ctrl()
+delay = Delay(instr, delay=0.3, feedback=0.1, mul=0.5).out()
+delay.ctrl()
 
-# set global Volume to -20 db to protect your ears and equipment
-s.setAmp(0.1)
-# start GUI
+
+# set master volume to -20 dB to protect your ears and equipment
+s.setAmp(.1)
 s.gui(locals())

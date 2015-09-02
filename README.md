@@ -2,8 +2,13 @@
 
 A few code snippets to build a live digital audio effect rack based on python and pyo, nothing fancy, just to get an idea how pyo works.
 
-You need Python 2.x (https://www.python.org/downloads/) and pyo (http://ajaxsoundstudio.com/software/pyo/) installed.
-   
+Requirements:
+* Python 2.x (https://www.python.org/downloads/)
+* pyo (http://ajaxsoundstudio.com/software/pyo/)
+* PyAudio (https://people.csail.mit.edu/hubert/pyaudio/)
+* * or Jack (http://jackaudio.org/)
+* Windows: ASIO4all (http://www.asio4all.com/)
+  
 You maybe have to adjust the Server settings manually.
 
 >python
@@ -14,6 +19,7 @@ You maybe have to adjust the Server settings manually.
 Choose the input/output-device (with the lowest latency) and assign the number to the script. 
 
 Plug in your mic, guitar, bass, keyboard, whatever, play around, have fun, rock on, find your settings and build a preset.
+
 
 
 License: 
@@ -31,6 +37,8 @@ GNU Lesser General Public License for more details.
 
 You should have received a copy of the GNU Lesser General Public
 License along with pyoFX.  If not, see <http://www.gnu.org/licenses/>.
+
+
 
 
 ... work in progress.... please stand by

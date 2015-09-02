@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# encode: utf-8
+# -*- coding: utf-8 -*-
 
 from pyo import *
 
