@@ -8,7 +8,26 @@ Requirements:
 * PyAudio (https://people.csail.mit.edu/hubert/pyaudio/)
 * * or Jack (http://jackaudio.org/)
 * Windows: ASIO4all (http://www.asio4all.com/)
-  
+
+
+
+== Installation ==
+
+Windows:
+* Install the ASIO4all binary
+* Install the python 2.7 32-bit binary
+* Install PyAudio with "pip install pyaudio" - If that failed download a wheel from http://www.lfd.uci.edu/~gohlke/pythonlibs/ and use "pip install filename.whl"
+* Install the pyo 32-bit binary
+
+Linux:
+I am sure you know what to do. For ArchLinux there is a pyo AUR-PKGBUILT, on Debian and forks there are definitely apt-packages.
+
+MacOS:
+Puhh, I don't know.
+
+
+
+ 
 You maybe have to adjust the Server settings manually.
 
 >python
@@ -16,7 +35,7 @@ You maybe have to adjust the Server settings manually.
 
 >> pa_list_devices()
 
-Choose the input/output-device (with the lowest latency) and assign the number to the script. 
+Choose the input/output-device (with the lowest latency) and assign the number to the script.
 
 Plug in your mic, guitar, bass, keyboard, whatever, play around, have fun, rock on, find your settings and build a preset.
 
