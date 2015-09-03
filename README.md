@@ -6,7 +6,8 @@ Requirements:
 * Python 2.x (https://www.python.org/downloads/)
 * pyo (http://ajaxsoundstudio.com/software/pyo/)
 * PyAudio (https://people.csail.mit.edu/hubert/pyaudio/)
-* * or Jack (http://jackaudio.org/)
+** or Jack (http://jackaudio.org/)
+* wxPython (http://www.wxpython.org/)
 * Windows: ASIO4all (http://www.asio4all.com/)
 
 
@@ -14,16 +15,28 @@ Requirements:
 == Installation ==
 
 Windows:
+---------
 * Install the ASIO4all binary
 * Install the python 2.7 32-bit binary
 * Install PyAudio with "pip install pyaudio" - If that failed download a wheel from http://www.lfd.uci.edu/~gohlke/pythonlibs/ and use "pip install filename.whl"
+* Install the wxPython 2.7 32-bit binary
 * Install the pyo 32-bit binary
 
 Linux:
-I am sure you know what to do. For ArchLinux there is a pyo AUR-PKGBUILT, on Debian and forks there are definitely apt-packages.
+---------
+I am pretty sure you know what to do. 
+* For ArchLinux there is a pyo AUR-PKGBUILD available (https://aur.archlinux.org/packages/python2-pyo/) 
+> yaourt python2-pyo
+
+* on Debian and forks there are definitely apt-packages available
+
 
 MacOS:
-Puhh, I don't know.
+----------
+Sorry, I don't know in detail. You maybe have to adjust the server setting from portaudio to coreaudio.
+
+For example:
+> s = Server(sr=44100, buffersize=128, audio=coreaudio nchnls=1)
 
 
 
