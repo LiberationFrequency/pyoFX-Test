@@ -3,7 +3,7 @@
 
 from pyo import *
 
-s = Server(sr=44100, buffersize=128, nchnls=1)
+s = Server(sr=44100, buffersize=128, audio='portaudio', nchnls=1)
 s.setInputDevice(10)
 s.setOutputDevice(9)
 s.boot()
