@@ -2,18 +2,18 @@
 
 A few code snippets to build a live digital audio effect rack based on python and pyo, nothing fancy, just to get an idea how pyo works.
 
-== Requirements ==
+= Requirements =
 -------------
 * Python 2.x (https://www.python.org/downloads/)
 * pyo (http://ajaxsoundstudio.com/software/pyo/)
-* PyAudio (https://people.csail.mit.edu/hubert/pyaudio/)
+* ? PyAudio (https://people.csail.mit.edu/hubert/pyaudio/)
 ** or Jack (http://jackaudio.org/)
-* wxPython (http://www.wxpython.org/)
+* ? wxPython (http://www.wxpython.org/)
 * Windows: ASIO4all (http://www.asio4all.com/)
 
 
 
-== Installation ==
+= Installation =
 -------------------
 
 
@@ -39,11 +39,11 @@ MacOS:
 Sorry, I don't know in detail. You maybe have to adjust the server setting from portaudio to coreaudio.
 
 For example:
-> s = Server(sr=44100, buffersize=128, audio='coreaudio' nchnls=1)
+> s = Server(sr=44100, buffersize=128, audio='coreaudio', nchnls=1)
 
 
 
-== Usage ==
+= Usage =
 --------------
 You maybe have to adjust the Server settings manually.
 
