@@ -20,29 +20,16 @@ instr = Input(chnl=0)
 
 eq1 = EQ(instr, freq=[63,125,250,500,1000,2000,4000,8000,16000], q=1, boost=[12,-12,12,-12,12,-12,12,-12,12], type=0)
 eq1.ctrl()
+p1 = Pan(eq1, outs=2, pan=1).out()
+p1.ctrl()
+
 eq2 = EQ(instr, freq=[63,125,250,500,1000,2000,4000,8000,16000], q=1, boost=[-12,12,-12,12,-12,12,-12,12,-12], type=0)
 eq2.ctrl()
-p1 = Pan(eq1, outs=2, pan=1)
-p1.ctrl()
-p2 = Pan(eq2, outs=2, pan=0)
+p2 = Pan(eq2, outs=2, pan=0).out()
 p2.ctrl()
 
-psum = p1 + p2
-
-comp = Compress(psum, thresh=-18, ratio=3, risetime=.1, falltime=.2, knee=0.5).out()
-comp.ctrl()
-
-#prelay1 = SDelay(instr, delay=0.002, mul=0.5)
-#prelay.ctrl()
-
-#harm1 = Harmonizer(prelay, transpo=0.07, feedback=0.01, winsize=0.1, mul=.6)
-#harm1.ctrl()
-#p1 = Pan(harm1, outs=2, pan=1)
-
-#harm2 = Harmonizer(prelay, transpo=-0.07, feedback=0.01, winsize=0.1, mul=.6)
-#harm2.ctrl()
-#p2 = Pan(harm2, outs=2, pan=0)
-
+#comp = Compress(instr, thresh=-12, ratio=1.5, risetime=.1, falltime=.2, knee=0.5).out()
+#comp.ctrl()
 
 
 #mm = Mixer(outs=3, chnls=2, time=.025)
