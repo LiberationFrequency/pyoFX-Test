@@ -2,12 +2,15 @@
 # -*- coding: utf-8 -*-
 
 """
-Description
+Description:
+see flanger_lib.py
 
 """
 
+
 # import necessary libraries
 from pyo import *
+from flanger_lib import Flanger
 
 
 # Server Settings:
@@ -26,11 +29,11 @@ instr = Input(chnl=0)
 
 
 # Processing
-lfo = Sine(freq=[.2,.25], mul=.1, add=.5)
+lfo = Sine(75, mul=0.25, add=0.5)
 lfo.ctrl()
-#disto = Disto(instr, drive=0.5, slope=0.3, mul=0.6, add=0).out()
-disto = Disto(instr, drive=lfo, slope=0.3, mul=0.3, add=0).out()
-disto.ctrl()
+flg = Flanger(instr, depth=0.8, lfofreq=0.5, feedback=lfo).out()
+flg.ctrl()
+
 
 
 # GUI

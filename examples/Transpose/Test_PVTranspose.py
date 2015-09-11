@@ -1,16 +1,31 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+"""
+Description
+
+"""
+
+# import necessary libraries
 from pyo import *
 
-s = Server(sr=44100, buffersize=128, audio='portaudio', nchnls=1)
+
+# Server Settings:
+## Latency is buffer size / sampling rate in seconds.
+s = Server(sr=44100, buffersize=64, audio='portaudio', nchnls=1)
 s.setInputDevice(10)
 s.setOutputDevice(9)
 s.boot()
 s.start()
+# set master volume to -20 dB to protect your ears and equipment
+s.setAmp(0.1)
 
+
+# Input
 instr = Input(chnl=0)
 
+
+# Processing
 pva = PVAnal(instr, size=1024)
 pva.ctrl()
 pvt = PVTranspose(pva, transpo=1.0144)
@@ -21,6 +36,5 @@ delay = Delay(instr, delay=1024./s.getSamplingRate(), feedback=0.1, mul=0.5).out
 delay.ctrl()
 
 
-# set master volume to -20 dB to protect your ears and equipment
-s.setAmp(0.1)
+# GUI
 s.gui(locals())

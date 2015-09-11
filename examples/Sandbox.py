@@ -6,12 +6,14 @@ Description
 
 """
 
+
+# import necessary libraries
 from pyo import *
 
 
 
-#Server Settings:
-#Latency is buffer size / sampling rate in seconds.
+# Server Settings:
+## Latency is buffer size / sampling rate in seconds.
 s = Server(sr=44100, buffersize=64, audio='portaudio', nchnls=1)
 s.setInputDevice(10)
 s.setOutputDevice(9)
@@ -28,7 +30,6 @@ instr = Input(chnl=0)
 
 
 # Processing
-
 
 
 

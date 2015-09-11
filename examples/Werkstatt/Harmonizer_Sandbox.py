@@ -1,20 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""
-Detuned waveguide bank.
 
 """
+Description
 
+"""
 
+# import necessary libraries
 from pyo import *
 
 
-"""
-Server Settings:
-
-Latency is buffer size / sampling rate in seconds.
-
-"""
+# Server Settings:
+## Latency is buffer size / sampling rate in seconds.
 s = Server(sr=44100, buffersize=64, audio='portaudio', nchnls=1)
 s.setInputDevice(10)
 s.setOutputDevice(9)
@@ -23,12 +20,12 @@ s.start()
 # set master volume to -20 dB to protect your ears and equipment
 s.setAmp(0.1)
 
+
 # Input
 instr = Input(chnl=0)
 
 
 # Processing
-
 eq_Bass = EQ(instr, freq=[5,10,20,2000,4000,8000,16000], q=1, boost=[-60,-40,-3,-3,-20,-40,-60], type=1)
 eq_Bass.ctrl()
 
@@ -54,8 +51,6 @@ ind = Phasor(freq=rate, phase=[0,0.5])
 win = Pointer(table=env, index=ind, mul=.7)
 
 snd = Delay(eq_Bass, delay=ind*wsize, mul=win)
-
-
 
 
 # This gives a factor for both the wind intensity and frequency. Intensity
@@ -87,8 +82,6 @@ total = snd + f1 + f2 + f3 + f4
 
 comp = Compress(total, thresh=-48, ratio=3, risetime=.01, falltime=.2, knee=0.5).out()
 comp.ctrl()
-
-
 
 
 # GUI

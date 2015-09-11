@@ -1,47 +1,45 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-static equalizer stereo enhancer
+static equalizer mono to stereo spread filter effect
+
+
 
 Knüppelstereofonie
 
 """
 
 
+# import necessary  libraries
 from pyo import *
 
-s = Server(sr=44100, buffersize=64, audio='portaudio', nchnls=1)
+
+# Server Settings:
+## Latency is buffer size / sampling rate in seconds.
+s = Server(sr=44100, buffersize=64, audio='portaudio', ichnls=1, nchnls=2)
 s.setInputDevice(10)
 s.setOutputDevice(9)
 s.boot()
 s.start()
-
-instr = Input(chnl=0)
-
-eq1 = EQ(instr, freq=[63,125,250,500,1000,2000,4000,8000,16000], q=1, boost=[12,-12,12,-12,12,-12,12,-12,12], type=0)
-eq1.ctrl()
-p1 = Pan(eq1, outs=2, pan=1).out()
-p1.ctrl()
-
-eq2 = EQ(instr, freq=[63,125,250,500,1000,2000,4000,8000,16000], q=1, boost=[-12,12,-12,12,-12,12,-12,12,-12], type=0)
-eq2.ctrl()
-p2 = Pan(eq2, outs=2, pan=0).out()
-p2.ctrl()
-
-#comp = Compress(instr, thresh=-12, ratio=1.5, risetime=.1, falltime=.2, knee=0.5).out()
-#comp.ctrl()
-
-
-#mm = Mixer(outs=3, chnls=2, time=.025)
-
-#mm.addInput(0, a)
-#mm.addInput(1, b)
-#mm.setAmp(0,1,.5)
-#mm.setAmp(1,2,.5)
-#mm.setAmp(1,1,.5)
-
-
-
 # set master volume to -20 dB to protect your ears and equipment
 s.setAmp(0.1)
+
+# Input
+instr = Input(chnl=0)
+
+
+# Processing
+eq_left = EQ(instr, freq=[31.5,63,125,250,500,1000,2000,4000,8000,16000], q=1, boost=[12,-12,12,-12,12,-12,12,-12,12,-12], type=0)
+eq_left.ctrl(title='EQ_Left')
+pan_left = Pan(eq_left, outs=2, pan=0, mul=.3).out()
+pan_left.ctrl(title='Pan_Left')
+
+eq_right = EQ(instr, freq=[31.5,63,125,250,500,1000,2000,4000,8000,16000], q=1, boost=[-12,12,-12,12,-12,12,-12,12,-12,12], type=0)
+eq_right.ctrl(title='EQ_Right')
+pan_right = Pan(eq_right, outs=2, pan=1, mul=.3).out()
+pan_right.ctrl(title='Pan_Right')
+
+
+
+# GUI
 s.gui(locals())
