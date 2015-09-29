@@ -1,0 +1,212 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>pyo &mdash; Pyo 0.7.6 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.7.6',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../_static/E-PyoIcon.ico"/>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="top" title="Pyo 0.7.6 documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li><a href="../index.html">Pyo 0.7.6 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for pyo</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Copyright 2009-2015 Olivier Belanger</span>
+
+<span class="sd">This file is part of pyo, a python module to help digital signal</span>
+<span class="sd">processing script creation.</span>
+
+<span class="sd">pyo is free software: you can redistribute it and/or modify</span>
+<span class="sd">it under the terms of the GNU Lesser General Public License as</span>
+<span class="sd">published by the Free Software Foundation, either version 3 of the</span>
+<span class="sd">License, or (at your option) any later version.</span>
+
+<span class="sd">pyo is distributed in the hope that it will be useful,</span>
+<span class="sd">but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="sd">MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="sd">GNU Lesser General Public License for more details.</span>
+
+<span class="sd">You should have received a copy of the GNU Lesser General Public</span>
+<span class="sd">License along with pyo.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">pyolib._maps</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">pyolib.analysis</span> <span class="kn">as</span> <span class="nn">analysis</span>
+<span class="kn">from</span> <span class="nn">pyolib.analysis</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">pyolib.controls</span> <span class="kn">as</span> <span class="nn">controls</span>
+<span class="kn">from</span> <span class="nn">pyolib.controls</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">pyolib.dynamics</span> <span class="kn">as</span> <span class="nn">dynamics</span>
+<span class="kn">from</span> <span class="nn">pyolib.dynamics</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">pyolib.effects</span> <span class="kn">as</span> <span class="nn">effects</span>
+<span class="kn">from</span> <span class="nn">pyolib.effects</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">pyolib.filters</span> <span class="kn">as</span> <span class="nn">filters</span>
+<span class="kn">from</span> <span class="nn">pyolib.filters</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">pyolib.generators</span> <span class="kn">as</span> <span class="nn">generators</span>
+<span class="kn">from</span> <span class="nn">pyolib.generators</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">pyolib.arithmetic</span> <span class="kn">as</span> <span class="nn">arithmetic</span>
+<span class="kn">from</span> <span class="nn">pyolib.arithmetic</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">pyolib.midi</span> <span class="kn">as</span> <span class="nn">midi</span>
+<span class="kn">from</span> <span class="nn">pyolib.midi</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">pyolib.opensndctrl</span> <span class="kn">as</span> <span class="nn">opensndctrl</span>
+<span class="kn">from</span> <span class="nn">pyolib.opensndctrl</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">pyolib.pan</span> <span class="kn">as</span> <span class="nn">pan</span>
+<span class="kn">from</span> <span class="nn">pyolib.pan</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">pyolib.pattern</span> <span class="kn">as</span> <span class="nn">pattern</span>
+<span class="kn">from</span> <span class="nn">pyolib.pattern</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">pyolib.randoms</span> <span class="kn">as</span> <span class="nn">randoms</span>
+<span class="kn">from</span> <span class="nn">pyolib.randoms</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">pyolib.server</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">pyolib.players</span> <span class="kn">as</span> <span class="nn">players</span>
+<span class="kn">from</span> <span class="nn">pyolib.players</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">pyolib.tableprocess</span> <span class="kn">as</span> <span class="nn">tableprocess</span>
+<span class="kn">from</span> <span class="nn">pyolib.tableprocess</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">pyolib.matrixprocess</span> <span class="kn">as</span> <span class="nn">matrixprocess</span>
+<span class="kn">from</span> <span class="nn">pyolib.matrixprocess</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">pyolib.tables</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">pyolib.matrix</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">pyolib.triggers</span> <span class="kn">as</span> <span class="nn">triggers</span>
+<span class="kn">from</span> <span class="nn">pyolib.triggers</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">pyolib.utils</span> <span class="kn">as</span> <span class="nn">utils</span>
+<span class="kn">from</span> <span class="nn">pyolib.utils</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">pyolib.fourier</span> <span class="kn">as</span> <span class="nn">fourier</span>
+<span class="kn">from</span> <span class="nn">pyolib.fourier</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">pyolib.phasevoc</span> <span class="kn">as</span> <span class="nn">phasevoc</span>
+<span class="kn">from</span> <span class="nn">pyolib.phasevoc</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">pyolib._core</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="k">if</span> <span class="n">WITH_EXTERNALS</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">pyolib.external</span> <span class="kn">as</span> <span class="nn">external</span>
+    <span class="kn">from</span> <span class="nn">pyolib.external</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">OBJECTS_TREE</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;functions&#39;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">([</span><span class="s">&#39;pa_count_devices&#39;</span><span class="p">,</span> <span class="s">&#39;pa_get_default_input&#39;</span><span class="p">,</span> <span class="s">&#39;pa_get_default_output&#39;</span><span class="p">,</span> <span class="s">&#39;pm_get_input_devices&#39;</span><span class="p">,</span>
+                                    <span class="s">&#39;pa_list_devices&#39;</span><span class="p">,</span> <span class="s">&#39;pa_count_host_apis&#39;</span><span class="p">,</span> <span class="s">&#39;pa_list_host_apis&#39;</span><span class="p">,</span> <span class="s">&#39;pa_get_default_host_api&#39;</span><span class="p">,</span>
+                                    <span class="s">&#39;pm_count_devices&#39;</span><span class="p">,</span> <span class="s">&#39;pm_list_devices&#39;</span><span class="p">,</span> <span class="s">&#39;sndinfo&#39;</span><span class="p">,</span> <span class="s">&#39;savefile&#39;</span><span class="p">,</span> <span class="s">&#39;pa_get_output_devices&#39;</span><span class="p">,</span>
+                                    <span class="s">&#39;pa_get_input_devices&#39;</span><span class="p">,</span> <span class="s">&#39;midiToHz&#39;</span><span class="p">,</span> <span class="s">&#39;hzToMidi&#39;</span><span class="p">,</span> <span class="s">&#39;sampsToSec&#39;</span><span class="p">,</span> <span class="s">&#39;secToSamps&#39;</span><span class="p">,</span> <span class="s">&#39;example&#39;</span><span class="p">,</span> <span class="s">&#39;class_args&#39;</span><span class="p">,</span>
+                                    <span class="s">&#39;pm_get_default_input&#39;</span><span class="p">,</span> <span class="s">&#39;pm_get_output_devices&#39;</span><span class="p">,</span> <span class="s">&#39;pm_get_default_output&#39;</span><span class="p">,</span> <span class="s">&#39;midiToTranspo&#39;</span><span class="p">,</span>
+                                     <span class="s">&#39;getVersion&#39;</span><span class="p">,</span> <span class="s">&#39;reducePoints&#39;</span><span class="p">,</span> <span class="s">&#39;serverCreated&#39;</span><span class="p">,</span> <span class="s">&#39;serverBooted&#39;</span><span class="p">,</span> <span class="s">&#39;distanceToSegment&#39;</span><span class="p">,</span> <span class="s">&#39;rescale&#39;</span><span class="p">,</span>
+                                     <span class="s">&#39;upsamp&#39;</span><span class="p">,</span> <span class="s">&#39;downsamp&#39;</span><span class="p">,</span> <span class="s">&#39;linToCosCurve&#39;</span><span class="p">,</span> <span class="s">&#39;convertStringToSysEncoding&#39;</span><span class="p">,</span> <span class="s">&#39;savefileFromTable&#39;</span><span class="p">,</span>
+                                    <span class="s">&#39;pa_get_input_max_channels&#39;</span><span class="p">,</span> <span class="s">&#39;pa_get_output_max_channels&#39;</span><span class="p">,</span> <span class="s">&#39;pa_get_devices_infos&#39;</span><span class="p">,</span> <span class="s">&#39;pa_get_version&#39;</span><span class="p">,</span>
+                                    <span class="s">&#39;pa_get_version_text&#39;</span><span class="p">,</span> <span class="s">&#39;floatmap&#39;</span><span class="p">]),</span>
+                <span class="s">&#39;PyoObjectBase&#39;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s">&#39;PyoMatrixObject&#39;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">([</span><span class="s">&#39;NewMatrix&#39;</span><span class="p">]),</span>
+                    <span class="s">&#39;PyoTableObject&#39;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">([</span><span class="s">&#39;LinTable&#39;</span><span class="p">,</span> <span class="s">&#39;NewTable&#39;</span><span class="p">,</span> <span class="s">&#39;SndTable&#39;</span><span class="p">,</span> <span class="s">&#39;HannTable&#39;</span><span class="p">,</span> <span class="s">&#39;HarmTable&#39;</span><span class="p">,</span> <span class="s">&#39;SawTable&#39;</span><span class="p">,</span> <span class="s">&#39;ParaTable&#39;</span><span class="p">,</span>
+                                              <span class="s">&#39;LogTable&#39;</span><span class="p">,</span> <span class="s">&#39;CosLogTable&#39;</span><span class="p">,</span> <span class="s">&#39;SquareTable&#39;</span><span class="p">,</span> <span class="s">&#39;ChebyTable&#39;</span><span class="p">,</span> <span class="s">&#39;CosTable&#39;</span><span class="p">,</span> <span class="s">&#39;CurveTable&#39;</span><span class="p">,</span> <span class="s">&#39;ExpTable&#39;</span><span class="p">,</span>
+                                              <span class="s">&#39;DataTable&#39;</span><span class="p">,</span> <span class="s">&#39;WinTable&#39;</span><span class="p">,</span> <span class="s">&#39;SincTable&#39;</span><span class="p">,</span> <span class="s">&#39;PartialTable&#39;</span><span class="p">,</span> <span class="s">&#39;AtanTable&#39;</span><span class="p">]),</span>
+                    <span class="s">&#39;PyoPVObject&#39;</span> <span class="p">:</span> <span class="nb">sorted</span><span class="p">([</span><span class="s">&#39;PVAnal&#39;</span><span class="p">,</span> <span class="s">&#39;PVSynth&#39;</span><span class="p">,</span> <span class="s">&#39;PVTranspose&#39;</span><span class="p">,</span> <span class="s">&#39;PVVerb&#39;</span><span class="p">,</span> <span class="s">&#39;PVGate&#39;</span><span class="p">,</span> <span class="s">&#39;PVAddSynth&#39;</span><span class="p">,</span> <span class="s">&#39;PVCross&#39;</span><span class="p">,</span> <span class="s">&#39;PVMult&#39;</span><span class="p">,</span>
+                                            <span class="s">&#39;PVMorph&#39;</span><span class="p">,</span> <span class="s">&#39;PVFilter&#39;</span><span class="p">,</span> <span class="s">&#39;PVDelay&#39;</span><span class="p">,</span> <span class="s">&#39;PVBuffer&#39;</span><span class="p">,</span> <span class="s">&#39;PVShift&#39;</span><span class="p">,</span> <span class="s">&#39;PVAmpMod&#39;</span><span class="p">,</span> <span class="s">&#39;PVFreqMod&#39;</span><span class="p">,</span> <span class="s">&#39;PVBufLoops&#39;</span><span class="p">,</span>
+                                            <span class="s">&#39;PVBufTabLoops&#39;</span><span class="p">,</span> <span class="s">&#39;PVMix&#39;</span><span class="p">]),</span>
+                    <span class="s">&#39;PyoObject&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;analysis&#39;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">([</span><span class="s">&#39;Follower&#39;</span><span class="p">,</span> <span class="s">&#39;Follower2&#39;</span><span class="p">,</span> <span class="s">&#39;ZCross&#39;</span><span class="p">,</span> <span class="s">&#39;Yin&#39;</span><span class="p">,</span> <span class="s">&#39;Centroid&#39;</span><span class="p">,</span> <span class="s">&#39;AttackDetector&#39;</span><span class="p">,</span> <span class="s">&#39;Scope&#39;</span><span class="p">,</span>
+                                                      <span class="s">&#39;Spectrum&#39;</span><span class="p">,</span> <span class="s">&#39;PeakAmp&#39;</span><span class="p">]),</span>
+                                  <span class="s">&#39;arithmetic&#39;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">([</span><span class="s">&#39;Sin&#39;</span><span class="p">,</span> <span class="s">&#39;Cos&#39;</span><span class="p">,</span> <span class="s">&#39;Tan&#39;</span><span class="p">,</span> <span class="s">&#39;Abs&#39;</span><span class="p">,</span> <span class="s">&#39;Sqrt&#39;</span><span class="p">,</span> <span class="s">&#39;Log&#39;</span><span class="p">,</span> <span class="s">&#39;Log2&#39;</span><span class="p">,</span> <span class="s">&#39;Log10&#39;</span><span class="p">,</span> <span class="s">&#39;Pow&#39;</span><span class="p">,</span> <span class="s">&#39;Atan2&#39;</span><span class="p">,</span> <span class="s">&#39;Floor&#39;</span><span class="p">,</span>
+                                                        <span class="s">&#39;Round&#39;</span><span class="p">,</span> <span class="s">&#39;Ceil&#39;</span><span class="p">,</span> <span class="s">&#39;Tanh&#39;</span><span class="p">]),</span>
+                                  <span class="s">&#39;controls&#39;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">([</span><span class="s">&#39;Fader&#39;</span><span class="p">,</span> <span class="s">&#39;Sig&#39;</span><span class="p">,</span> <span class="s">&#39;SigTo&#39;</span><span class="p">,</span> <span class="s">&#39;Adsr&#39;</span><span class="p">,</span> <span class="s">&#39;Linseg&#39;</span><span class="p">,</span> <span class="s">&#39;Expseg&#39;</span><span class="p">]),</span>
+                                  <span class="s">&#39;dynamics&#39;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">([</span><span class="s">&#39;Clip&#39;</span><span class="p">,</span> <span class="s">&#39;Compress&#39;</span><span class="p">,</span> <span class="s">&#39;Degrade&#39;</span><span class="p">,</span> <span class="s">&#39;Mirror&#39;</span><span class="p">,</span> <span class="s">&#39;Wrap&#39;</span><span class="p">,</span> <span class="s">&#39;Gate&#39;</span><span class="p">,</span> <span class="s">&#39;Balance&#39;</span><span class="p">,</span> <span class="s">&#39;Min&#39;</span><span class="p">,</span> <span class="s">&#39;Max&#39;</span><span class="p">]),</span>
+                                  <span class="s">&#39;effects&#39;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">([</span><span class="s">&#39;Delay&#39;</span><span class="p">,</span> <span class="s">&#39;SDelay&#39;</span><span class="p">,</span> <span class="s">&#39;Disto&#39;</span><span class="p">,</span> <span class="s">&#39;Freeverb&#39;</span><span class="p">,</span> <span class="s">&#39;Waveguide&#39;</span><span class="p">,</span> <span class="s">&#39;Convolve&#39;</span><span class="p">,</span> <span class="s">&#39;WGVerb&#39;</span><span class="p">,</span> <span class="s">&#39;SmoothDelay&#39;</span><span class="p">,</span>
+                                                     <span class="s">&#39;Harmonizer&#39;</span><span class="p">,</span> <span class="s">&#39;Chorus&#39;</span><span class="p">,</span> <span class="s">&#39;AllpassWG&#39;</span><span class="p">,</span> <span class="s">&#39;FreqShift&#39;</span><span class="p">,</span> <span class="s">&#39;Vocoder&#39;</span><span class="p">,</span> <span class="s">&#39;Delay1&#39;</span><span class="p">,</span> <span class="s">&#39;STRev&#39;</span><span class="p">]),</span>
+                                  <span class="s">&#39;filters&#39;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">([</span><span class="s">&#39;Biquad&#39;</span><span class="p">,</span> <span class="s">&#39;BandSplit&#39;</span><span class="p">,</span> <span class="s">&#39;Port&#39;</span><span class="p">,</span> <span class="s">&#39;Hilbert&#39;</span><span class="p">,</span> <span class="s">&#39;Tone&#39;</span><span class="p">,</span> <span class="s">&#39;DCBlock&#39;</span><span class="p">,</span> <span class="s">&#39;EQ&#39;</span><span class="p">,</span> <span class="s">&#39;Allpass&#39;</span><span class="p">,</span>
+                                                     <span class="s">&#39;Allpass2&#39;</span><span class="p">,</span> <span class="s">&#39;Phaser&#39;</span><span class="p">,</span> <span class="s">&#39;Biquadx&#39;</span><span class="p">,</span> <span class="s">&#39;IRWinSinc&#39;</span><span class="p">,</span> <span class="s">&#39;IRAverage&#39;</span><span class="p">,</span> <span class="s">&#39;IRPulse&#39;</span><span class="p">,</span> <span class="s">&#39;IRFM&#39;</span><span class="p">,</span>
+                                                     <span class="s">&#39;FourBand&#39;</span><span class="p">,</span> <span class="s">&#39;Biquada&#39;</span><span class="p">,</span> <span class="s">&#39;Atone&#39;</span><span class="p">,</span> <span class="s">&#39;SVF&#39;</span><span class="p">,</span> <span class="s">&#39;Average&#39;</span><span class="p">,</span> <span class="s">&#39;Reson&#39;</span><span class="p">,</span> <span class="s">&#39;Resonx&#39;</span><span class="p">,</span> <span class="s">&#39;ButLP&#39;</span><span class="p">,</span>
+                                                     <span class="s">&#39;ButHP&#39;</span><span class="p">,</span> <span class="s">&#39;ButBP&#39;</span><span class="p">,</span> <span class="s">&#39;ButBR&#39;</span><span class="p">,</span> <span class="s">&#39;ComplexRes&#39;</span><span class="p">]),</span>
+                                  <span class="s">&#39;generators&#39;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">([</span><span class="s">&#39;Noise&#39;</span><span class="p">,</span> <span class="s">&#39;Phasor&#39;</span><span class="p">,</span> <span class="s">&#39;Sine&#39;</span><span class="p">,</span> <span class="s">&#39;Input&#39;</span><span class="p">,</span> <span class="s">&#39;FM&#39;</span><span class="p">,</span> <span class="s">&#39;SineLoop&#39;</span><span class="p">,</span> <span class="s">&#39;Blit&#39;</span><span class="p">,</span> <span class="s">&#39;PinkNoise&#39;</span><span class="p">,</span> <span class="s">&#39;CrossFM&#39;</span><span class="p">,</span>
+                                                        <span class="s">&#39;BrownNoise&#39;</span><span class="p">,</span> <span class="s">&#39;Rossler&#39;</span><span class="p">,</span> <span class="s">&#39;Lorenz&#39;</span><span class="p">,</span> <span class="s">&#39;LFO&#39;</span><span class="p">,</span> <span class="s">&#39;SumOsc&#39;</span><span class="p">,</span> <span class="s">&#39;SuperSaw&#39;</span><span class="p">,</span> <span class="s">&#39;RCOsc&#39;</span><span class="p">]),</span>
+                                  <span class="s">&#39;internals&#39;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">([</span><span class="s">&#39;Dummy&#39;</span><span class="p">,</span> <span class="s">&#39;InputFader&#39;</span><span class="p">,</span> <span class="s">&#39;Mix&#39;</span><span class="p">,</span> <span class="s">&#39;VarPort&#39;</span><span class="p">]),</span>
+                                  <span class="s">&#39;midi&#39;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">([</span><span class="s">&#39;Midictl&#39;</span><span class="p">,</span> <span class="s">&#39;CtlScan&#39;</span><span class="p">,</span> <span class="s">&#39;CtlScan2&#39;</span><span class="p">,</span> <span class="s">&#39;Notein&#39;</span><span class="p">,</span> <span class="s">&#39;MidiAdsr&#39;</span><span class="p">,</span> <span class="s">&#39;MidiDelAdsr&#39;</span><span class="p">,</span> <span class="s">&#39;Bendin&#39;</span><span class="p">,</span>
+                                                  <span class="s">&#39;Touchin&#39;</span><span class="p">,</span> <span class="s">&#39;Programin&#39;</span><span class="p">,</span> <span class="s">&#39;RawMidi&#39;</span><span class="p">]),</span>
+                                  <span class="s">&#39;opensndctrl&#39;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">([</span><span class="s">&#39;OscReceive&#39;</span><span class="p">,</span> <span class="s">&#39;OscSend&#39;</span><span class="p">,</span> <span class="s">&#39;OscDataSend&#39;</span><span class="p">,</span> <span class="s">&#39;OscDataReceive&#39;</span><span class="p">,</span> <span class="s">&#39;OscListReceive&#39;</span><span class="p">]),</span>
+                                  <span class="s">&#39;pan&#39;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">([</span><span class="s">&#39;Pan&#39;</span><span class="p">,</span> <span class="s">&#39;SPan&#39;</span><span class="p">,</span> <span class="s">&#39;Switch&#39;</span><span class="p">,</span> <span class="s">&#39;Selector&#39;</span><span class="p">,</span> <span class="s">&#39;Mixer&#39;</span><span class="p">,</span> <span class="s">&#39;VoiceManager&#39;</span><span class="p">]),</span>
+                                  <span class="s">&#39;pattern&#39;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">([</span><span class="s">&#39;Pattern&#39;</span><span class="p">,</span> <span class="s">&#39;Score&#39;</span><span class="p">,</span> <span class="s">&#39;CallAfter&#39;</span><span class="p">]),</span>
+                                  <span class="s">&#39;randoms&#39;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">([</span><span class="s">&#39;Randi&#39;</span><span class="p">,</span> <span class="s">&#39;Randh&#39;</span><span class="p">,</span> <span class="s">&#39;Choice&#39;</span><span class="p">,</span> <span class="s">&#39;RandInt&#39;</span><span class="p">,</span> <span class="s">&#39;Xnoise&#39;</span><span class="p">,</span> <span class="s">&#39;XnoiseMidi&#39;</span><span class="p">,</span> <span class="s">&#39;RandDur&#39;</span><span class="p">,</span> <span class="s">&#39;XnoiseDur&#39;</span><span class="p">,</span> <span class="s">&#39;Urn&#39;</span><span class="p">]),</span>
+                                  <span class="s">&#39;players&#39;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">([</span><span class="s">&#39;SfMarkerShuffler&#39;</span><span class="p">,</span> <span class="s">&#39;SfPlayer&#39;</span><span class="p">,</span> <span class="s">&#39;SfMarkerLooper&#39;</span><span class="p">]),</span>
+                                  <span class="s">&#39;tableprocess&#39;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">([</span><span class="s">&#39;TableRec&#39;</span><span class="p">,</span> <span class="s">&#39;Osc&#39;</span><span class="p">,</span> <span class="s">&#39;Pointer&#39;</span><span class="p">,</span> <span class="s">&#39;Pointer2&#39;</span><span class="p">,</span> <span class="s">&#39;Lookup&#39;</span><span class="p">,</span> <span class="s">&#39;Granulator&#39;</span><span class="p">,</span> <span class="s">&#39;Pulsar&#39;</span><span class="p">,</span> <span class="s">&#39;OscLoop&#39;</span><span class="p">,</span>
+                                                          <span class="s">&#39;Granule&#39;</span><span class="p">,</span> <span class="s">&#39;TableRead&#39;</span><span class="p">,</span> <span class="s">&#39;TableMorph&#39;</span><span class="p">,</span> <span class="s">&#39;Looper&#39;</span><span class="p">,</span> <span class="s">&#39;TableIndex&#39;</span><span class="p">,</span> <span class="s">&#39;OscBank&#39;</span><span class="p">,</span> <span class="s">&#39;OscTrig&#39;</span><span class="p">,</span>
+                                                          <span class="s">&#39;TablePut&#39;</span><span class="p">,</span> <span class="s">&#39;TableScale&#39;</span><span class="p">,</span> <span class="s">&#39;Particle&#39;</span><span class="p">,</span> <span class="s">&#39;TableWrite&#39;</span><span class="p">]),</span>
+                                  <span class="s">&#39;matrixprocess&#39;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">([</span><span class="s">&#39;MatrixRec&#39;</span><span class="p">,</span> <span class="s">&#39;MatrixPointer&#39;</span><span class="p">,</span> <span class="s">&#39;MatrixMorph&#39;</span><span class="p">,</span> <span class="s">&#39;MatrixRecLoop&#39;</span><span class="p">]),</span>
+                                  <span class="s">&#39;triggers&#39;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">([</span><span class="s">&#39;Metro&#39;</span><span class="p">,</span> <span class="s">&#39;Beat&#39;</span><span class="p">,</span> <span class="s">&#39;TrigEnv&#39;</span><span class="p">,</span> <span class="s">&#39;TrigRand&#39;</span><span class="p">,</span> <span class="s">&#39;TrigRandInt&#39;</span><span class="p">,</span> <span class="s">&#39;Select&#39;</span><span class="p">,</span> <span class="s">&#39;Counter&#39;</span><span class="p">,</span> <span class="s">&#39;TrigChoice&#39;</span><span class="p">,</span>
+                                                    <span class="s">&#39;TrigFunc&#39;</span><span class="p">,</span> <span class="s">&#39;Thresh&#39;</span><span class="p">,</span> <span class="s">&#39;Cloud&#39;</span><span class="p">,</span> <span class="s">&#39;Trig&#39;</span><span class="p">,</span> <span class="s">&#39;TrigXnoise&#39;</span><span class="p">,</span> <span class="s">&#39;TrigXnoiseMidi&#39;</span><span class="p">,</span> <span class="s">&#39;Timer&#39;</span><span class="p">,</span> <span class="s">&#39;Count&#39;</span><span class="p">,</span>
+                                                    <span class="s">&#39;Change&#39;</span><span class="p">,</span> <span class="s">&#39;TrigLinseg&#39;</span><span class="p">,</span> <span class="s">&#39;TrigExpseg&#39;</span><span class="p">,</span> <span class="s">&#39;Percent&#39;</span><span class="p">,</span> <span class="s">&#39;Seq&#39;</span><span class="p">,</span> <span class="s">&#39;TrigTableRec&#39;</span><span class="p">,</span> <span class="s">&#39;Iter&#39;</span><span class="p">,</span> <span class="s">&#39;NextTrig&#39;</span><span class="p">,</span>
+                                                    <span class="s">&#39;TrigVal&#39;</span><span class="p">,</span> <span class="s">&#39;Euclide&#39;</span><span class="p">,</span> <span class="s">&#39;TrigBurst&#39;</span><span class="p">]),</span>
+                                  <span class="s">&#39;utils&#39;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">([</span><span class="s">&#39;Clean_objects&#39;</span><span class="p">,</span> <span class="s">&#39;Print&#39;</span><span class="p">,</span> <span class="s">&#39;Snap&#39;</span><span class="p">,</span> <span class="s">&#39;Interp&#39;</span><span class="p">,</span> <span class="s">&#39;SampHold&#39;</span><span class="p">,</span> <span class="s">&#39;Compare&#39;</span><span class="p">,</span> <span class="s">&#39;Record&#39;</span><span class="p">,</span> <span class="s">&#39;Between&#39;</span><span class="p">,</span> <span class="s">&#39;Denorm&#39;</span><span class="p">,</span>
+                                                    <span class="s">&#39;ControlRec&#39;</span><span class="p">,</span> <span class="s">&#39;ControlRead&#39;</span><span class="p">,</span> <span class="s">&#39;NoteinRec&#39;</span><span class="p">,</span> <span class="s">&#39;NoteinRead&#39;</span><span class="p">,</span> <span class="s">&#39;DBToA&#39;</span><span class="p">,</span> <span class="s">&#39;AToDB&#39;</span><span class="p">,</span> <span class="s">&#39;Scale&#39;</span><span class="p">,</span> <span class="s">&#39;CentsToTranspo&#39;</span><span class="p">,</span>
+                                                    <span class="s">&#39;TranspoToCents&#39;</span><span class="p">,</span> <span class="s">&#39;MToF&#39;</span><span class="p">,</span> <span class="s">&#39;FToM&#39;</span><span class="p">,</span> <span class="s">&#39;MToT&#39;</span><span class="p">,</span> <span class="s">&#39;TrackHold&#39;</span><span class="p">]),</span>
+                                  <span class="s">&#39;fourier&#39;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">([</span><span class="s">&#39;FFT&#39;</span><span class="p">,</span> <span class="s">&#39;IFFT&#39;</span><span class="p">,</span> <span class="s">&#39;CarToPol&#39;</span><span class="p">,</span> <span class="s">&#39;PolToCar&#39;</span><span class="p">,</span> <span class="s">&#39;FrameDelta&#39;</span><span class="p">,</span> <span class="s">&#39;FrameAccum&#39;</span><span class="p">,</span> <span class="s">&#39;Vectral&#39;</span><span class="p">,</span> <span class="s">&#39;CvlVerb&#39;</span><span class="p">])}},</span>
+        <span class="s">&#39;Map&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;SLMap&#39;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">([</span><span class="s">&#39;SLMapFreq&#39;</span><span class="p">,</span> <span class="s">&#39;SLMapMul&#39;</span><span class="p">,</span> <span class="s">&#39;SLMapPhase&#39;</span><span class="p">,</span> <span class="s">&#39;SLMapQ&#39;</span><span class="p">,</span> <span class="s">&#39;SLMapDur&#39;</span><span class="p">,</span> <span class="s">&#39;SLMapPan&#39;</span><span class="p">])},</span>
+        <span class="s">&#39;Server&#39;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="s">&#39;Stream&#39;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="s">&#39;TableStream&#39;</span><span class="p">:</span> <span class="p">[]}</span>
+
+<span class="n">DOC_KEYWORDS</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;Attributes&#39;</span><span class="p">,</span> <span class="s">&#39;Examples&#39;</span><span class="p">,</span> <span class="s">&#39;Parameters&#39;</span><span class="p">,</span> <span class="s">&#39;Methods&#39;</span><span class="p">,</span> <span class="s">&#39;Notes&#39;</span><span class="p">,</span> <span class="s">&#39;Methods details&#39;</span><span class="p">,</span> <span class="s">&#39;See also&#39;</span><span class="p">,</span> <span class="s">&#39;Parentclass&#39;</span><span class="p">]</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li><a href="../index.html">Pyo 0.7.6 documentation</a> &raquo;</li>
+          <li><a href="index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Olivier Bélanger.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

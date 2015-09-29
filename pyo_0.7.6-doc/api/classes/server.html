@@ -1,0 +1,1168 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Audio Server &mdash; Pyo 0.7.6 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.7.6',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../../_static/E-PyoIcon.ico"/>
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="top" title="Pyo 0.7.6 documentation" href="../../index.html" />
+    <link rel="up" title="Classes by category" href="index.html" />
+    <link rel="next" title="Base Classes" href="_core.html" />
+    <link rel="prev" title="Classes by category" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="_core.html" title="Base Classes"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Classes by category"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">Pyo 0.7.6 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >API Documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Classes by category</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-pyo">
+<span id="audio-server"></span><h1>Audio Server</h1>
+<div class="section" id="server">
+<h2><em>Server</em></h2>
+<dl class="class">
+<dt id="pyo.Server">
+<em class="property">class </em><tt class="descname">Server</tt><big>(</big><em>sr=44100</em>, <em>nchnls=2</em>, <em>buffersize=256</em>, <em>duplex=1</em>, <em>audio='portaudio'</em>, <em>jackname='pyo'</em>, <em>ichnls=None</em><big>)</big></dt>
+<dd><p>Main processing audio loop callback handler.</p>
+<p>The Server object handles all communications with Portaudio and
+Portmidi. It keeps track of all audio streams created as well as
+connections between them.</p>
+<p>An instance of the Server must be booted before defining any
+signal processing chain.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>sr <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">Sampling rate used by Portaudio and the Server to compute samples.
+Defaults to 44100.</p>
+</dd>
+<dt>nchnls <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">Number of output channels. The number of input channels will be the
+same if <cite>ichnls</cite> argument is not defined. Defaults to 2.</p>
+</dd>
+<dt>buffersize <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first">Number of samples that Portaudio will request from the callback loop.
+Defaults to 256.</p>
+<p>This value has an impact on CPU use (a small buffer size is harder
+to compute) and on the latency of the system.</p>
+<p class="last">Latency is <cite>buffer size / sampling rate</cite> in seconds.</p>
+</dd>
+<dt>duplex <span class="classifier-delimiter">:</span> <span class="classifier">int {0, 1}, optional</span></dt>
+<dd><p class="first last">Input - output mode. 0 is output only and 1 is both ways.
+Defaults to 1.</p>
+</dd>
+<dt>audio <span class="classifier-delimiter">:</span> <span class="classifier">string {&#8216;portaudio&#8217;, &#8216;pa&#8217;, &#8216;jack&#8217;, &#8216;coreaudio&#8217;, &#8216;offline&#8217;, &#8216;offline_nb}, optional</span></dt>
+<dd><p class="first">Audio backend to use. &#8216;pa&#8217; is equivalent to &#8216;portaudio&#8217;. Default is &#8216;portaudio&#8217;.</p>
+<p>&#8216;offline&#8217; save the audio output in a soundfile as fast as possible in blocking mode,</p>
+<p>ie. the main program doesn&#8217;t respond until the end of the computation.</p>
+<p>&#8216;offline_nb&#8217; save the audio output in a soundfile as fast as possible in non-blocking
+mode,</p>
+<p>ie. the computation is executed in a separated thread, allowing the program to
+respond while the computation goes on.</p>
+<p class="last">It is the responsibility of the user to make sure that the program doesn&#8217;t exit before
+the computation is done.</p>
+</dd>
+<dt>jackname <span class="classifier-delimiter">:</span> <span class="classifier">string, optional</span></dt>
+<dd><p class="first last">Name of jack client. Defaults to &#8216;pyo&#8217;</p>
+</dd>
+<dt>ichnls <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">Number of input channels if different of output channels. If None (default), ichnls = nchnls.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The following methods must be called <strong>before</strong> booting the server</p>
+<ul class="last simple">
+<li>setInOutDevice(x) : Set both input and output devices. See <cite>pa_list_devices()</cite>.</li>
+<li>setInputDevice(x) : Set the audio input device number. See <cite>pa_list_devices()</cite>.</li>
+<li>setOutputDevice(x) : Set the audio output device number. See <cite>pa_list_devices()</cite>.</li>
+<li>setInputOffset(x) : Set the first physical input channel.</li>
+<li>setOutputOffset(x) : Set the first physical output channel.</li>
+<li>setInOutOffset(x) : Set the first physical input and output channels.</li>
+<li>setMidiInputDevice(x) : Set the MIDI input device number. See <cite>pm_list_devices()</cite>.</li>
+<li>setMidiOutputDevice(x) : Set the MIDI output device number. See <cite>pm_list_devices()</cite>.</li>
+<li>setSamplingRate(x) : Set the sampling rate used by the server.</li>
+<li>setBufferSize(x) : Set the buffer size used by the server.</li>
+<li>setNchnls(x) : Set the number of output (and input if <cite>ichnls</cite> = None) channels used by the server.</li>
+<li>setIchnls(x) : Set the number of input channels (if different of output channels) used by the server.</li>
+<li>setDuplex(x) : Set the duplex mode used by the server.</li>
+<li>setVerbosity(x) : Set the server&#8217;s verbosity.</li>
+<li>reinit(sr, nchnls, buffersize, duplex, audio, jackname) : Reinit the server&#8217;s settings.</li>
+</ul>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># For an 8 channels server in duplex mode with</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># a sampling rate of 48000 Hz and buffer size of 512</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">(</span><span class="n">sr</span><span class="o">=</span><span class="mi">48000</span><span class="p">,</span> <span class="n">nchnls</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">buffersize</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span> <span class="n">duplex</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.Server.reinit">
+<tt class="descname">reinit</tt><big>(</big><em>sr=44100</em>, <em>nchnls=2</em>, <em>buffersize=256</em>, <em>duplex=1</em>, <em>audio='portaudio'</em>, <em>jackname='pyo'</em>, <em>ichnls=None</em><big>)</big></dt>
+<dd><p>Reinit the server&#8217;settings. Useful to alternate between real-time and offline server.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body">Same as in the __init__ method.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Server.gui">
+<tt class="descname">gui</tt><big>(</big><em>locals=None</em>, <em>meter=True</em>, <em>timer=True</em>, <em>exit=True</em><big>)</big></dt>
+<dd><p>Show the server&#8217;s user interface.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>locals <span class="classifier-delimiter">:</span> <span class="classifier">locals namespace {locals(), None}, optional</span></dt>
+<dd><p class="first last">If locals() is given, the interface will show an interpreter extension,
+giving a way to interact with the running script. Defaults to None.</p>
+</dd>
+<dt>meter <span class="classifier-delimiter">:</span> <span class="classifier">boolean, optinal</span></dt>
+<dd><p class="first last">If True, the interface will show a vumeter of the global output signal.
+Defaults to True.</p>
+</dd>
+<dt>timer <span class="classifier-delimiter">:</span> <span class="classifier">boolean, optional</span></dt>
+<dd><p class="first last">If True, the interface will show a clock of the current time.
+Defaults to True.</p>
+</dd>
+<dt>exit <span class="classifier-delimiter">:</span> <span class="classifier">boolean, optional</span></dt>
+<dd><p class="first last">If True, the python interpreter will exit when the &#8216;Quit&#8217; button is pressed,
+Otherwise, the GUI will be closed leaving the interpreter alive.
+Defaults to True.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Server.setTimeCallable">
+<tt class="descname">setTimeCallable</tt><big>(</big><em>func</em><big>)</big></dt>
+<dd><p>Set a function callback that will receive the current time as argument.</p>
+<dl class="docutils">
+<dt>The function will receive four integers in this format:</dt>
+<dd>hours, minutes, seconds, milliseconds</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>func <span class="classifier-delimiter">:</span> <span class="classifier">python callable</span></dt>
+<dd><p class="first last">Python function or method to call with current time as argument.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Server.setMeterCallable">
+<tt class="descname">setMeterCallable</tt><big>(</big><em>func</em><big>)</big></dt>
+<dd><p>Set a function callback that will receive the current rms values as argument.</p>
+<p>The function will receive a list containing the rms value for each audio channel.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>func <span class="classifier-delimiter">:</span> <span class="classifier">python callable</span></dt>
+<dd><p class="first last">Python function or method to call with current rms values as argument.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Server.setMeter">
+<tt class="descname">setMeter</tt><big>(</big><em>meter</em><big>)</big></dt>
+<dd><p>Registers a meter object to the server.</p>
+<p>The object must have a method named <cite>setRms</cite>. This method will be called
+with the rms values of each audio channel as argument.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>meter <span class="classifier-delimiter">:</span> <span class="classifier">python object</span></dt>
+<dd><p class="first last">Python object with a <cite>setRms</cite> method.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Server.setInOutDevice">
+<tt class="descname">setInOutDevice</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Set both input and output audio devices. See <cite>pa_list_devices()</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">Number of the audio input and output devices.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Server.setInputDevice">
+<tt class="descname">setInputDevice</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Set the audio input device number. See <cite>pa_list_devices()</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">Number of the audio device listed by Portaudio.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Server.setOutputDevice">
+<tt class="descname">setOutputDevice</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Set the audio output device number. See <cite>pa_list_devices()</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">Number of the audio device listed by Portaudio.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Server.setInputOffset">
+<tt class="descname">setInputOffset</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Set the first physical input channel.</p>
+<p>Channel number <cite>x</cite> from the soundcard will be assigned to
+server&#8217;s channel one, channel number <cite>x</cite> + 1 to server&#8217;s
+channel two and so on.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">Channel number.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Server.setOutputOffset">
+<tt class="descname">setOutputOffset</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Set the first physical output channel.</p>
+<p>Server&#8217;s channel one will be assigned to soundcard&#8217;s channel
+number <cite>x</cite>, server&#8217;s channel two will be assigned to soundcard&#8217;s
+channel number <cite>x</cite> + 1 and so on.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">Channel number.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Server.setInOutOffset">
+<tt class="descname">setInOutOffset</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Set the first physical input and output channels.</p>
+<p>Set both offsets to the same value. See <cite>setInputOffset</cite> and
+<cite>setOutputOffset</cite> documentation for more details.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">Channel number.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Server.setMidiInputDevice">
+<tt class="descname">setMidiInputDevice</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Set the Midi input device number. See <cite>pm_list_devices()</cite>.</p>
+<p>A number greater than the highest portmidi device index
+will opened all available input devices.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">Number of the Midi device listed by Portmidi.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Server.setMidiOutputDevice">
+<tt class="descname">setMidiOutputDevice</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Set the Midi output device number. See <cite>pm_list_devices()</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">Number of the Midi device listed by Portmidi.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Server.setSamplingRate">
+<tt class="descname">setSamplingRate</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Set the sampling rate used by the server.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">New sampling rate, must be supported by the soundcard.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Server.setBufferSize">
+<tt class="descname">setBufferSize</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Set the buffer size used by the server.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">New buffer size.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Server.setNchnls">
+<tt class="descname">setNchnls</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Set the number of output (and input if <cite>ichnls</cite> = None) channels used by the server.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">New number of channels.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Server.setIchnls">
+<tt class="descname">setIchnls</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Set the number of input channels (if different of output channels) used by the server.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">New number of input channels.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Server.setDuplex">
+<tt class="descname">setDuplex</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Set the duplex mode used by the server.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">int {0 or 1}</span></dt>
+<dd><p class="first last">New mode. 0 is output only, 1 is both ways.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Server.setVerbosity">
+<tt class="descname">setVerbosity</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Set the server&#8217;s verbosity.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><dl class="first last docutils">
+<dt>A sum of values to display different levels:</dt>
+<dd><ul class="first last simple">
+<li>1 = error</li>
+<li>2 = message</li>
+<li>4 = warning</li>
+<li>8 = debug</li>
+</ul>
+</dd>
+</dl>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Server.setJackAuto">
+<tt class="descname">setJackAuto</tt><big>(</big><em>xin=True</em>, <em>xout=True</em><big>)</big></dt>
+<dd><p>Tells the server to auto-connect (or not) Jack ports to System ports.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>xin <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
+<dd><p class="first last">Input Auto-connection switch. True is enabled (default) and False is disabled.</p>
+</dd>
+<dt>xout <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
+<dd><p class="first last">Output Auto-connection switch. True is enabled (default) and False is disabled.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Server.setJackAutoConnectInputPorts">
+<tt class="descname">setJackAutoConnectInputPorts</tt><big>(</big><em>ports</em><big>)</big></dt>
+<dd><p>Tells the server to auto-connect Jack input ports to pre-defined Jack ports.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>ports <span class="classifier-delimiter">:</span> <span class="classifier">string or list of strings</span></dt>
+<dd><p class="first last">Name of the Jack port(s) to auto-connect. Regular Expressions are allowed.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Server.setJackAutoConnectOutputPorts">
+<tt class="descname">setJackAutoConnectOutputPorts</tt><big>(</big><em>ports</em><big>)</big></dt>
+<dd><p>Tells the server to auto-connect Jack output ports to pre-defined Jack ports.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>ports <span class="classifier-delimiter">:</span> <span class="classifier">string or list of strings</span></dt>
+<dd><p class="first last">Name of the Jack port(s) to auto-connect. Regular Expressions are allowed.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Server.setGlobalSeed">
+<tt class="descname">setGlobalSeed</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Set the server&#8217;s global seed used by random objects.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first">A positive integer that will be used as the seed by random objects.</p>
+<p class="last">If zero, randoms will be seeded with the system clock current value.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Server.setStartOffset">
+<tt class="descname">setStartOffset</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Set the server&#8217;s starting time offset. First <cite>x</cite> seconds will be rendered
+offline as fast as possible.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">Starting time of the real-time processing.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Server.setAmp">
+<tt class="descname">setAmp</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Set the overall amplitude.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">New amplitude.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Server.shutdown">
+<tt class="descname">shutdown</tt><big>(</big><big>)</big></dt>
+<dd><p>Shut down and clear the server. This method will erase all objects
+from the callback loop. This method need to be called before changing
+server&#8217;s parameters like <cite>samplingrate</cite>, <cite>buffersize</cite>, <cite>nchnls</cite>, ...</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Server.boot">
+<tt class="descname">boot</tt><big>(</big><em>newBuffer=True</em><big>)</big></dt>
+<dd><p>Boot the server. Must be called before defining any signal processing
+chain. Server&#8217;s parameters like <cite>samplingrate</cite>, <cite>buffersize</cite> or
+<cite>nchnls</cite> will be effective after a call to this method.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>newBuffer <span class="classifier-delimiter">:</span> <span class="classifier">bool</span></dt>
+<dd><p class="first">Specify if the buffers need to be allocated or not. Useful to limit
+the allocation of new buffers when the buffer size hasn&#8217;t change.</p>
+<p>Therefore, this is useful to limit calls to the Python interpreter
+to get the buffers addresses when using Pyo inside a
+C/C++ application with the embedded server.</p>
+<p class="last">Defaults to True.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Server.start">
+<tt class="descname">start</tt><big>(</big><big>)</big></dt>
+<dd><p>Start the audio callback loop and begin processing.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Server.stop">
+<tt class="descname">stop</tt><big>(</big><big>)</big></dt>
+<dd><p>Stop the audio callback loop.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Server.recordOptions">
+<tt class="descname">recordOptions</tt><big>(</big><em>dur=-1</em>, <em>filename=None</em>, <em>fileformat=0</em>, <em>sampletype=0</em><big>)</big></dt>
+<dd><p>Sets options for soundfile created by offline rendering or global recording.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>dur <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">Duration, in seconds, of the recorded file. Only used by
+offline rendering. Must be positive. Defaults to -1.</p>
+</dd>
+<dt>filename <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
+<dd><p class="first last">Full path of the file to create. If None, a file called
+<cite>pyo_rec.wav</cite> will be created in the user&#8217;s home directory.
+Defaults to None.</p>
+</dd>
+<dt>fileformat <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first">Format type of the audio file. This function will first try to
+set the format from the filename extension.</p>
+<dl class="last docutils">
+<dt>If it&#8217;s not possible, it uses the fileformat parameter. Supported formats are:</dt>
+<dd><ol class="first last arabic simple" start="0">
+<li>WAV - Microsoft WAV format (little endian) {.wav, .wave} (default)</li>
+<li>AIFF - Apple/SGI AIFF format (big endian) {.aif, .aiff}</li>
+<li>AU - Sun/NeXT AU format (big endian) {.au}</li>
+<li>RAW - RAW PCM data {no extension}</li>
+<li>SD2 - Sound Designer 2 {.sd2}</li>
+<li>FLAC - FLAC lossless file format {.flac}</li>
+<li>CAF - Core Audio File format {.caf}</li>
+<li>OGG - Xiph OGG container {.ogg}</li>
+</ol>
+</dd>
+</dl>
+</dd>
+<dt>sampletype <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first">Bit depth encoding of the audio file.</p>
+<dl class="last docutils">
+<dt>SD2 and FLAC only support 16 or 24 bit int. Supported types are:</dt>
+<dd><ol class="first last arabic simple" start="0">
+<li>16 bits int (default)</li>
+<li>24 bits int</li>
+<li>32 bits int</li>
+<li>32 bits float</li>
+<li>64 bits float</li>
+<li>U-Law encoded</li>
+<li>A-Law encoded</li>
+</ol>
+</dd>
+</dl>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Server.recstart">
+<tt class="descname">recstart</tt><big>(</big><em>filename=None</em><big>)</big></dt>
+<dd><p>Begins a default recording of the sound that is sent to the
+soundcard. This will create a file called <cite>pyo_rec.wav</cite> in
+the user&#8217;s home directory if no path is supplied or defined
+with recordOptions method. Uses file format and sample type
+defined with recordOptions method.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>filename <span class="classifier-delimiter">:</span> <span class="classifier">string, optional</span></dt>
+<dd><p class="first last">Name of the file to be created. Defaults to None.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Server.recstop">
+<tt class="descname">recstop</tt><big>(</big><big>)</big></dt>
+<dd><p>Stop the previously started recording.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Server.noteout">
+<tt class="descname">noteout</tt><big>(</big><em>pitch</em>, <em>velocity</em>, <em>channel=0</em>, <em>timestamp=0</em><big>)</big></dt>
+<dd><p>Send a MIDI note message to the selected midi output device.</p>
+<p>Arguments can be list of values to generate multiple events
+in one call.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>pitch <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">Midi pitch, between 0 and 127.</p>
+</dd>
+<dt>velocity <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">Amplitude of the note, between 0 and 127. A note
+with a velocity of 0 is equivalent to a note off.</p>
+</dd>
+<dt>channel <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">The Midi channel, between 1 and 16, on which the
+note is sent. A channel of 0 means all channels.
+Defaults to 0.</p>
+</dd>
+<dt>timestamp <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">The delay time, in milliseconds, before the note
+is sent on the portmidi stream. A value of 0 means
+to play the note now. Defaults to 0.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Server.afterout">
+<tt class="descname">afterout</tt><big>(</big><em>pitch</em>, <em>velocity</em>, <em>channel=0</em>, <em>timestamp=0</em><big>)</big></dt>
+<dd><p>Send an aftertouch message to the selected midi output device.</p>
+<p>Arguments can be list of values to generate multiple events
+in one call.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>pitch <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">Midi key pressed down, between 0 and 127.</p>
+</dd>
+<dt>velocity <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">Velocity of the pressure, between 0 and 127.</p>
+</dd>
+<dt>channel <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">The Midi channel, between 1 and 16, on which the
+note is sent. A channel of 0 means all channels.
+Defaults to 0.</p>
+</dd>
+<dt>timestamp <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">The delay time, in milliseconds, before the note
+is sent on the portmidi stream. A value of 0 means
+to play the note now. Defaults to 0.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Server.ctlout">
+<tt class="descname">ctlout</tt><big>(</big><em>ctlnum</em>, <em>value</em>, <em>channel=0</em>, <em>timestamp=0</em><big>)</big></dt>
+<dd><p>Send a control change message to the selected midi output device.</p>
+<p>Arguments can be list of values to generate multiple events
+in one call.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>ctlnum <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">Controller number, between 0 and 127.</p>
+</dd>
+<dt>value <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">Value of the controller, between 0 and 127.</p>
+</dd>
+<dt>channel <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">The Midi channel, between 1 and 16, on which the
+message is sent. A channel of 0 means all channels.
+Defaults to 0.</p>
+</dd>
+<dt>timestamp <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">The delay time, in milliseconds, before the message
+is sent on the portmidi stream. A value of 0 means
+to play the message now. Defaults to 0.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Server.programout">
+<tt class="descname">programout</tt><big>(</big><em>value</em>, <em>channel=0</em>, <em>timestamp=0</em><big>)</big></dt>
+<dd><p>Send a program change message to the selected midi output device.</p>
+<p>Arguments can be list of values to generate multiple events
+in one call.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>value <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">New program number, between 0 and 127.</p>
+</dd>
+<dt>channel <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">The Midi channel, between 1 and 16, on which the
+message is sent. A channel of 0 means all channels.
+Defaults to 0.</p>
+</dd>
+<dt>timestamp <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">The delay time, in milliseconds, before the message
+is sent on the portmidi stream. A value of 0 means
+to play the message now. Defaults to 0.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Server.pressout">
+<tt class="descname">pressout</tt><big>(</big><em>value</em>, <em>channel=0</em>, <em>timestamp=0</em><big>)</big></dt>
+<dd><p>Send a channel pressure message to the selected midi output device.</p>
+<p>Arguments can be list of values to generate multiple events
+in one call.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>value <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">Single greatest pressure value, between 0 and 127.</p>
+</dd>
+<dt>channel <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">The Midi channel, between 1 and 16, on which the
+message is sent. A channel of 0 means all channels.
+Defaults to 0.</p>
+</dd>
+<dt>timestamp <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">The delay time, in milliseconds, before the message
+is sent on the portmidi stream. A value of 0 means
+to play the message now. Defaults to 0.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Server.bendout">
+<tt class="descname">bendout</tt><big>(</big><em>value</em>, <em>channel=0</em>, <em>timestamp=0</em><big>)</big></dt>
+<dd><p>Send a pitch bend message to the selected midi output device.</p>
+<p>Arguments can be list of values to generate multiple events
+in one call.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>value <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">14 bits pitch bend value. 8192 is where there is no
+bending, 0 is full down and 16383 is full up bending.</p>
+</dd>
+<dt>channel <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">The Midi channel, between 1 and 16, on which the
+message is sent. A channel of 0 means all channels.
+Defaults to 0.</p>
+</dd>
+<dt>timestamp <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">The delay time, in milliseconds, before the message
+is sent on the portmidi stream. A value of 0 means
+to play the message now. Defaults to 0.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Server.getSamplingRate">
+<tt class="descname">getSamplingRate</tt><big>(</big><big>)</big></dt>
+<dd><p>Return the current sampling rate.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Server.getNchnls">
+<tt class="descname">getNchnls</tt><big>(</big><big>)</big></dt>
+<dd><p>Return the current number of channels.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Server.getBufferSize">
+<tt class="descname">getBufferSize</tt><big>(</big><big>)</big></dt>
+<dd><p>Return the current buffer size.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Server.getGlobalSeed">
+<tt class="descname">getGlobalSeed</tt><big>(</big><big>)</big></dt>
+<dd><p>Return the current global seed.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Server.getIsStarted">
+<tt class="descname">getIsStarted</tt><big>(</big><big>)</big></dt>
+<dd><p>Returns 1 if the server is started, otherwise returns 0.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Server.getIsBooted">
+<tt class="descname">getIsBooted</tt><big>(</big><big>)</big></dt>
+<dd><p>Returns 1 if the server is booted, otherwise returns 0.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Server.getMidiActive">
+<tt class="descname">getMidiActive</tt><big>(</big><big>)</big></dt>
+<dd><p>Returns 1 if Midi callback is active, otherwise returns 0.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Server.getStreams">
+<tt class="descname">getStreams</tt><big>(</big><big>)</big></dt>
+<dd><p>Returns the list of Stream objects currently in the Server memory.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Server.getNumberOfStreams">
+<tt class="descname">getNumberOfStreams</tt><big>(</big><big>)</big></dt>
+<dd><p>Returns the number of streams currently in the Server memory.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Server.setServer">
+<tt class="descname">setServer</tt><big>(</big><big>)</big></dt>
+<dd><p>Sets this server as the one to use for new objects when using the embedded device</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Server.getInputAddr">
+<tt class="descname">getInputAddr</tt><big>(</big><big>)</big></dt>
+<dd><p>Return the address of the input buffer</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Server.getOutputAddr">
+<tt class="descname">getOutputAddr</tt><big>(</big><big>)</big></dt>
+<dd><p>Return the address of the output buffer</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Server.getServerID">
+<tt class="descname">getServerID</tt><big>(</big><big>)</big></dt>
+<dd><p>Return the server ID</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Server.getServerAddr">
+<tt class="descname">getServerAddr</tt><big>(</big><big>)</big></dt>
+<dd><p>Return the address of the server</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Server.getEmbedICallbackAddr">
+<tt class="descname">getEmbedICallbackAddr</tt><big>(</big><big>)</big></dt>
+<dd><p>Return the address of the interleaved embedded callback function</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Server.amp">
+<tt class="descname">amp</tt></dt>
+<dd><p>float. Overall amplitude.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Server.startoffset">
+<tt class="descname">startoffset</tt></dt>
+<dd><p>float. Starting time of the real-time processing.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Server.verbosity">
+<tt class="descname">verbosity</tt></dt>
+<dd><p>int. Server verbosity.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Server.globalseed">
+<tt class="descname">globalseed</tt></dt>
+<dd><p>int. Server global seed.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Audio Server</a><ul>
+<li><a class="reference internal" href="#server"><em>Server</em></a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Classes by category</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="_core.html"
+                        title="next chapter">Base Classes</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="_core.html" title="Base Classes"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Classes by category"
+             >previous</a> |</li>
+        <li><a href="../../index.html">Pyo 0.7.6 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >API Documentation</a> &raquo;</li>
+          <li><a href="index.html" >Classes by category</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Olivier Bélanger.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

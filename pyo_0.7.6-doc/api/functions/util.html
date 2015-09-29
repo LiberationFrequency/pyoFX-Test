@@ -1,0 +1,248 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Utilities &mdash; Pyo 0.7.6 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.7.6',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../../_static/E-PyoIcon.ico"/>
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="top" title="Pyo 0.7.6 documentation" href="../../index.html" />
+    <link rel="up" title="Functions" href="index.html" />
+    <link rel="next" title="Alphabetical class reference" href="../alphabetical.html" />
+    <link rel="prev" title="Server Quieries" href="server.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../alphabetical.html" title="Alphabetical class reference"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="server.html" title="Server Quieries"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">Pyo 0.7.6 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >API Documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Functions</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-pyo">
+<span id="utilities"></span><h1>Utilities</h1>
+<div class="section" id="example">
+<h2><em>example</em></h2>
+<dl class="function">
+<dt id="pyo.example">
+<tt class="descname">example</tt><big>(</big><em>cls</em>, <em>dur=5</em>, <em>toprint=True</em>, <em>double=False</em><big>)</big></dt>
+<dd><p>Execute the example given in the documentation of the object as an argument.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>cls <span class="classifier-delimiter">:</span> <span class="classifier">PyoObject class</span></dt>
+<dd><p class="first last">Class reference of the desired object example.</p>
+</dd>
+<dt>dur <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Duration of the example.</p>
+</dd>
+<dt>toprint <span class="classifier-delimiter">:</span> <span class="classifier">boolean, optional</span></dt>
+<dd><p class="first last">If True, the example script will be printed to the console.
+Defaults to True.</p>
+</dd>
+<dt>double <span class="classifier-delimiter">:</span> <span class="classifier">boolean, optional</span></dt>
+<dd><p class="first last">If True, force the example to run in double precision (64-bit)
+Defaults to False.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">example</span><span class="p">(</span><span class="n">Sine</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="class-args">
+<h2><em>class_args</em></h2>
+<dl class="function">
+<dt id="pyo.class_args">
+<tt class="descname">class_args</tt><big>(</big><em>cls</em><big>)</big></dt>
+<dd><p>Returns the init line of a class reference.</p>
+<p>This function takes a class reference (not an instance of that class)
+as input and returns the init line of that class with the default values.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>cls <span class="classifier-delimiter">:</span> <span class="classifier">PyoObject class</span></dt>
+<dd><p class="first last">Class reference of the desired object&#8217;s init line.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">class_args</span><span class="p">(</span><span class="n">Sine</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s">&#39;Sine(freq=1000, phase=0, mul=1, add=0)&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="getversion">
+<h2><em>getVersion</em></h2>
+<dl class="function">
+<dt id="pyo.getVersion">
+<tt class="descname">getVersion</tt><big>(</big><big>)</big></dt>
+<dd><p>Returns the version number of the current pyo installation.</p>
+<p>This function returns the version number of the current pyo
+installation as a 3-ints tuple (major, minor, rev).</p>
+<p>The returned tuple for version &#8216;0.4.1&#8217; will look like : (0, 4, 1)</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">getVersion</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="convertstringtosysencoding">
+<h2><em>convertStringToSysEncoding</em></h2>
+<dl class="function">
+<dt id="pyo.convertStringToSysEncoding">
+<tt class="descname">convertStringToSysEncoding</tt><big>(</big><em>str</em><big>)</big></dt>
+<dd><p>Convert a string to the current platform file system encoding.</p>
+<p>Returns the new encoded string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>str <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
+<dd><p class="first last">String to convert.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="convertargstolists">
+<h2><em>convertArgsToLists</em></h2>
+<dl class="function">
+<dt id="pyo.convertArgsToLists">
+<tt class="descname">convertArgsToLists</tt><big>(</big><em>*args</em><big>)</big></dt>
+<dd><p>Convert all arguments to list if not already a list or a PyoObject.
+Return new args and maximum list length.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="wrap">
+<h2><em>wrap</em></h2>
+<dl class="function">
+<dt id="pyo.wrap">
+<tt class="descname">wrap</tt><big>(</big><em>arg</em>, <em>i</em><big>)</big></dt>
+<dd><p>Return value at position <cite>i</cite> from <cite>arg</cite> with wrap around <cite>arg</cite> length.</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Utilities</a><ul>
+<li><a class="reference internal" href="#example"><em>example</em></a></li>
+<li><a class="reference internal" href="#class-args"><em>class_args</em></a></li>
+<li><a class="reference internal" href="#getversion"><em>getVersion</em></a></li>
+<li><a class="reference internal" href="#convertstringtosysencoding"><em>convertStringToSysEncoding</em></a></li>
+<li><a class="reference internal" href="#convertargstolists"><em>convertArgsToLists</em></a></li>
+<li><a class="reference internal" href="#wrap"><em>wrap</em></a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="server.html"
+                        title="previous chapter">Server Quieries</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../alphabetical.html"
+                        title="next chapter">Alphabetical class reference</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../alphabetical.html" title="Alphabetical class reference"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="server.html" title="Server Quieries"
+             >previous</a> |</li>
+        <li><a href="../../index.html">Pyo 0.7.6 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >API Documentation</a> &raquo;</li>
+          <li><a href="index.html" >Functions</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Olivier Bélanger.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

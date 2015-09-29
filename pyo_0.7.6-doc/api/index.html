@@ -1,0 +1,152 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>API Documentation &mdash; Pyo 0.7.6 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.7.6',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../_static/E-PyoIcon.ico"/>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="top" title="Pyo 0.7.6 documentation" href="../index.html" />
+    <link rel="next" title="Constants" href="constants.html" />
+    <link rel="prev" title="Example of a custom PyoTableObject" href="../tutorials/pyotableobject1.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="constants.html" title="Constants"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../tutorials/pyotableobject1.html" title="Example of a custom PyoTableObject"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Pyo 0.7.6 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="api-documentation">
+<h1>API Documentation</h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="constants.html">Constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="functions/index.html">Functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="functions/audio.html">Audio Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="functions/midi.html">Midi Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="functions/sndfile.html">Soundfile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="functions/sampling.html">Resampling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="functions/conv.html">Conversions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="functions/server.html">Server Quieries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="functions/util.html">Utilities</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="alphabetical.html">Alphabetical class reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="classes/index.html">Classes by category</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="classes/server.html">Audio Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classes/_core.html">Base Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classes/analysis.html">Audio Signal Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classes/arithmetic.html">Arithmetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classes/controls.html">Control Signals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classes/dynamics.html">Dynamic management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classes/effects.html">Special Effects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classes/filters.html">Filters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classes/fourier.html">Fast Fourier Transform</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classes/pvoc.html">Phase Vocoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classes/generators.html">Signal Generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classes/internals.html">Internal objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classes/matrixprocess.html">Matrix Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classes/midi.html">Midi Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classes/opensndctrl.html">Open Sound Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classes/pan.html">Routing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classes/pattern.html">Event Sequencing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classes/players.html">Soundfile Players</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classes/randoms.html">Random generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classes/tableprocess.html">Table Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classes/triggers.html">Sample Accurate Timing (Triggers)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classes/utils.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classes/tables.html">Tables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classes/matrices.html">Matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classes/map.html">Value Converters (SLMap)</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../tutorials/pyotableobject1.html"
+                        title="previous chapter">Example of a custom PyoTableObject</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="constants.html"
+                        title="next chapter">Constants</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="constants.html" title="Constants"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../tutorials/pyotableobject1.html" title="Example of a custom PyoTableObject"
+             >previous</a> |</li>
+        <li><a href="../index.html">Pyo 0.7.6 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Olivier Bélanger.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

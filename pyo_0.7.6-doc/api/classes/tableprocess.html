@@ -1,0 +1,3467 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Table Processing &mdash; Pyo 0.7.6 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.7.6',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../../_static/E-PyoIcon.ico"/>
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="top" title="Pyo 0.7.6 documentation" href="../../index.html" />
+    <link rel="up" title="Classes by category" href="index.html" />
+    <link rel="next" title="Sample Accurate Timing (Triggers)" href="triggers.html" />
+    <link rel="prev" title="Random generators" href="randoms.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="triggers.html" title="Sample Accurate Timing (Triggers)"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="randoms.html" title="Random generators"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">Pyo 0.7.6 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >API Documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Classes by category</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-pyo">
+<span id="table-processing"></span><h1>Table Processing</h1>
+<p>Set of objects to perform operations on PyoTableObjects.</p>
+<p>PyoTableObjects are 1 dimension containers. They can be used to
+store audio samples or algorithmic sequences for future uses.</p>
+<div class="section" id="granulator">
+<h2><em>Granulator</em></h2>
+<dl class="class">
+<dt id="pyo.Granulator">
+<em class="property">class </em><tt class="descname">Granulator</tt><big>(</big><em>table</em>, <em>env</em>, <em>pitch=1</em>, <em>pos=0</em>, <em>dur=0.1</em>, <em>grains=8</em>, <em>basedur=0.1</em>, <em>mul=1</em>, <em>add=0</em><big>)</big></dt>
+<dd><p>Granular synthesis generator.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoObject" title="pyo.PyoObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>table <span class="classifier-delimiter">:</span> <span class="classifier">PyoTableObject</span></dt>
+<dd><p class="first last">Table containing the waveform samples.</p>
+</dd>
+<dt>env <span class="classifier-delimiter">:</span> <span class="classifier">PyoTableObject</span></dt>
+<dd><p class="first last">Table containing the grain envelope.</p>
+</dd>
+<dt>pitch <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject, optional</span></dt>
+<dd><p class="first last">Overall pitch of the granulator. This value transpose the
+pitch of all grains. Defaults to 1.</p>
+</dd>
+<dt>pos <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject, optional</span></dt>
+<dd><p class="first last">Pointer position, in samples, in the waveform table. Each
+grain sampled the current value of this stream at the beginning
+of its envelope and hold it until the end of the grain.
+Defaults to 0.</p>
+</dd>
+<dt>dur <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject, optional</span></dt>
+<dd><p class="first last">Duration, in seconds, of the grain. Each grain sampled the
+current value of this stream at the beginning of its envelope
+and hold it until the end of the grain. Defaults to 0.1.</p>
+</dd>
+<dt>grains <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">Number of grains. Defaults to 8.</p>
+</dd>
+<dt>basedur <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Base duration used to calculate the speed of the pointer to
+read the grain at its original pitch. By changing the value of
+the <cite>dur</cite> parameter, transposition per grain can be generated.
+Defaults to 0.1.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">snd</span> <span class="o">=</span> <span class="n">SndTable</span><span class="p">(</span><span class="n">SNDS_PATH</span> <span class="o">+</span> <span class="s">&quot;/transparent.aif&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">env</span> <span class="o">=</span> <span class="n">HannTable</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pos</span> <span class="o">=</span> <span class="n">Phasor</span><span class="p">(</span><span class="n">snd</span><span class="o">.</span><span class="n">getRate</span><span class="p">()</span><span class="o">*.</span><span class="mi">25</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">snd</span><span class="o">.</span><span class="n">getSize</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dur</span> <span class="o">=</span> <span class="n">Noise</span><span class="p">(</span><span class="o">.</span><span class="mo">001</span><span class="p">,</span> <span class="o">.</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">Granulator</span><span class="p">(</span><span class="n">snd</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">1.001</span><span class="p">],</span> <span class="n">pos</span><span class="p">,</span> <span class="n">dur</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.Granulator.setTable">
+<tt class="descname">setTable</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>table</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoTableObject</span></dt>
+<dd><p class="first last">new <cite>table</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Granulator.setEnv">
+<tt class="descname">setEnv</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>env</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoTableObject</span></dt>
+<dd><p class="first last">new <cite>env</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Granulator.setPitch">
+<tt class="descname">setPitch</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>pitch</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">new <cite>pitch</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Granulator.setPos">
+<tt class="descname">setPos</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>pos</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">new <cite>pos</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Granulator.setDur">
+<tt class="descname">setDur</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>dur</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">new <cite>dur</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Granulator.setGrains">
+<tt class="descname">setGrains</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>grains</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">new <cite>grains</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Granulator.setBaseDur">
+<tt class="descname">setBaseDur</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>basedur</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">new <cite>basedur</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Granulator.table">
+<tt class="descname">table</tt></dt>
+<dd><p>PyoTableObject. Table containing the waveform samples.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Granulator.env">
+<tt class="descname">env</tt></dt>
+<dd><p>PyoTableObject. Table containing the grain envelope.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Granulator.pitch">
+<tt class="descname">pitch</tt></dt>
+<dd><p>float or PyoObject. Overall pitch of the granulator.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Granulator.pos">
+<tt class="descname">pos</tt></dt>
+<dd><p>float or PyoObject. Position of the pointer in the sound table.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Granulator.dur">
+<tt class="descname">dur</tt></dt>
+<dd><p>float or PyoObject. Duration, in seconds, of the grain.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Granulator.grains">
+<tt class="descname">grains</tt></dt>
+<dd><p>int. Number of grains.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Granulator.basedur">
+<tt class="descname">basedur</tt></dt>
+<dd><p>float. Duration to read the grain at its original pitch.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="granule">
+<h2><em>Granule</em></h2>
+<dl class="class">
+<dt id="pyo.Granule">
+<em class="property">class </em><tt class="descname">Granule</tt><big>(</big><em>table</em>, <em>env</em>, <em>dens=50</em>, <em>pitch=1</em>, <em>pos=0</em>, <em>dur=0.1</em>, <em>mul=1</em>, <em>add=0</em><big>)</big></dt>
+<dd><p>Another granular synthesis generator.</p>
+<p>As of pyo 0.7.4, users can call the <cite>setSync</cite> method to change the
+granulation mode (either synchronous or asynchronous) of the object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoObject" title="pyo.PyoObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>table <span class="classifier-delimiter">:</span> <span class="classifier">PyoTableObject</span></dt>
+<dd><p class="first last">Table containing the waveform samples.</p>
+</dd>
+<dt>env <span class="classifier-delimiter">:</span> <span class="classifier">PyoTableObject</span></dt>
+<dd><p class="first last">Table containing the grain envelope.</p>
+</dd>
+<dt>dens <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject, optional</span></dt>
+<dd><p class="first last">Density of grains per second. Defaults to 50.</p>
+</dd>
+<dt>pitch <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject, optional</span></dt>
+<dd><p class="first last">Pitch of the grains. A new grain gets the current value
+of <cite>pitch</cite> as its reading speed. Defaults to 1.</p>
+</dd>
+<dt>pos <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject, optional</span></dt>
+<dd><p class="first last">Pointer position, in samples, in the waveform table. Each
+grain sampled the current value of this stream at the beginning
+of its envelope and hold it until the end of the grain.
+Defaults to 0.</p>
+</dd>
+<dt>dur <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject, optional</span></dt>
+<dd><p class="first last">Duration, in seconds, of the grain. Each grain sampled the
+current value of this stream at the beginning of its envelope
+and hold it until the end of the grain. Defaults to 0.1.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">snd</span> <span class="o">=</span> <span class="n">SndTable</span><span class="p">(</span><span class="n">SNDS_PATH</span><span class="o">+</span><span class="s">&quot;/transparent.aif&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">end</span> <span class="o">=</span> <span class="n">snd</span><span class="o">.</span><span class="n">getSize</span><span class="p">()</span> <span class="o">-</span> <span class="n">s</span><span class="o">.</span><span class="n">getSamplingRate</span><span class="p">()</span> <span class="o">*</span> <span class="mf">0.2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">env</span> <span class="o">=</span> <span class="n">HannTable</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pos</span> <span class="o">=</span> <span class="n">Randi</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="p">[</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">],</span> <span class="n">mul</span><span class="o">=</span><span class="n">end</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dns</span> <span class="o">=</span> <span class="n">Randi</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">freq</span><span class="o">=.</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pit</span> <span class="o">=</span> <span class="n">Randi</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mf">0.99</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mf">1.01</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">grn</span> <span class="o">=</span> <span class="n">Granule</span><span class="p">(</span><span class="n">snd</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">dens</span><span class="o">=</span><span class="n">dns</span><span class="p">,</span> <span class="n">pitch</span><span class="o">=</span><span class="n">pit</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="n">pos</span><span class="p">,</span> <span class="n">dur</span><span class="o">=.</span><span class="mi">2</span><span class="p">,</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.Granule.setTable">
+<tt class="descname">setTable</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>table</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoTableObject</span></dt>
+<dd><p class="first last">new <cite>table</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Granule.setEnv">
+<tt class="descname">setEnv</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>env</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoTableObject</span></dt>
+<dd><p class="first last">new <cite>env</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Granule.setDens">
+<tt class="descname">setDens</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>dens</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">new <cite>dens</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Granule.setPitch">
+<tt class="descname">setPitch</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>pitch</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">new <cite>pitch</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Granule.setPos">
+<tt class="descname">setPos</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>pos</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">new <cite>pos</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Granule.setDur">
+<tt class="descname">setDur</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>dur</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">new <cite>dur</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Granule.setSync">
+<tt class="descname">setSync</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Sets the granulation mode, synchronous or asynchronous.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
+<dd><p class="first last">True means synchronous granulation (the default)
+while False means asynchronous.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Granule.table">
+<tt class="descname">table</tt></dt>
+<dd><p>PyoTableObject. Table containing the waveform samples.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Granule.env">
+<tt class="descname">env</tt></dt>
+<dd><p>PyoTableObject. Table containing the grain envelope.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Granule.dens">
+<tt class="descname">dens</tt></dt>
+<dd><p>float or PyoObject. Density of grains per second.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Granule.pitch">
+<tt class="descname">pitch</tt></dt>
+<dd><p>float or PyoObject. Transposition factor of the grain.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Granule.pos">
+<tt class="descname">pos</tt></dt>
+<dd><p>float or PyoObject. Position of the pointer in the sound table.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Granule.dur">
+<tt class="descname">dur</tt></dt>
+<dd><p>float or PyoObject. Duration, in seconds, of the grain.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="lookup">
+<h2><em>Lookup</em></h2>
+<dl class="class">
+<dt id="pyo.Lookup">
+<em class="property">class </em><tt class="descname">Lookup</tt><big>(</big><em>table</em>, <em>index</em>, <em>mul=1</em>, <em>add=0</em><big>)</big></dt>
+<dd><p>Uses table to do waveshaping on an audio signal.</p>
+<p>Lookup uses a table to apply waveshaping on an input signal
+<cite>index</cite>. The index must be between -1 and 1, it is automatically
+scaled between 0 and len(table)-1 and is used as a position
+pointer in the table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoObject" title="pyo.PyoObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>table <span class="classifier-delimiter">:</span> <span class="classifier">PyoTableObject</span></dt>
+<dd><p class="first last">Table containing the transfert function.</p>
+</dd>
+<dt>index <span class="classifier-delimiter">:</span> <span class="classifier">PyoObject</span></dt>
+<dd><p class="first last">Audio signal, between -1 and 1, internally converted to be
+used as the index position in the table.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lfo</span> <span class="o">=</span> <span class="n">Sine</span><span class="p">(</span><span class="n">freq</span><span class="o">=</span><span class="p">[</span><span class="o">.</span><span class="mi">15</span><span class="p">,</span><span class="o">.</span><span class="mi">2</span><span class="p">],</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">2</span><span class="p">,</span> <span class="n">add</span><span class="o">=.</span><span class="mi">25</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">Sine</span><span class="p">(</span><span class="n">freq</span><span class="o">=</span><span class="p">[</span><span class="mi">100</span><span class="p">,</span><span class="mi">150</span><span class="p">],</span> <span class="n">mul</span><span class="o">=</span><span class="n">lfo</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">CosTable</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">),(</span><span class="mi">3072</span><span class="p">,</span><span class="o">-</span><span class="mf">0.85</span><span class="p">),(</span><span class="mi">4096</span><span class="p">,</span><span class="mi">0</span><span class="p">),(</span><span class="mi">5520</span><span class="p">,</span><span class="o">.</span><span class="mi">85</span><span class="p">),(</span><span class="mi">8192</span><span class="p">,</span><span class="mi">1</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">Lookup</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">t</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">a</span><span class="p">,</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">5</span><span class="o">-</span><span class="n">lfo</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.Lookup.setTable">
+<tt class="descname">setTable</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>table</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoTableObject</span></dt>
+<dd><p class="first last">new <cite>table</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Lookup.setIndex">
+<tt class="descname">setIndex</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>index</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoObject</span></dt>
+<dd><p class="first last">new <cite>index</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Lookup.table">
+<tt class="descname">table</tt></dt>
+<dd><p>PyoTableObject. Table containing the transfert function.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Lookup.index">
+<tt class="descname">index</tt></dt>
+<dd><p>PyoObject. Audio input used as the table index.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="looper">
+<h2><em>Looper</em></h2>
+<dl class="class">
+<dt id="pyo.Looper">
+<em class="property">class </em><tt class="descname">Looper</tt><big>(</big><em>table</em>, <em>pitch=1</em>, <em>start=0</em>, <em>dur=1.0</em>, <em>xfade=20</em>, <em>mode=1</em>, <em>xfadeshape=0</em>, <em>startfromloop=False</em>, <em>interp=2</em>, <em>autosmooth=False</em>, <em>mul=1</em>, <em>add=0</em><big>)</big></dt>
+<dd><p>Crossfading looper.</p>
+<p>Looper reads audio from a PyoTableObject and plays it back in a loop with
+user-defined pitch, start time, duration and crossfade time. The <cite>mode</cite>
+argument allows the user to choose different looping modes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoObject" title="pyo.PyoObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>table <span class="classifier-delimiter">:</span> <span class="classifier">PyoTableObject</span></dt>
+<dd><p class="first last">Table containing the waveform samples.</p>
+</dd>
+<dt>pitch <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject, optional</span></dt>
+<dd><p class="first last">Transposition factor. 1 is normal pitch, 0.5 is one octave lower, 2 is
+one octave higher. Negative values are not allowed. Defaults to 1.</p>
+</dd>
+<dt>start <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject, optional</span></dt>
+<dd><p class="first last">Starting point, in seconds, of the loop, updated only once per loop cycle.
+Defaults to 0.</p>
+</dd>
+<dt>dur <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject, optional</span></dt>
+<dd><p class="first last">Duration, in seconds, of the loop, updated only once per loop cycle.
+Defaults to 1.</p>
+</dd>
+<dt>xfade <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject {0 -&gt; 50}, optional</span></dt>
+<dd><p class="first last">Percent of the loop time used to crossfade readers, updated only once per
+loop cycle and clipped between 0 and 50. Defaults to 20.</p>
+</dd>
+<dt>mode <span class="classifier-delimiter">:</span> <span class="classifier">int {0, 1, 2, 3}, optional</span></dt>
+<dd><dl class="first last docutils">
+<dt>Loop modes. Defaults to 1.</dt>
+<dd><ol class="first last arabic simple" start="0">
+<li>no loop</li>
+<li>forward</li>
+<li>backward</li>
+<li>back-and-forth</li>
+</ol>
+</dd>
+</dl>
+</dd>
+<dt>xfadeshape <span class="classifier-delimiter">:</span> <span class="classifier">int {0, 1, 2}, optional</span></dt>
+<dd><dl class="first last docutils">
+<dt>Crossfade envelope shape. Defaults to 0.</dt>
+<dd><ol class="first last arabic simple" start="0">
+<li>linear</li>
+<li>equal power</li>
+<li>sigmoid</li>
+</ol>
+</dd>
+</dl>
+</dd>
+<dt>startfromloop <span class="classifier-delimiter">:</span> <span class="classifier">boolean, optional</span></dt>
+<dd><p class="first last">If True, reading will begin directly at the loop start point. Otherwise, it
+begins at the beginning of the table. Defaults to False.</p>
+</dd>
+<dt>interp <span class="classifier-delimiter">:</span> <span class="classifier">int {1, 2, 3, 4}, optional</span></dt>
+<dd><dl class="first last docutils">
+<dt>Choice of the interpolation method. Defaults to 2.</dt>
+<dd><ol class="first last arabic simple">
+<li>no interpolation</li>
+<li>linear</li>
+<li>cosinus</li>
+<li>cubic</li>
+</ol>
+</dd>
+</dl>
+</dd>
+<dt>autosmooth <span class="classifier-delimiter">:</span> <span class="classifier">boolean, optional</span></dt>
+<dd><p class="first last">If True, a lowpass filter, following the pitch, is applied on the output signal
+to reduce the quantization noise produced by very low transpositions.
+Defaults to False.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#pyo.Granulator" title="pyo.Granulator"><tt class="xref py py-class docutils literal"><span class="pre">Granulator</span></tt></a>, <a class="reference internal" href="#pyo.Pointer" title="pyo.Pointer"><tt class="xref py py-class docutils literal"><span class="pre">Pointer</span></tt></a></p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tab</span> <span class="o">=</span> <span class="n">SndTable</span><span class="p">(</span><span class="n">SNDS_PATH</span> <span class="o">+</span> <span class="s">&#39;/transparent.aif&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pit</span> <span class="o">=</span> <span class="n">Choice</span><span class="p">(</span><span class="n">choice</span><span class="o">=</span><span class="p">[</span><span class="o">.</span><span class="mi">5</span><span class="p">,</span><span class="o">.</span><span class="mi">75</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mf">1.25</span><span class="p">,</span><span class="mf">1.5</span><span class="p">],</span> <span class="n">freq</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">start</span> <span class="o">=</span> <span class="n">Phasor</span><span class="p">(</span><span class="n">freq</span><span class="o">=.</span><span class="mi">2</span><span class="p">,</span> <span class="n">mul</span><span class="o">=</span><span class="n">tab</span><span class="o">.</span><span class="n">getDur</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dur</span> <span class="o">=</span> <span class="n">Choice</span><span class="p">(</span><span class="n">choice</span><span class="o">=</span><span class="p">[</span><span class="o">.</span><span class="mo">0625</span><span class="p">,</span><span class="o">.</span><span class="mi">125</span><span class="p">,</span><span class="o">.</span><span class="mi">125</span><span class="p">,</span><span class="o">.</span><span class="mi">25</span><span class="p">,</span><span class="o">.</span><span class="mi">33</span><span class="p">],</span> <span class="n">freq</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">Looper</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">tab</span><span class="p">,</span> <span class="n">pitch</span><span class="o">=</span><span class="n">pit</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="n">start</span><span class="p">,</span> <span class="n">dur</span><span class="o">=</span><span class="n">dur</span><span class="p">,</span> <span class="n">startfromloop</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">25</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.Looper.setTable">
+<tt class="descname">setTable</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>table</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoTableObject</span></dt>
+<dd><p class="first last">new <cite>table</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Looper.setPitch">
+<tt class="descname">setPitch</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>pitch</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">new <cite>pitch</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Looper.setStart">
+<tt class="descname">setStart</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>start</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">new <cite>start</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Looper.setDur">
+<tt class="descname">setDur</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>dur</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">new <cite>dur</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Looper.setXfade">
+<tt class="descname">setXfade</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>xfade</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">new <cite>xfade</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Looper.setXfadeShape">
+<tt class="descname">setXfadeShape</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>xfadeshape</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">new <cite>xfadeshape</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Looper.setStartFromLoop">
+<tt class="descname">setStartFromLoop</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>startfromloop</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
+<dd><p class="first last">new <cite>startfromloop</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Looper.setMode">
+<tt class="descname">setMode</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>mode</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">new <cite>mode</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Looper.setInterp">
+<tt class="descname">setInterp</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>interp</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">new <cite>interp</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Looper.setAutoSmooth">
+<tt class="descname">setAutoSmooth</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>autosmooth</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
+<dd><p class="first last">new <cite>autosmooth</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Looper.reset">
+<tt class="descname">reset</tt><big>(</big><big>)</big></dt>
+<dd><p>Resets internal reading pointers to 0.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Looper.table">
+<tt class="descname">table</tt></dt>
+<dd><p>PyoTableObject. Table containing the waveform samples.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Looper.pitch">
+<tt class="descname">pitch</tt></dt>
+<dd><p>float or PyoObject. Transposition factor.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Looper.start">
+<tt class="descname">start</tt></dt>
+<dd><p>float or PyoObject. Loop start position in seconds.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Looper.dur">
+<tt class="descname">dur</tt></dt>
+<dd><p>float or PyoObject. Loop duration in seconds.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Looper.xfade">
+<tt class="descname">xfade</tt></dt>
+<dd><p>float or PyoObject. Crossfade duration in percent.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Looper.xfadeshape">
+<tt class="descname">xfadeshape</tt></dt>
+<dd><p>int. Crossfade envelope.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Looper.startfromloop">
+<tt class="descname">startfromloop</tt></dt>
+<dd><p>boolean. Starts from loop point if True, otherwise starts from beginning of the sound.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Looper.mode">
+<tt class="descname">mode</tt></dt>
+<dd><p>int. Looping mode.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Looper.interp">
+<tt class="descname">interp</tt></dt>
+<dd><p>int. Interpolation method.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Looper.autosmooth">
+<tt class="descname">autosmooth</tt></dt>
+<dd><p>boolean. Activates a lowpass filter applied on output signal.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="osc">
+<h2><em>Osc</em></h2>
+<dl class="class">
+<dt id="pyo.Osc">
+<em class="property">class </em><tt class="descname">Osc</tt><big>(</big><em>table</em>, <em>freq=1000</em>, <em>phase=0</em>, <em>interp=2</em>, <em>mul=1</em>, <em>add=0</em><big>)</big></dt>
+<dd><p>A simple oscillator reading a waveform table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoObject" title="pyo.PyoObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>table <span class="classifier-delimiter">:</span> <span class="classifier">PyoTableObject</span></dt>
+<dd><p class="first last">Table containing the waveform samples.</p>
+</dd>
+<dt>freq <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject, optional</span></dt>
+<dd><p class="first last">Frequency in cycles per second. Defaults to 1000.</p>
+</dd>
+<dt>phase <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject, optional</span></dt>
+<dd><p class="first last">Phase of sampling, expressed as a fraction of a cycle (0 to 1).
+Defaults to 0.</p>
+</dd>
+<dt>interp <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><dl class="first last docutils">
+<dt>Choice of the interpolation method. Defaults to 2.</dt>
+<dd><ol class="first last arabic simple">
+<li>no interpolation</li>
+<li>linear</li>
+<li>cosinus</li>
+<li>cubic</li>
+</ol>
+</dd>
+</dl>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="generators.html#pyo.Phasor" title="pyo.Phasor"><tt class="xref py py-class docutils literal"><span class="pre">Phasor</span></tt></a>, <a class="reference internal" href="generators.html#pyo.Sine" title="pyo.Sine"><tt class="xref py py-class docutils literal"><span class="pre">Sine</span></tt></a></p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">HarmTable</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">.</span><span class="mi">33</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">.</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">.</span><span class="mi">143</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">.</span><span class="mi">111</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">.</span><span class="mi">091</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">Osc</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">t</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="p">[</span><span class="mi">100</span><span class="p">,</span><span class="mf">99.2</span><span class="p">],</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.Osc.setTable">
+<tt class="descname">setTable</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>table</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoTableObject</span></dt>
+<dd><p class="first last">new <cite>table</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Osc.setFreq">
+<tt class="descname">setFreq</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>freq</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">new <cite>freq</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Osc.setPhase">
+<tt class="descname">setPhase</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>phase</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">new <cite>phase</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Osc.setInterp">
+<tt class="descname">setInterp</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>interp</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">int {1, 2, 3, 4}</span></dt>
+<dd><p class="first last">new <cite>interp</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Osc.reset">
+<tt class="descname">reset</tt><big>(</big><big>)</big></dt>
+<dd><p>Resets current phase to 0.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Osc.table">
+<tt class="descname">table</tt></dt>
+<dd><p>PyoTableObject. Table containing the waveform samples.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Osc.freq">
+<tt class="descname">freq</tt></dt>
+<dd><p>float or PyoObject. Frequency in cycles per second.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Osc.phase">
+<tt class="descname">phase</tt></dt>
+<dd><p>float or PyoObject. Phase of sampling.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Osc.interp">
+<tt class="descname">interp</tt></dt>
+<dd><p>int {1, 2, 3, 4}. Interpolation method.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="oscbank">
+<h2><em>OscBank</em></h2>
+<dl class="class">
+<dt id="pyo.OscBank">
+<em class="property">class </em><tt class="descname">OscBank</tt><big>(</big><em>table</em>, <em>freq=100</em>, <em>spread=1</em>, <em>slope=0.9</em>, <em>frndf=1</em>, <em>frnda=0</em>, <em>arndf=1</em>, <em>arnda=0</em>, <em>num=24</em>, <em>fjit=False</em>, <em>mul=1</em>, <em>add=0</em><big>)</big></dt>
+<dd><p>Any number of oscillators reading a waveform table.</p>
+<p>OscBank mixes the output of any number of oscillators. The frequencies
+of each oscillator is controlled with two parameters, the base frequency
+<cite>freq</cite> and a coefficient of expansion <cite>spread</cite>. Frequencies are computed
+with the following formula (<cite>n</cite> is the order of the partial):</p>
+<p>f_n = freq + freq * spread * n</p>
+<p>The frequencies and amplitudes can be modulated by two random generators
+with interpolation (each partial have a different set of randoms).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoObject" title="pyo.PyoObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>table <span class="classifier-delimiter">:</span> <span class="classifier">PyoTableObject</span></dt>
+<dd><p class="first last">Table containing the waveform samples.</p>
+</dd>
+<dt>freq <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject, optional</span></dt>
+<dd><p class="first last">Base frequency in cycles per second. Defaults to 100.</p>
+</dd>
+<dt>spread <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject, optional</span></dt>
+<dd><p class="first last">Coefficient of expansion used to compute partial frequencies.
+If <cite>spread</cite> is 0, all partials will be at the base frequency.
+A value of 1 will generate integer harmonics, a value of 2
+will skip even harmonics and non-integer values will generate
+different series of inharmonic frequencies. Defaults to 1.</p>
+</dd>
+<dt>slope <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject, optional</span></dt>
+<dd><p class="first last">specifies the multiplier in the series of amplitude coefficients.
+This is a power series: the nth partial will have an amplitude of
+(slope ** n), i.e. strength values trace an exponential curve.
+Defaults to 1.</p>
+</dd>
+<dt>frndf <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject, optional</span></dt>
+<dd><p class="first last">Frequency, in cycle per second, of the frequency modulations.
+Defaults to 1.</p>
+</dd>
+<dt>frnda <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject, optional</span></dt>
+<dd><p class="first last">Maximum frequency deviation (positive and negative) in portion of
+the partial frequency. A value of 1 means that the frequency can
+drift from 0 Hz to twice the partial frequency. A value of 0
+deactivates the frequency deviations. Defaults to 0.</p>
+</dd>
+<dt>arndf <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject, optional</span></dt>
+<dd><p class="first last">Frequency, in cycle per second, of the amplitude modulations.
+Defaults to 1.</p>
+</dd>
+<dt>arnda <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject, optional</span></dt>
+<dd><p class="first last">Amount of amplitude deviation. 0 deactivates the amplitude
+modulations and 1 gives full amplitude modulations.
+Defaults to 0.</p>
+</dd>
+<dt>num <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">Number of oscillators. Available at initialization only.
+Defaults to 24.</p>
+</dd>
+<dt>fjit <span class="classifier-delimiter">:</span> <span class="classifier">boolean, optional</span></dt>
+<dd><p class="first last">If True, a small jitter is added to the frequency of each partial.
+For a large number of oscillators and a very small <cite>spread</cite>, the
+periodicity between partial frequencies can cause very strange
+artefact. Adding a jitter breaks the periodicity. Defaults to False.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#pyo.Osc" title="pyo.Osc"><tt class="xref py py-class docutils literal"><span class="pre">Osc</span></tt></a></p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Altough parameters can be audio signals, values are sampled only once
+per buffer size. To avoid artefacts, it is recommended to keep variations
+at low rate (&lt; 20 Hz).</p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ta</span> <span class="o">=</span> <span class="n">HarmTable</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="o">.</span><span class="mi">3</span><span class="p">,</span><span class="o">.</span><span class="mi">2</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tb</span> <span class="o">=</span> <span class="n">HarmTable</span><span class="p">([</span><span class="mi">1</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="n">Fader</span><span class="p">(</span><span class="n">fadein</span><span class="o">=.</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">play</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">OscBank</span><span class="p">(</span><span class="n">ta</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="n">spread</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">frndf</span><span class="o">=.</span><span class="mi">25</span><span class="p">,</span><span class="n">frnda</span><span class="o">=.</span><span class="mo">01</span><span class="p">,</span><span class="n">num</span><span class="o">=</span><span class="p">[</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">],</span><span class="n">fjit</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span><span class="n">mul</span><span class="o">=</span><span class="n">f</span><span class="o">*</span><span class="mf">0.5</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">OscBank</span><span class="p">(</span><span class="n">tb</span><span class="p">,</span><span class="mi">250</span><span class="p">,</span><span class="n">spread</span><span class="o">=.</span><span class="mi">25</span><span class="p">,</span><span class="n">slope</span><span class="o">=.</span><span class="mi">8</span><span class="p">,</span><span class="n">arndf</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span><span class="n">arnda</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">num</span><span class="o">=</span><span class="p">[</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">],</span><span class="n">mul</span><span class="o">=</span><span class="n">f</span><span class="o">*</span><span class="mf">0.4</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.OscBank.setTable">
+<tt class="descname">setTable</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>table</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoTableObject</span></dt>
+<dd><p class="first last">new <cite>table</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.OscBank.setFreq">
+<tt class="descname">setFreq</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>freq</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">new <cite>freq</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.OscBank.setSpread">
+<tt class="descname">setSpread</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>spread</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">new <cite>spread</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.OscBank.setSlope">
+<tt class="descname">setSlope</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>slope</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">new <cite>slope</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.OscBank.setFrndf">
+<tt class="descname">setFrndf</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>frndf</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">new <cite>frndf</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.OscBank.setFrnda">
+<tt class="descname">setFrnda</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>frnda</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">new <cite>frnda</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.OscBank.setArndf">
+<tt class="descname">setArndf</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>arndf</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">new <cite>arndf</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.OscBank.setArnda">
+<tt class="descname">setArnda</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>arnda</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">new <cite>arnda</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.OscBank.setFjit">
+<tt class="descname">setFjit</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>fjit</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
+<dd><p class="first last">new <cite>fjit</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.OscBank.table">
+<tt class="descname">table</tt></dt>
+<dd><p>PyoTableObject. Table containing the waveform samples.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.OscBank.freq">
+<tt class="descname">freq</tt></dt>
+<dd><p>float or PyoObject. Frequency in cycles per second.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.OscBank.spread">
+<tt class="descname">spread</tt></dt>
+<dd><p>float or PyoObject. Frequency expansion factor.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.OscBank.slope">
+<tt class="descname">slope</tt></dt>
+<dd><p>float or PyoObject. Multiplier in the series of amplitudes.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.OscBank.frndf">
+<tt class="descname">frndf</tt></dt>
+<dd><p>float or PyoObject. Frequency of the frequency modulations.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.OscBank.frnda">
+<tt class="descname">frnda</tt></dt>
+<dd><p>float or PyoObject. Maximum frequency deviation from 0 to 1.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.OscBank.arndf">
+<tt class="descname">arndf</tt></dt>
+<dd><p>float or PyoObject. Frequency of the amplitude modulations.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.OscBank.arnda">
+<tt class="descname">arnda</tt></dt>
+<dd><p>float or PyoObject. Amount of amplitude deviation from 0 to 1.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.OscBank.fjit">
+<tt class="descname">fjit</tt></dt>
+<dd><p>boolean. Jitter added to the parial frequencies.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="oscloop">
+<h2><em>OscLoop</em></h2>
+<dl class="class">
+<dt id="pyo.OscLoop">
+<em class="property">class </em><tt class="descname">OscLoop</tt><big>(</big><em>table</em>, <em>freq=1000</em>, <em>feedback=0</em>, <em>mul=1</em>, <em>add=0</em><big>)</big></dt>
+<dd><p>A simple oscillator with feedback reading a waveform table.</p>
+<p>OscLoop reads a waveform table with linear interpolation and feedback control.
+The oscillator output, multiplied by <cite>feedback</cite>, is added to the position
+increment and can be used to control the brightness of the oscillator.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoObject" title="pyo.PyoObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>table <span class="classifier-delimiter">:</span> <span class="classifier">PyoTableObject</span></dt>
+<dd><p class="first last">Table containing the waveform samples.</p>
+</dd>
+<dt>freq <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject, optional</span></dt>
+<dd><p class="first last">Frequency in cycles per second. Defaults to 1000.</p>
+</dd>
+<dt>feedback <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject, optional</span></dt>
+<dd><p class="first last">Amount of the output signal added to position increment, between 0 and 1.
+Controls the brightness. Defaults to 0.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#pyo.Osc" title="pyo.Osc"><tt class="xref py py-class docutils literal"><span class="pre">Osc</span></tt></a>, <a class="reference internal" href="generators.html#pyo.SineLoop" title="pyo.SineLoop"><tt class="xref py py-class docutils literal"><span class="pre">SineLoop</span></tt></a></p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">HarmTable</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">.</span><span class="mi">33</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">.</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">.</span><span class="mi">143</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lfo</span> <span class="o">=</span> <span class="n">Sine</span><span class="p">(</span><span class="o">.</span><span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">.</span><span class="mo">05</span><span class="p">,</span> <span class="o">.</span><span class="mo">05</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">OscLoop</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">t</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="p">[</span><span class="mi">100</span><span class="p">,</span><span class="mf">99.3</span><span class="p">],</span> <span class="n">feedback</span><span class="o">=</span><span class="n">lfo</span><span class="p">,</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.OscLoop.setTable">
+<tt class="descname">setTable</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>table</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoTableObject</span></dt>
+<dd><p class="first last">new <cite>table</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.OscLoop.setFreq">
+<tt class="descname">setFreq</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>freq</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">new <cite>freq</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.OscLoop.setFeedback">
+<tt class="descname">setFeedback</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>feedback</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">new <cite>feedback</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.OscLoop.table">
+<tt class="descname">table</tt></dt>
+<dd><p>PyoTableObject. Table containing the waveform samples.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.OscLoop.freq">
+<tt class="descname">freq</tt></dt>
+<dd><p>float or PyoObject. Frequency in cycles per second.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.OscLoop.feedback">
+<tt class="descname">feedback</tt></dt>
+<dd><p>float or PyoObject. Brightness control.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="osctrig">
+<h2><em>OscTrig</em></h2>
+<dl class="class">
+<dt id="pyo.OscTrig">
+<em class="property">class </em><tt class="descname">OscTrig</tt><big>(</big><em>table</em>, <em>trig</em>, <em>freq=1000</em>, <em>phase=0</em>, <em>interp=2</em>, <em>mul=1</em>, <em>add=0</em><big>)</big></dt>
+<dd><p>An oscillator reading a waveform table with sample accurate reset signal.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoObject" title="pyo.PyoObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>table <span class="classifier-delimiter">:</span> <span class="classifier">PyoTableObject</span></dt>
+<dd><p class="first last">Table containing the waveform samples.</p>
+</dd>
+<dt>trig <span class="classifier-delimiter">:</span> <span class="classifier">PyoObject</span></dt>
+<dd><p class="first last">Trigger signal. Reset the table pointer position to zero on
+each trig.</p>
+</dd>
+<dt>freq <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject, optional</span></dt>
+<dd><p class="first last">Frequency in cycles per second. Defaults to 1000.</p>
+</dd>
+<dt>phase <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject, optional</span></dt>
+<dd><p class="first last">Phase of sampling, expressed as a fraction of a cycle (0 to 1).
+Defaults to 0.</p>
+</dd>
+<dt>interp <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><dl class="first last docutils">
+<dt>Choice of the interpolation method. Defaults to 2.</dt>
+<dd><ol class="first last arabic simple">
+<li>no interpolation</li>
+<li>linear</li>
+<li>cosinus</li>
+<li>cubic</li>
+</ol>
+</dd>
+</dl>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#pyo.Osc" title="pyo.Osc"><tt class="xref py py-class docutils literal"><span class="pre">Osc</span></tt></a>, <a class="reference internal" href="generators.html#pyo.Phasor" title="pyo.Phasor"><tt class="xref py py-class docutils literal"><span class="pre">Phasor</span></tt></a>, <a class="reference internal" href="generators.html#pyo.Sine" title="pyo.Sine"><tt class="xref py py-class docutils literal"><span class="pre">Sine</span></tt></a></p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tab</span> <span class="o">=</span> <span class="n">SndTable</span><span class="p">(</span><span class="n">SNDS_PATH</span><span class="o">+</span><span class="s">&quot;/transparent.aif&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tim</span> <span class="o">=</span> <span class="n">Phasor</span><span class="p">([</span><span class="o">-</span><span class="mf">0.2</span><span class="p">,</span><span class="o">-</span><span class="mf">0.25</span><span class="p">],</span> <span class="n">mul</span><span class="o">=</span><span class="n">tab</span><span class="o">.</span><span class="n">getDur</span><span class="p">()</span><span class="o">-</span><span class="mf">0.005</span><span class="p">,</span> <span class="n">add</span><span class="o">=</span><span class="mf">0.005</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rst</span> <span class="o">=</span> <span class="n">Metro</span><span class="p">(</span><span class="n">tim</span><span class="p">)</span><span class="o">.</span><span class="n">play</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">OscTrig</span><span class="p">(</span><span class="n">tab</span><span class="p">,</span> <span class="n">rst</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="n">tab</span><span class="o">.</span><span class="n">getRate</span><span class="p">(),</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.OscTrig.setTable">
+<tt class="descname">setTable</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>table</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoTableObject</span></dt>
+<dd><p class="first last">new <cite>table</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.OscTrig.setTrig">
+<tt class="descname">setTrig</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>trig</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoObject</span></dt>
+<dd><p class="first last">new <cite>trig</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.OscTrig.setFreq">
+<tt class="descname">setFreq</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>freq</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">new <cite>freq</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.OscTrig.setPhase">
+<tt class="descname">setPhase</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>phase</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">new <cite>phase</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.OscTrig.setInterp">
+<tt class="descname">setInterp</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>interp</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">int {1, 2, 3, 4}</span></dt>
+<dd><p class="first last">new <cite>interp</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.OscTrig.reset">
+<tt class="descname">reset</tt><big>(</big><big>)</big></dt>
+<dd><p>Resets current phase to 0.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.OscTrig.table">
+<tt class="descname">table</tt></dt>
+<dd><p>PyoTableObject. Table containing the waveform samples.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.OscTrig.trig">
+<tt class="descname">trig</tt></dt>
+<dd><p>PyoObject. Trigger signal. Reset pointer position to zero</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.OscTrig.freq">
+<tt class="descname">freq</tt></dt>
+<dd><p>float or PyoObject. Frequency in cycles per second.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.OscTrig.phase">
+<tt class="descname">phase</tt></dt>
+<dd><p>float or PyoObject. Phase of sampling.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.OscTrig.interp">
+<tt class="descname">interp</tt></dt>
+<dd><p>int {1, 2, 3, 4}. Interpolation method.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="particle">
+<h2><em>Particle</em></h2>
+<dl class="class">
+<dt id="pyo.Particle">
+<em class="property">class </em><tt class="descname">Particle</tt><big>(</big><em>table</em>, <em>env</em>, <em>dens=50</em>, <em>pitch=1</em>, <em>pos=0</em>, <em>dur=0.1</em>, <em>dev=0.01</em>, <em>pan=0.5</em>, <em>chnls=1</em>, <em>mul=1</em>, <em>add=0</em><big>)</big></dt>
+<dd><p>A full control granular synthesis generator.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoObject" title="pyo.PyoObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>table <span class="classifier-delimiter">:</span> <span class="classifier">PyoTableObject</span></dt>
+<dd><p class="first last">Table containing the waveform samples.</p>
+</dd>
+<dt>env <span class="classifier-delimiter">:</span> <span class="classifier">PyoTableObject</span></dt>
+<dd><p class="first last">Table containing the grain envelope.</p>
+</dd>
+<dt>dens <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject, optional</span></dt>
+<dd><p class="first last">Density of grains per second. Defaults to 50.</p>
+</dd>
+<dt>pitch <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject, optional</span></dt>
+<dd><p class="first last">Pitch of the grains. Each grain sampled the current value
+of this stream at the beginning of its envelope and hold
+it until the end of the grain. Defaults to 1.</p>
+</dd>
+<dt>pos <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject, optional</span></dt>
+<dd><p class="first last">Pointer position, in samples, in the waveform table. Each
+grain sampled the current value of this stream at the beginning
+of its envelope and hold it until the end of the grain.
+Defaults to 0.</p>
+</dd>
+<dt>dur <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject, optional</span></dt>
+<dd><p class="first last">Duration, in seconds, of the grain. Each grain sampled the
+current value of this stream at the beginning of its envelope
+and hold it until the end of the grain. Defaults to 0.1.</p>
+</dd>
+<dt>dev <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject, optional</span></dt>
+<dd><p class="first last">Maximum deviation of the starting time of the grain, between 0 and
+1 (relative to the current duration of the grain). Each grain sampled
+the current value of this stream at the beginning of its envelope
+and hold it until the end of the grain. Defaults to 0.01.</p>
+</dd>
+<dt>pan <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject, optional</span></dt>
+<dd><p class="first last">Panning factor of the grain (if chnls=1, this value is skipped).
+Each grain sampled the current value of this stream at the beginning
+of its envelope and hold it until the end of the grain. Defaults to 0.5.</p>
+</dd>
+<dt>chnls <span class="classifier-delimiter">:</span> <span class="classifier">integer, optional</span></dt>
+<dd><p class="first last">Number of output channels per audio stream (if chnls=2 and a stereo sound
+table is given at the table argument, the objet will create 4 output
+streams, 2 per table channel). Available at initialization only. Defaults to 1.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Particle object compensate for the difference between sampling rate of the
+loaded sound and the current sampling rate of the Server.</p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">snd</span> <span class="o">=</span> <span class="n">SndTable</span><span class="p">(</span><span class="n">SNDS_PATH</span><span class="o">+</span><span class="s">&quot;/transparent.aif&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">end</span> <span class="o">=</span> <span class="n">snd</span><span class="o">.</span><span class="n">getSize</span><span class="p">()</span> <span class="o">-</span> <span class="n">s</span><span class="o">.</span><span class="n">getSamplingRate</span><span class="p">()</span> <span class="o">*</span> <span class="mf">0.25</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">env</span> <span class="o">=</span> <span class="n">HannTable</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dns</span> <span class="o">=</span> <span class="n">Randi</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">freq</span><span class="o">=.</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pit</span> <span class="o">=</span> <span class="n">Randh</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mf">0.99</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mf">1.01</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pos</span> <span class="o">=</span> <span class="n">Randi</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">mul</span><span class="o">=</span><span class="n">end</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dur</span> <span class="o">=</span> <span class="n">Randi</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="mf">0.15</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dev</span> <span class="o">=</span> <span class="n">Randi</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pan</span> <span class="o">=</span> <span class="n">Noise</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">grn</span> <span class="o">=</span> <span class="n">Particle</span><span class="p">(</span><span class="n">snd</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">dns</span><span class="p">,</span> <span class="n">pit</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">dur</span><span class="p">,</span> <span class="n">dev</span><span class="p">,</span> <span class="n">pan</span><span class="p">,</span> <span class="n">chnls</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.Particle.setTable">
+<tt class="descname">setTable</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>table</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoTableObject</span></dt>
+<dd><p class="first last">new <cite>table</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Particle.setEnv">
+<tt class="descname">setEnv</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>env</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoTableObject</span></dt>
+<dd><p class="first last">new <cite>env</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Particle.setDens">
+<tt class="descname">setDens</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>dens</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">new <cite>dens</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Particle.setPitch">
+<tt class="descname">setPitch</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>pitch</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">new <cite>pitch</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Particle.setPos">
+<tt class="descname">setPos</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>pos</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">new <cite>pos</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Particle.setDur">
+<tt class="descname">setDur</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>dur</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">new <cite>dur</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Particle.setDev">
+<tt class="descname">setDev</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>dev</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">new <cite>dev</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Particle.setPan">
+<tt class="descname">setPan</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>pan</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">new <cite>pan</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Particle.table">
+<tt class="descname">table</tt></dt>
+<dd><p>PyoTableObject. Table containing the waveform samples.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Particle.env">
+<tt class="descname">env</tt></dt>
+<dd><p>PyoTableObject. Table containing the grain envelope.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Particle.dens">
+<tt class="descname">dens</tt></dt>
+<dd><p>float or PyoObject. Density of grains per second.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Particle.pitch">
+<tt class="descname">pitch</tt></dt>
+<dd><p>float or PyoObject. Transposition factor of the grain.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Particle.pos">
+<tt class="descname">pos</tt></dt>
+<dd><p>float or PyoObject. Position of the pointer in the sound table.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Particle.dur">
+<tt class="descname">dur</tt></dt>
+<dd><p>float or PyoObject. Duration, in seconds, of the grain.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Particle.dev">
+<tt class="descname">dev</tt></dt>
+<dd><p>float or PyoObject. Deviation of the starting point of the grain in the table.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Particle.pan">
+<tt class="descname">pan</tt></dt>
+<dd><p>float or PyoObject.Panning of the grain.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="pointer">
+<h2><em>Pointer</em></h2>
+<dl class="class">
+<dt id="pyo.Pointer">
+<em class="property">class </em><tt class="descname">Pointer</tt><big>(</big><em>table</em>, <em>index</em>, <em>mul=1</em>, <em>add=0</em><big>)</big></dt>
+<dd><p>Table reader with control on the pointer position.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoObject" title="pyo.PyoObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>table <span class="classifier-delimiter">:</span> <span class="classifier">PyoTableObject</span></dt>
+<dd><p class="first last">Table containing the waveform samples.</p>
+</dd>
+<dt>index <span class="classifier-delimiter">:</span> <span class="classifier">PyoObject</span></dt>
+<dd><p class="first last">Normalized position in the table between 0 and 1.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">SndTable</span><span class="p">(</span><span class="n">SNDS_PATH</span> <span class="o">+</span> <span class="s">&#39;/transparent.aif&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">freq</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">getRate</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">Phasor</span><span class="p">(</span><span class="n">freq</span><span class="o">=</span><span class="p">[</span><span class="n">freq</span><span class="o">*</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">freq</span><span class="o">*</span><span class="mf">0.45</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">Pointer</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">t</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">p</span><span class="p">,</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.Pointer.setTable">
+<tt class="descname">setTable</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>table</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoTableObject</span></dt>
+<dd><p class="first last">new <cite>table</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Pointer.setIndex">
+<tt class="descname">setIndex</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>index</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoObject</span></dt>
+<dd><p class="first last">new <cite>index</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Pointer.table">
+<tt class="descname">table</tt></dt>
+<dd><p>PyoTableObject. Table containing the waveform samples.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Pointer.index">
+<tt class="descname">index</tt></dt>
+<dd><p>PyoObject. Index pointer position in the table.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="pointer2">
+<h2><em>Pointer2</em></h2>
+<dl class="class">
+<dt id="pyo.Pointer2">
+<em class="property">class </em><tt class="descname">Pointer2</tt><big>(</big><em>table</em>, <em>index</em>, <em>interp=4</em>, <em>autosmooth=True</em>, <em>mul=1</em>, <em>add=0</em><big>)</big></dt>
+<dd><p>High quality table reader with control on the pointer position.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoObject" title="pyo.PyoObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>table <span class="classifier-delimiter">:</span> <span class="classifier">PyoTableObject</span></dt>
+<dd><p class="first last">Table containing the waveform samples.</p>
+</dd>
+<dt>index <span class="classifier-delimiter">:</span> <span class="classifier">PyoObject</span></dt>
+<dd><p class="first last">Normalized position in the table between 0 and 1.</p>
+</dd>
+<dt>interp <span class="classifier-delimiter">:</span> <span class="classifier">int {1, 2, 3, 4}, optional</span></dt>
+<dd><dl class="first last docutils">
+<dt>Choice of the interpolation method. Defaults to 4.</dt>
+<dd><ol class="first last arabic simple">
+<li>no interpolation</li>
+<li>linear</li>
+<li>cosinus</li>
+<li>cubic</li>
+</ol>
+</dd>
+</dl>
+</dd>
+<dt>autosmooth <span class="classifier-delimiter">:</span> <span class="classifier">boolean, optional</span></dt>
+<dd><p class="first">If True, a lowpass filter, following the pitch, is applied on</p>
+<p>the output signal to reduce the quantization noise produced</p>
+<p class="last">by very low transpositions. Defaults to True.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">SndTable</span><span class="p">(</span><span class="n">SNDS_PATH</span> <span class="o">+</span> <span class="s">&#39;/transparent.aif&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">freq</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">getRate</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">Phasor</span><span class="p">(</span><span class="n">freq</span><span class="o">=</span><span class="p">[</span><span class="n">freq</span><span class="o">*</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">freq</span><span class="o">*</span><span class="mf">0.45</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">Pointer2</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">t</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">p</span><span class="p">,</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.Pointer2.setTable">
+<tt class="descname">setTable</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>table</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoTableObject</span></dt>
+<dd><p class="first last">new <cite>table</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Pointer2.setIndex">
+<tt class="descname">setIndex</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>index</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoObject</span></dt>
+<dd><p class="first last">new <cite>index</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Pointer2.setInterp">
+<tt class="descname">setInterp</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>interp</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">int {1, 2, 3, 4}</span></dt>
+<dd><dl class="first last docutils">
+<dt>new <cite>interp</cite> attribute.</dt>
+<dd><ol class="first last arabic simple">
+<li>no interpolation</li>
+<li>linear interpolation</li>
+<li>cosine interpolation</li>
+<li>cubic interpolation (default)</li>
+</ol>
+</dd>
+</dl>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Pointer2.setAutoSmooth">
+<tt class="descname">setAutoSmooth</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>autosmooth</cite> attribute.</p>
+<p>If True, a lowpass filter, following the playback speed, is applied on
+the output signal to reduce the quantization noise produced by very
+low transpositions.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
+<dd><p class="first last">new <cite>autosmooth</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Pointer2.table">
+<tt class="descname">table</tt></dt>
+<dd><p>PyoTableObject. Table containing the waveform samples.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Pointer2.index">
+<tt class="descname">index</tt></dt>
+<dd><p>PyoObject. Index pointer position in the table.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Pointer2.interp">
+<tt class="descname">interp</tt></dt>
+<dd><p>int {1, 2, 3, 4}. Interpolation method.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Pointer2.autosmooth">
+<tt class="descname">autosmooth</tt></dt>
+<dd><p>boolean. Quantization noise filter.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="pulsar">
+<h2><em>Pulsar</em></h2>
+<dl class="class">
+<dt id="pyo.Pulsar">
+<em class="property">class </em><tt class="descname">Pulsar</tt><big>(</big><em>table</em>, <em>env</em>, <em>freq=100</em>, <em>frac=0.5</em>, <em>phase=0</em>, <em>interp=2</em>, <em>mul=1</em>, <em>add=0</em><big>)</big></dt>
+<dd><p>Pulsar synthesis oscillator.</p>
+<p>Pulsar synthesis produces a train of sound particles called pulsars
+that can make rhythms or tones, depending on the fundamental frequency
+of the train. Varying the <cite>frac</cite> parameter changes the portion of the
+period assigned to the waveform and the portion of the period assigned
+to its following silence, but maintain the overall pulsar period. This
+results in an effect much like a sweeping band-pass filter.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoObject" title="pyo.PyoObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>table <span class="classifier-delimiter">:</span> <span class="classifier">PyoTableObject</span></dt>
+<dd><p class="first last">Table containing the waveform samples.</p>
+</dd>
+<dt>env <span class="classifier-delimiter">:</span> <span class="classifier">PyoTableObject</span></dt>
+<dd><p class="first last">Table containing the envelope samples.</p>
+</dd>
+<dt>freq <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject, optional</span></dt>
+<dd><p class="first last">Frequency in cycles per second. Defaults to 100.</p>
+</dd>
+<dt>frac <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject, optional</span></dt>
+<dd><p class="first last">Fraction of the whole period (0 -&gt; 1) given to the waveform.
+The rest will be filled with zeros. Defaults to 0.5.</p>
+</dd>
+<dt>phase <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject, optional</span></dt>
+<dd><p class="first last">Phase of sampling, expressed as a fraction of a cycle (0 to 1).
+Defaults to 0.</p>
+</dd>
+<dt>interp <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><dl class="first last docutils">
+<dt>Choice of the interpolation method. Defaults to 2.</dt>
+<dd><ol class="first last arabic simple">
+<li>no interpolation</li>
+<li>linear</li>
+<li>cosinus</li>
+<li>cubic</li>
+</ol>
+</dd>
+</dl>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#pyo.Osc" title="pyo.Osc"><tt class="xref py py-class docutils literal"><span class="pre">Osc</span></tt></a></p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">w</span> <span class="o">=</span> <span class="n">HarmTable</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">.</span><span class="mi">33</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">.</span><span class="mi">143</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">.</span><span class="mi">111</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">e</span> <span class="o">=</span> <span class="n">HannTable</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lfo</span> <span class="o">=</span> <span class="n">Sine</span><span class="p">([</span><span class="o">.</span><span class="mi">1</span><span class="p">,</span><span class="o">.</span><span class="mi">15</span><span class="p">],</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">2</span><span class="p">,</span> <span class="n">add</span><span class="o">=.</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">Pulsar</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">w</span><span class="p">,</span> <span class="n">env</span><span class="o">=</span><span class="n">e</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">frac</span><span class="o">=</span><span class="n">lfo</span><span class="p">,</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">08</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.Pulsar.setTable">
+<tt class="descname">setTable</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>table</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoTableObject</span></dt>
+<dd><p class="first last">new <cite>table</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Pulsar.setEnv">
+<tt class="descname">setEnv</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>env</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoTableObject</span></dt>
+<dd><p class="first last">new <cite>env</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Pulsar.setFreq">
+<tt class="descname">setFreq</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>freq</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">new <cite>freq</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Pulsar.setFrac">
+<tt class="descname">setFrac</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>frac</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">new <cite>frac</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Pulsar.setPhase">
+<tt class="descname">setPhase</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>phase</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">new <cite>phase</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Pulsar.setInterp">
+<tt class="descname">setInterp</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>interp</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">int {1, 2, 3, 4}</span></dt>
+<dd><dl class="first last docutils">
+<dt>Choice of the interpolation method.</dt>
+<dd><ol class="first last arabic simple">
+<li>no interpolation</li>
+<li>linear</li>
+<li>cosinus</li>
+<li>cubic</li>
+</ol>
+</dd>
+</dl>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Pulsar.table">
+<tt class="descname">table</tt></dt>
+<dd><p>PyoTableObject. Table containing the waveform samples.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Pulsar.env">
+<tt class="descname">env</tt></dt>
+<dd><p>PyoTableObject. Table containing the envelope samples.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Pulsar.freq">
+<tt class="descname">freq</tt></dt>
+<dd><p>float or PyoObject. Frequency in cycles per second.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Pulsar.frac">
+<tt class="descname">frac</tt></dt>
+<dd><p>float or PyoObject. Fraction of the period assigned to waveform.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Pulsar.phase">
+<tt class="descname">phase</tt></dt>
+<dd><p>float or PyoObject. Phase of sampling.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Pulsar.interp">
+<tt class="descname">interp</tt></dt>
+<dd><p>int {1, 2, 3, 4}. Interpolation method.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="tableindex">
+<h2><em>TableIndex</em></h2>
+<dl class="class">
+<dt id="pyo.TableIndex">
+<em class="property">class </em><tt class="descname">TableIndex</tt><big>(</big><em>table</em>, <em>index</em>, <em>mul=1</em>, <em>add=0</em><big>)</big></dt>
+<dd><p>Table reader by sample position without interpolation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoObject" title="pyo.PyoObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>table <span class="classifier-delimiter">:</span> <span class="classifier">PyoTableObject</span></dt>
+<dd><p class="first last">Table containing the samples.</p>
+</dd>
+<dt>index <span class="classifier-delimiter">:</span> <span class="classifier">PyoObject</span></dt>
+<dd><p class="first last">Position in the table, as integer audio stream,
+between 0 and table&#8217;s size - 1.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">random</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">notes</span> <span class="o">=</span> <span class="p">[</span><span class="n">midiToHz</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">60</span><span class="p">,</span><span class="mi">84</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tab</span> <span class="o">=</span> <span class="n">DataTable</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="n">notes</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ind</span> <span class="o">=</span> <span class="n">RandInt</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">8</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pit</span> <span class="o">=</span> <span class="n">TableIndex</span><span class="p">(</span><span class="n">tab</span><span class="p">,</span> <span class="n">ind</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">SineLoop</span><span class="p">(</span><span class="n">freq</span><span class="o">=</span><span class="n">pit</span><span class="p">,</span> <span class="n">feedback</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.TableIndex.setTable">
+<tt class="descname">setTable</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>table</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoTableObject</span></dt>
+<dd><p class="first last">new <cite>table</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.TableIndex.setIndex">
+<tt class="descname">setIndex</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>index</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoObject</span></dt>
+<dd><p class="first last">new <cite>index</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.TableIndex.table">
+<tt class="descname">table</tt></dt>
+<dd><p>PyoTableObject. Table containing the samples.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.TableIndex.index">
+<tt class="descname">index</tt></dt>
+<dd><p>PyoObject. Position in the table.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="tablemorph">
+<h2><em>TableMorph</em></h2>
+<dl class="class">
+<dt id="pyo.TableMorph">
+<em class="property">class </em><tt class="descname">TableMorph</tt><big>(</big><em>input</em>, <em>table</em>, <em>sources</em><big>)</big></dt>
+<dd><p>Morphs between multiple PyoTableObjects.</p>
+<p>Uses an index into a list of PyoTableObjects to morph between adjacent
+tables in the list. The resulting morphed function is written into the
+<cite>table</cite> object at the beginning of each buffer size. The tables in the
+list and the resulting table must be equal in size.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoObject" title="pyo.PyoObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>input <span class="classifier-delimiter">:</span> <span class="classifier">PyoObject</span></dt>
+<dd><p class="first last">Morphing index between 0 and 1. 0 is the first table in the list
+and 1 is the last.</p>
+</dd>
+<dt>table <span class="classifier-delimiter">:</span> <span class="classifier">NewTable</span></dt>
+<dd><p class="first last">The table where to write morphed waveform.</p>
+</dd>
+<dt>sources <span class="classifier-delimiter">:</span> <span class="classifier">list of PyoTableObject</span></dt>
+<dd><p class="first last">List of tables to interpolate from.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The out() method is bypassed. TableMorph returns no signal.</p>
+<p class="last">TableMorph has no <cite>mul</cite> and <cite>add</cite> attributes.</p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">(</span><span class="n">duplex</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t1</span> <span class="o">=</span> <span class="n">HarmTable</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="o">.</span><span class="mi">5</span><span class="p">,</span><span class="o">.</span><span class="mi">33</span><span class="p">,</span><span class="o">.</span><span class="mi">25</span><span class="p">,</span><span class="o">.</span><span class="mi">2</span><span class="p">,</span><span class="o">.</span><span class="mi">167</span><span class="p">,</span><span class="o">.</span><span class="mi">143</span><span class="p">,</span><span class="o">.</span><span class="mi">125</span><span class="p">,</span><span class="o">.</span><span class="mi">111</span><span class="p">,</span><span class="o">.</span><span class="mi">1</span><span class="p">,</span><span class="o">.</span><span class="mi">091</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t2</span> <span class="o">=</span> <span class="n">HarmTable</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">.</span><span class="mi">33</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">.</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">.</span><span class="mi">143</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">.</span><span class="mi">111</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">.</span><span class="mi">091</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t3</span> <span class="o">=</span> <span class="n">NewTable</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mf">8192.</span><span class="o">/</span><span class="n">s</span><span class="o">.</span><span class="n">getSamplingRate</span><span class="p">(),</span> <span class="n">chnls</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lfo</span> <span class="o">=</span> <span class="n">Sine</span><span class="p">(</span><span class="o">.</span><span class="mi">25</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">.</span><span class="mi">5</span><span class="p">,</span> <span class="o">.</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mor</span> <span class="o">=</span> <span class="n">TableMorph</span><span class="p">(</span><span class="n">lfo</span><span class="p">,</span> <span class="n">t3</span><span class="p">,</span> <span class="p">[</span><span class="n">t1</span><span class="p">,</span><span class="n">t2</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">osc</span> <span class="o">=</span> <span class="n">Osc</span><span class="p">(</span><span class="n">t3</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="p">[</span><span class="mf">199.5</span><span class="p">,</span><span class="mi">200</span><span class="p">],</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">08</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.TableMorph.setInput">
+<tt class="descname">setInput</tt><big>(</big><em>x</em>, <em>fadetime=0.05</em><big>)</big></dt>
+<dd><p>Replace the <cite>input</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoObject</span></dt>
+<dd><p class="first last">New signal to process.</p>
+</dd>
+<dt>fadetime <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Crossfade time between old and new input. Defaults to 0.05.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.TableMorph.setTable">
+<tt class="descname">setTable</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>table</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">NewTable</span></dt>
+<dd><p class="first last">new <cite>table</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.TableMorph.setSources">
+<tt class="descname">setSources</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><blockquote>
+<div>Replace the <cite>sources</cite> attribute.</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">list of PyoTableObject</span></dt>
+<dd><p class="first last">new <cite>sources</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.TableMorph.input">
+<tt class="descname">input</tt></dt>
+<dd><p>PyoObject. Morphing index between 0 and 1.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.TableMorph.table">
+<tt class="descname">table</tt></dt>
+<dd><p>NewTable. The table where to write samples.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.TableMorph.sources">
+<tt class="descname">sources</tt></dt>
+<dd><p>list of PyoTableObject. List of tables to interpolate from.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="tableput">
+<h2><em>TablePut</em></h2>
+<dl class="class">
+<dt id="pyo.TablePut">
+<em class="property">class </em><tt class="descname">TablePut</tt><big>(</big><em>input</em>, <em>table</em><big>)</big></dt>
+<dd><p>Writes values, without repetitions, from an audio stream into a DataTable.</p>
+<p>See <a class="reference internal" href="tables.html#pyo.DataTable" title="pyo.DataTable"><tt class="xref py py-class docutils literal"><span class="pre">DataTable</span></tt></a> to create an empty table.</p>
+<p>TablePut takes an audio input and writes values into a DataTable but
+only when value changes. This allow to record only new values, without
+repetitions.</p>
+<p>The play method is not called at the object creation time. It starts
+the recording into the table until the table is full. Calling the
+play method again restarts the recording and overwrites previously
+recorded values. The stop method stops the recording. Otherwise, the
+default behaviour is to record through the end of the table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoObject" title="pyo.PyoObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>input <span class="classifier-delimiter">:</span> <span class="classifier">PyoObject</span></dt>
+<dd><p class="first last">Audio signal to write in the table.</p>
+</dd>
+<dt>table <span class="classifier-delimiter">:</span> <span class="classifier">DataTable</span></dt>
+<dd><p class="first last">The table where to write values.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The out() method is bypassed. TablePut returns no signal.</p>
+<p>TablePut has no <cite>mul</cite> and <cite>add</cite> attributes.</p>
+<p class="last">TablePut will sends a trigger signal at the end of the recording.
+User can retrieve the trigger streams by calling obj[&#8216;trig&#8217;].</p>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="tables.html#pyo.DataTable" title="pyo.DataTable"><tt class="xref py py-class docutils literal"><span class="pre">DataTable</span></tt></a>, <a class="reference internal" href="tables.html#pyo.NewTable" title="pyo.NewTable"><tt class="xref py py-class docutils literal"><span class="pre">NewTable</span></tt></a>, <a class="reference internal" href="#pyo.TableRec" title="pyo.TableRec"><tt class="xref py py-class docutils literal"><span class="pre">TableRec</span></tt></a></p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">DataTable</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rnd</span> <span class="o">=</span> <span class="n">Choice</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">601</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span> <span class="n">freq</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rec</span> <span class="o">=</span> <span class="n">TablePut</span><span class="p">(</span><span class="n">rnd</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span><span class="o">.</span><span class="n">play</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">met</span> <span class="o">=</span> <span class="n">Metro</span><span class="p">(</span><span class="o">.</span><span class="mi">125</span><span class="p">)</span><span class="o">.</span><span class="n">play</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ind</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="n">met</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fr</span> <span class="o">=</span> <span class="n">TableIndex</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">ind</span><span class="p">,</span> <span class="n">mul</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mf">1.005</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">osc</span> <span class="o">=</span> <span class="n">SineLoop</span><span class="p">(</span><span class="n">fr</span><span class="p">,</span> <span class="n">feedback</span><span class="o">=.</span><span class="mi">08</span><span class="p">,</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.TablePut.setInput">
+<tt class="descname">setInput</tt><big>(</big><em>x</em>, <em>fadetime=0.05</em><big>)</big></dt>
+<dd><p>Replace the <cite>input</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoObject</span></dt>
+<dd><p class="first last">New signal to process.</p>
+</dd>
+<dt>fadetime <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Crossfade time between old and new input. Defaults to 0.05.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.TablePut.setTable">
+<tt class="descname">setTable</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>table</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">DataTable</span></dt>
+<dd><p class="first last">new <cite>table</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.TablePut.input">
+<tt class="descname">input</tt></dt>
+<dd><p>PyoObject. Audio signal to write in the table.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.TablePut.table">
+<tt class="descname">table</tt></dt>
+<dd><p>DataTable. The table where to write values.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="tableread">
+<h2><em>TableRead</em></h2>
+<dl class="class">
+<dt id="pyo.TableRead">
+<em class="property">class </em><tt class="descname">TableRead</tt><big>(</big><em>table</em>, <em>freq=1</em>, <em>loop=0</em>, <em>interp=2</em>, <em>mul=1</em>, <em>add=0</em><big>)</big></dt>
+<dd><p>Simple waveform table reader.</p>
+<p>Read sampled sound from a table, with optional looping mode.</p>
+<p>The play() method starts the playback and is not called at the
+object creation time.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoObject" title="pyo.PyoObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>table <span class="classifier-delimiter">:</span> <span class="classifier">PyoTableObject</span></dt>
+<dd><p class="first last">Table containing the waveform samples.</p>
+</dd>
+<dt>freq <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject, optional</span></dt>
+<dd><p class="first last">Frequency in cycles per second. Defaults to 1.</p>
+</dd>
+<dt>loop <span class="classifier-delimiter">:</span> <span class="classifier">int {0, 1}, optional</span></dt>
+<dd><p class="first last">Looping mode, 0 means off, 1 means on.
+Defaults to 0.</p>
+</dd>
+<dt>interp <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><dl class="first last docutils">
+<dt>Choice of the interpolation method. Defaults to 2.</dt>
+<dd><ol class="first last arabic simple">
+<li>no interpolation</li>
+<li>linear</li>
+<li>cosinus</li>
+<li>cubic</li>
+</ol>
+</dd>
+</dl>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>TableRead will sends a trigger signal at the end of the playback if
+loop is off or any time it wraps around if loop is on. User can
+retreive the trigger streams by calling obj[&#8216;trig&#8217;]:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">tabr</span> <span class="o">=</span> <span class="n">TableRead</span><span class="p">(</span><span class="n">SNDS_PATH</span> <span class="o">+</span> <span class="s">&quot;/transparent.aif&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">trig</span> <span class="o">=</span> <span class="n">TrigRand</span><span class="p">(</span><span class="n">tab</span><span class="p">[</span><span class="s">&#39;trig&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#pyo.Osc" title="pyo.Osc"><tt class="xref py py-class docutils literal"><span class="pre">Osc</span></tt></a></p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">snd</span> <span class="o">=</span> <span class="n">SndTable</span><span class="p">(</span><span class="n">SNDS_PATH</span> <span class="o">+</span> <span class="s">&#39;/transparent.aif&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">freq</span> <span class="o">=</span> <span class="n">snd</span><span class="o">.</span><span class="n">getRate</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">TableRead</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">snd</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="p">[</span><span class="n">freq</span><span class="p">,</span><span class="n">freq</span><span class="o">*.</span><span class="mi">99</span><span class="p">],</span> <span class="n">loop</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.TableRead.setTable">
+<tt class="descname">setTable</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>table</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoTableObject</span></dt>
+<dd><p class="first last">new <cite>table</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.TableRead.setFreq">
+<tt class="descname">setFreq</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>freq</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">new <cite>freq</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.TableRead.setLoop">
+<tt class="descname">setLoop</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>loop</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">int {0, 1}</span></dt>
+<dd><p class="first last">new <cite>loop</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.TableRead.setInterp">
+<tt class="descname">setInterp</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>interp</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">int {1, 2, 3, 4}</span></dt>
+<dd><p class="first last">new <cite>interp</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.TableRead.reset">
+<tt class="descname">reset</tt><big>(</big><big>)</big></dt>
+<dd><p>Resets current phase to 0.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.TableRead.table">
+<tt class="descname">table</tt></dt>
+<dd><p>PyoTableObject. Table containing the waveform samples.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.TableRead.freq">
+<tt class="descname">freq</tt></dt>
+<dd><p>float or PyoObject. Frequency in cycles per second.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.TableRead.loop">
+<tt class="descname">loop</tt></dt>
+<dd><p>int. Looping mode.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.TableRead.interp">
+<tt class="descname">interp</tt></dt>
+<dd><p>int {1, 2, 3, 4}. Interpolation method.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="tablerec">
+<h2><em>TableRec</em></h2>
+<dl class="class">
+<dt id="pyo.TableRec">
+<em class="property">class </em><tt class="descname">TableRec</tt><big>(</big><em>input</em>, <em>table</em>, <em>fadetime=0</em><big>)</big></dt>
+<dd><p>TableRec is for writing samples into a previously created NewTable.</p>
+<p>See <cite>NewTable</cite> to create an empty table.</p>
+<p>The play method is not called at the object creation time. It starts
+the recording into the table until the table is full. Calling the
+play method again restarts the recording and overwrites previously
+recorded samples. The stop method stops the recording. Otherwise, the
+default behaviour is to record through the end of the table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoObject" title="pyo.PyoObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>input <span class="classifier-delimiter">:</span> <span class="classifier">PyoObject</span></dt>
+<dd><p class="first last">Audio signal to write in the table.</p>
+</dd>
+<dt>table <span class="classifier-delimiter">:</span> <span class="classifier">NewTable</span></dt>
+<dd><p class="first last">The table where to write samples.</p>
+</dd>
+<dt>fadetime <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Fade time at the beginning and the end of the recording
+in seconds. Defaults to 0.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The out() method is bypassed. TableRec returns no signal.</p>
+<p>TableRec has no <cite>mul</cite> and <cite>add</cite> attributes.</p>
+<p>TableRec will sends a trigger signal at the end of the recording.
+User can retrieve the trigger streams by calling obj[&#8216;trig&#8217;]. In
+this example, the recorded table will be read automatically after
+a recording:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">NewTable</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">chnls</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rec</span> <span class="o">=</span> <span class="n">TableRec</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="n">t</span><span class="p">,</span> <span class="n">fadetime</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tr</span> <span class="o">=</span> <span class="n">TrigEnv</span><span class="p">(</span><span class="n">rec</span><span class="p">[</span><span class="s">&#39;trig&#39;</span><span class="p">],</span> <span class="n">table</span><span class="o">=</span><span class="n">t</span><span class="p">,</span> <span class="n">dur</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+</pre></div>
+</div>
+<p class="last">obj[&#8216;time&#8217;] outputs an audio stream of the current recording time,
+in samples.</p>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="tables.html#pyo.NewTable" title="pyo.NewTable"><tt class="xref py py-class docutils literal"><span class="pre">NewTable</span></tt></a>, <a class="reference internal" href="triggers.html#pyo.TrigTableRec" title="pyo.TrigTableRec"><tt class="xref py py-class docutils literal"><span class="pre">TrigTableRec</span></tt></a></p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">(</span><span class="n">duplex</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">NewTable</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">chnls</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">TableRec</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="o">.</span><span class="mo">01</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">amp</span> <span class="o">=</span> <span class="n">Iter</span><span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="s">&quot;trig&quot;</span><span class="p">],</span> <span class="p">[</span><span class="o">.</span><span class="mi">5</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">freq</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">getRate</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">Osc</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="p">[</span><span class="n">freq</span><span class="p">,</span> <span class="n">freq</span><span class="o">*.</span><span class="mi">99</span><span class="p">],</span> <span class="n">mul</span><span class="o">=</span><span class="n">amp</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># to record in the empty table, call:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># b.play()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.TableRec.setInput">
+<tt class="descname">setInput</tt><big>(</big><em>x</em>, <em>fadetime=0.05</em><big>)</big></dt>
+<dd><p>Replace the <cite>input</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoObject</span></dt>
+<dd><p class="first last">New signal to process.</p>
+</dd>
+<dt>fadetime <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Crossfade time between old and new input. Defaults to 0.05.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.TableRec.setTable">
+<tt class="descname">setTable</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>table</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">NewTable</span></dt>
+<dd><p class="first last">new <cite>table</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.TableRec.input">
+<tt class="descname">input</tt></dt>
+<dd><p>PyoObject. Audio signal to write in the table.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.TableRec.table">
+<tt class="descname">table</tt></dt>
+<dd><p>NewTable. The table where to write samples.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="tablewrite">
+<h2><em>TableWrite</em></h2>
+<dl class="class">
+<dt id="pyo.TableWrite">
+<em class="property">class </em><tt class="descname">TableWrite</tt><big>(</big><em>input</em>, <em>pos</em>, <em>table</em><big>)</big></dt>
+<dd><p>TableWrite writes samples into a previously created NewTable.</p>
+<p>See <cite>NewTable</cite> to create an empty table.</p>
+<p>TableWrite takes samples from its <cite>input</cite> stream and writes
+them at a normalized position given by the <cite>pos</cite> stream.
+Position must be an audio stream, ie. a PyoObject. This
+object allows fast recording of values coming from an X-Y
+pad into a table object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoObject" title="pyo.PyoObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>input <span class="classifier-delimiter">:</span> <span class="classifier">PyoObject</span></dt>
+<dd><p class="first last">Audio signal to write in the table.</p>
+</dd>
+<dt>pos <span class="classifier-delimiter">:</span> <span class="classifier">PyoObject</span></dt>
+<dd><p class="first last">Audio signal specifying the normalized position (in the
+range 0 to 1) where to write the <cite>input</cite> samples.</p>
+</dd>
+<dt>table <span class="classifier-delimiter">:</span> <span class="classifier">NewTable</span></dt>
+<dd><p class="first last">The table where to write samples.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The out() method is bypassed. TableWrite returns no signal.</p>
+<p class="last">TableWrite has no <cite>mul</cite> and <cite>add</cite> attributes.</p>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="tables.html#pyo.NewTable" title="pyo.NewTable"><tt class="xref py py-class docutils literal"><span class="pre">NewTable</span></tt></a>, <a class="reference internal" href="#pyo.TableRec" title="pyo.TableRec"><tt class="xref py py-class docutils literal"><span class="pre">TableRec</span></tt></a></p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">(</span><span class="n">duplex</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tab</span> <span class="o">=</span> <span class="n">NewTable</span><span class="p">(</span><span class="mi">8192</span><span class="o">/</span><span class="n">s</span><span class="o">.</span><span class="n">getSamplingRate</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tab</span><span class="o">.</span><span class="n">view</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pos</span> <span class="o">=</span> <span class="n">Phasor</span><span class="p">(</span><span class="o">.</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">val</span> <span class="o">=</span> <span class="n">Sine</span><span class="p">(</span><span class="o">.</span><span class="mi">25</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rec</span> <span class="o">=</span> <span class="n">TableWrite</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">tab</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pat</span> <span class="o">=</span> <span class="n">Pattern</span><span class="p">(</span><span class="n">tab</span><span class="o">.</span><span class="n">refreshView</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">)</span><span class="o">.</span><span class="n">play</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.TableWrite.setInput">
+<tt class="descname">setInput</tt><big>(</big><em>x</em>, <em>fadetime=0.05</em><big>)</big></dt>
+<dd><p>Replace the <cite>input</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoObject</span></dt>
+<dd><p class="first last">New signal to process.</p>
+</dd>
+<dt>fadetime <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Crossfade time between old and new input. Defaults to 0.05.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.TableWrite.setTable">
+<tt class="descname">setTable</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>table</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">NewTable</span></dt>
+<dd><p class="first last">new <cite>table</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.TableWrite.setPos">
+<tt class="descname">setPos</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>pos</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoObject</span></dt>
+<dd><p class="first last">new <cite>pos</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.TableWrite.input">
+<tt class="descname">input</tt></dt>
+<dd><p>PyoObject. Audio signal to write in the table.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.TableWrite.table">
+<tt class="descname">table</tt></dt>
+<dd><p>NewTable. The table where to write samples.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.TableWrite.pos">
+<tt class="descname">pos</tt></dt>
+<dd><p>PyoObject. Normalized position, as audio stream, where to write samples.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="tablescale">
+<h2><em>TableScale</em></h2>
+<dl class="class">
+<dt id="pyo.TableScale">
+<em class="property">class </em><tt class="descname">TableScale</tt><big>(</big><em>table</em>, <em>outtable</em>, <em>mul=1</em>, <em>add=0</em><big>)</big></dt>
+<dd><p>Scales all the values contained in a PyoTableObject.</p>
+<p>TableScale scales the values of <cite>table</cite> argument according
+to <cite>mul</cite> and <cite>add</cite> arguments and writes the new values in
+<cite>outtable</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoObject" title="pyo.PyoObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>table <span class="classifier-delimiter">:</span> <span class="classifier">PyoTableObject</span></dt>
+<dd><p class="first last">Table containing the original values.</p>
+</dd>
+<dt>outtable <span class="classifier-delimiter">:</span> <span class="classifier">PyoTableObject</span></dt>
+<dd><p class="first last">Table where to write the scaled values.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">DataTable</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="n">midiToHz</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">48</span><span class="p">,</span> <span class="mi">72</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t2</span> <span class="o">=</span> <span class="n">DataTable</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="n">Metro</span><span class="p">(</span><span class="o">.</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">play</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="n">m</span> <span class="p">,</span><span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f1</span> <span class="o">=</span> <span class="n">TableIndex</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">syn1</span> <span class="o">=</span> <span class="n">SineLoop</span><span class="p">(</span><span class="n">f1</span><span class="p">,</span> <span class="n">feedback</span><span class="o">=</span><span class="mf">0.08</span><span class="p">,</span> <span class="n">mul</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">scl</span> <span class="o">=</span> <span class="n">TableScale</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">t2</span><span class="p">,</span> <span class="n">mul</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f2</span> <span class="o">=</span> <span class="n">TableIndex</span><span class="p">(</span><span class="n">t2</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">syn2</span> <span class="o">=</span> <span class="n">SineLoop</span><span class="p">(</span><span class="n">f2</span><span class="p">,</span> <span class="n">feedback</span><span class="o">=</span><span class="mf">0.08</span><span class="p">,</span> <span class="n">mul</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.TableScale.setTable">
+<tt class="descname">setTable</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>table</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoTableObject</span></dt>
+<dd><p class="first last">new <cite>table</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.TableScale.setOuttable">
+<tt class="descname">setOuttable</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>outtable</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoTableObject</span></dt>
+<dd><p class="first last">new <cite>outtable</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.TableScale.table">
+<tt class="descname">table</tt></dt>
+<dd><p>PyoTableObject. Table containing the original values.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.TableScale.outtable">
+<tt class="descname">outtable</tt></dt>
+<dd><p>PyoTableObject. Scaled output table.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Table Processing</a><ul>
+<li><a class="reference internal" href="#granulator"><em>Granulator</em></a></li>
+<li><a class="reference internal" href="#granule"><em>Granule</em></a></li>
+<li><a class="reference internal" href="#lookup"><em>Lookup</em></a></li>
+<li><a class="reference internal" href="#looper"><em>Looper</em></a></li>
+<li><a class="reference internal" href="#osc"><em>Osc</em></a></li>
+<li><a class="reference internal" href="#oscbank"><em>OscBank</em></a></li>
+<li><a class="reference internal" href="#oscloop"><em>OscLoop</em></a></li>
+<li><a class="reference internal" href="#osctrig"><em>OscTrig</em></a></li>
+<li><a class="reference internal" href="#particle"><em>Particle</em></a></li>
+<li><a class="reference internal" href="#pointer"><em>Pointer</em></a></li>
+<li><a class="reference internal" href="#pointer2"><em>Pointer2</em></a></li>
+<li><a class="reference internal" href="#pulsar"><em>Pulsar</em></a></li>
+<li><a class="reference internal" href="#tableindex"><em>TableIndex</em></a></li>
+<li><a class="reference internal" href="#tablemorph"><em>TableMorph</em></a></li>
+<li><a class="reference internal" href="#tableput"><em>TablePut</em></a></li>
+<li><a class="reference internal" href="#tableread"><em>TableRead</em></a></li>
+<li><a class="reference internal" href="#tablerec"><em>TableRec</em></a></li>
+<li><a class="reference internal" href="#tablewrite"><em>TableWrite</em></a></li>
+<li><a class="reference internal" href="#tablescale"><em>TableScale</em></a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="randoms.html"
+                        title="previous chapter">Random generators</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="triggers.html"
+                        title="next chapter">Sample Accurate Timing (Triggers)</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="triggers.html" title="Sample Accurate Timing (Triggers)"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="randoms.html" title="Random generators"
+             >previous</a> |</li>
+        <li><a href="../../index.html">Pyo 0.7.6 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >API Documentation</a> &raquo;</li>
+          <li><a href="index.html" >Classes by category</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Olivier Bélanger.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>
