@@ -1,0 +1,424 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Tutorial on creating a custom PyoObject (RingMod) &mdash; Pyo 0.7.7 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.7.7',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../_static/E-PyoIcon.ico"/>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="top" title="Pyo 0.7.7 documentation" href="../index.html" />
+    <link rel="up" title="Tutorials" href="index.html" />
+    <link rel="next" title="Tutorial on creating a custom PyoObject (Flanger)" href="pyoobject2.html" />
+    <link rel="prev" title="Tutorials" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="pyoobject2.html" title="Tutorial on creating a custom PyoObject (Flanger)"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Tutorials"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Pyo 0.7.7 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Tutorials</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="tutorial-on-creating-a-custom-pyoobject-ringmod">
+<h1>Tutorial on creating a custom PyoObject (RingMod)</h1>
+<p>There are few steps we need to take care of in order to create a class with all
+of the PyoObject behaviors.</p>
+<p>Things to consider:</p>
+<ul class="simple">
+<li>The parent class must be PyoObject, that means the PyoObject&#8217;s __init__ method must be called inside the object&#8217;s __init__ method to properly initialize PyoObject&#8217;s basic attributes.</li>
+<li>When a PyoObject receives another PyoObject, it looks for a list of objects called &#8220;self._base_objs&#8221;. This list must contain the C implementation of the audio objects generating the output sound of the process.</li>
+<li>Adding &#8220;mul&#8221; and &#8220;add&#8221; arguments (they act on objects in self._base_objs).</li>
+<li>All PyoObjects support &#8220;list expansion&#8221;.</li>
+<li>All PyoObjects with sound in input support cross-fading between old and new sources.</li>
+<li>We will probably want to override the play(), out() and stop() methods.</li>
+<li>There is an attribute for any function that modify a parameter.</li>
+<li>We should override the ctrl() method to allow a GUI to control parameters.</li>
+</ul>
+<p>In this tutorial, we will define a RingMod object with this definition:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">RingMod</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">mul</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">add</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>First of all, we need to import the pyo module</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pyo</span> <span class="kn">import</span> <span class="o">*</span>
+</pre></div>
+</div>
+<div class="section" id="step-1-declaring-the-class">
+<h2>Step 1 - Declaring the class</h2>
+<p>We will create a new class called RingMod with PyoObject as its parent class.
+Another good habit is to put a __doc__ string at the beginning of our classes.
+Doing so will allow other users to retrieve the object&#8217;s documentation with the
+standard python help() function.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">RingMod</span><span class="p">(</span><span class="n">PyoObject</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Ring modulator.</span>
+
+<span class="sd">    Ring modulation is a signal-processing effect in electronics</span>
+<span class="sd">    performed by multiplying two signals, where one is typically</span>
+<span class="sd">    a sine-wave or another simple waveform.</span>
+
+<span class="sd">    :Parent: :py:class:`PyoObject`</span>
+
+<span class="sd">    :Args:</span>
+
+<span class="sd">        input : PyoObject</span>
+<span class="sd">            Input signal to process.</span>
+<span class="sd">        freq : float or PyoObject, optional</span>
+<span class="sd">            Frequency, in cycles per second, of the modulator.</span>
+<span class="sd">            Defaults to 100.</span>
+
+<span class="sd">    &gt;&gt;&gt; s = Server().boot()</span>
+<span class="sd">    &gt;&gt;&gt; s.start()</span>
+<span class="sd">    &gt;&gt;&gt; src = SfPlayer(SNDS_PATH+&quot;/transparent.aif&quot;, loop=True, mul=.3)</span>
+<span class="sd">    &gt;&gt;&gt; lfo = Sine(.25, phase=[0,.5], mul=.5, add=.5)</span>
+<span class="sd">    &gt;&gt;&gt; ring = RingMod(src, freq=[800,1000], mul=lfo).out()</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="step-2-the-init-method">
+<h2>Step 2 - The __init__ method</h2>
+<p>This is the place where we have to take care of some of pyo&#8217;s generic behaviours.
+The most important thing to remember is that when a PyoObject receives another
+PyoObject in input, it looks for an attribute called self._base_objs. This attribute
+is a list of the object&#8217;s base classes and is considered the audio output signal
+of the object (the Sine object uses internally an object called Sine_base). The
+getBaseObjects() method returns the list of base classes for a given PyoObject. We
+will call the getBaseObjects() method on the objects generating the output signal of
+our process. .play(), .out(), .stop() and .mix() methods act on this list.</p>
+<p>We also need to add two arguments to the definition of the object: &#8220;mul&#8221; and &#8220;add&#8221;.
+The attributes &#8220;self._mul&#8221; and &#8220;self._add&#8221; are handled by the parent class and are
+automatically applied to the objects stored in the list &#8220;self._base_objs&#8221;.</p>
+<p>Finally, we have to consider the &#8220;multi-channel expansion&#8221; feature, allowing lists given as
+arguments to create multiple instances of our object and managing multiple audio streams.
+Two functions help us to accomplish this:</p>
+<p>convertArgsToLists(<a href="#id1"><span class="problematic" id="id2">*</span></a>args) : Return arguments converted to lists and the maximum list size.
+wrap(list,i) : Return value at position &#8220;i&#8221; in &#8220;list&#8221; with wrap around len(list).</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">mul</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">add</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="c"># Properly initialize PyoObject&#39;s basic attributes</span>
+    <span class="n">PyoObject</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mul</span><span class="p">,</span> <span class="n">add</span><span class="p">)</span>
+
+    <span class="c"># Keep references of all raw arguments</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_input</span> <span class="o">=</span> <span class="nb">input</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_freq</span> <span class="o">=</span> <span class="n">freq</span>
+
+    <span class="c"># Using InputFader to manage input sound allows cross-fade when changing sources</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_in_fader</span> <span class="o">=</span> <span class="n">InputFader</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
+
+    <span class="c"># Convert all arguments to lists for &quot;multi-channel expansion&quot;</span>
+    <span class="n">in_fader</span><span class="p">,</span><span class="n">freq</span><span class="p">,</span><span class="n">mul</span><span class="p">,</span><span class="n">add</span><span class="p">,</span><span class="n">lmax</span> <span class="o">=</span> <span class="n">convertArgsToLists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_in_fader</span><span class="p">,</span><span class="n">freq</span><span class="p">,</span><span class="n">mul</span><span class="p">,</span><span class="n">add</span><span class="p">)</span>
+
+    <span class="c"># Apply processing</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_mod</span> <span class="o">=</span> <span class="n">Sine</span><span class="p">(</span><span class="n">freq</span><span class="o">=</span><span class="n">freq</span><span class="p">,</span> <span class="n">mul</span><span class="o">=</span><span class="n">in_fader</span><span class="p">)</span>
+
+    <span class="c"># Use Sig object as a through to prevent modifying &quot;mul&quot; attribute of self._mod</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_ring</span> <span class="o">=</span> <span class="n">Sig</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_mod</span><span class="p">,</span> <span class="n">mul</span><span class="o">=</span><span class="n">mul</span><span class="p">,</span> <span class="n">add</span><span class="o">=</span><span class="n">add</span><span class="p">)</span>
+
+    <span class="c"># self._base_objs is the audio output seen by the outside world!</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_base_objs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ring</span><span class="o">.</span><span class="n">getBaseObjects</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="step-3-setxxx-methods-and-attributes">
+<h2>Step 3 - setXXX methods and attributes</h2>
+<p>Now, we will add methods and attributes getter and setter for all controllable
+parameters. It should be noted that we use the setInput() method of the
+InputFader object to change an input source. This object implements a cross-fade
+between the old source and the new one with a cross-fade duration argument.
+Here, we need to keep references of raw argument in order to get the
+real current state when we call the dump() method.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">setInput</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">fadetime</span><span class="o">=</span><span class="mf">0.05</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Replace the `input` attribute.</span>
+
+<span class="sd">    :Args:</span>
+
+<span class="sd">        x : PyoObject</span>
+<span class="sd">            New signal to process.</span>
+<span class="sd">        fadetime : float, optional</span>
+<span class="sd">            Crossfade time between old and new input. Defaults to 0.05.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_input</span> <span class="o">=</span> <span class="n">x</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_in_fader</span><span class="o">.</span><span class="n">setInput</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">fadetime</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">setFreq</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Replace the `freq` attribute.</span>
+
+<span class="sd">    :Args:</span>
+
+<span class="sd">        x : float or PyoObject</span>
+<span class="sd">            New `freq` attribute.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_freq</span> <span class="o">=</span> <span class="n">x</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_mod</span><span class="o">.</span><span class="n">freq</span> <span class="o">=</span> <span class="n">x</span>
+
+<span class="nd">@property</span> <span class="c"># getter</span>
+<span class="k">def</span> <span class="nf">input</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;PyoObject. Input signal to process.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_input</span>
+<span class="nd">@input.setter</span> <span class="c"># setter</span>
+<span class="k">def</span> <span class="nf">input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">setInput</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="nd">@property</span>
+<span class="k">def</span> <span class="nf">freq</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;float or PyoObject. Frequency of the modulator.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_freq</span>
+<span class="nd">@freq.setter</span>
+<span class="k">def</span> <span class="nf">freq</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">setFreq</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="step-4-the-ctrl-method">
+<h2>Step 4 - The ctrl() method</h2>
+<p>The ctrl() method of a PyoObject is used to pop-up a GUI to control the parameters
+of the object. The initialization of sliders is done with a list of SLMap objects
+where we can set the range of the slider, the type of scaling, the name of the
+attribute linked to the slider and the initial value. We will define a default
+&#8220;self._map_list&#8221; that will be used if the user doesn&#8217;t provide one to the parameter
+&#8220;map_list&#8221;. If the object doesn&#8217;t have any parameter to control with a GUI, this</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">ctrl</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">map_list</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">wxnoserver</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_map_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">SLMap</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2000</span><span class="p">,</span> <span class="s">&quot;log&quot;</span><span class="p">,</span> <span class="s">&quot;freq&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_freq</span><span class="p">),</span>
+                      <span class="n">SLMapMul</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_mul</span><span class="p">)]</span>
+    <span class="n">PyoObject</span><span class="o">.</span><span class="n">ctrl</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">map_list</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">wxnoserver</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="step-5-overriding-the-play-stop-and-out-methods">
+<h2>Step 5 - Overriding the .play(), .stop() and .out() methods</h2>
+<p>Finally, we might want to override .play(), .stop() and .out() methods to be sure all
+our internal PyoObjects are consequently managed instead of only objects in self._base_obj,
+as it is in built-in objects. To handle properly the process for self._base_objs, we still
+need to call the method that belongs to PyoObject. We return the returned value (self) of
+these methods in order to possibly append the method to the object&#8217;s creation. See the
+definition of these methods in the PyoObject man page to understand the meaning of arguments.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">play</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dur</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_mod</span><span class="o">.</span><span class="n">play</span><span class="p">(</span><span class="n">dur</span><span class="p">,</span> <span class="n">delay</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">PyoObject</span><span class="o">.</span><span class="n">play</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dur</span><span class="p">,</span> <span class="n">delay</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_mod</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">PyoObject</span><span class="o">.</span><span class="n">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">out</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chnl</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">inc</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">dur</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_mod</span><span class="o">.</span><span class="n">play</span><span class="p">(</span><span class="n">dur</span><span class="p">,</span> <span class="n">delay</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">PyoObject</span><span class="o">.</span><span class="n">out</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chnl</span><span class="p">,</span> <span class="n">inc</span><span class="p">,</span> <span class="n">dur</span><span class="p">,</span> <span class="n">delay</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Here we are, we&#8217;ve just created our first custom pyo object!</p>
+</div>
+<div class="section" id="complete-class-definition-and-test">
+<h2>Complete class definition and test</h2>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pyo</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="k">class</span> <span class="nc">RingMod</span><span class="p">(</span><span class="n">PyoObject</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Ring modulator.</span>
+
+<span class="sd">    Ring modulation is a signal-processing effect in electronics</span>
+<span class="sd">    performed by multiplying two signals, where one is typically</span>
+<span class="sd">    a sine-wave or another simple waveform.</span>
+
+<span class="sd">    :Parent: :py:class:`PyoObject`</span>
+
+<span class="sd">    :Args:</span>
+
+<span class="sd">        input : PyoObject</span>
+<span class="sd">            Input signal to process.</span>
+<span class="sd">        freq : float or PyoObject, optional</span>
+<span class="sd">            Frequency, in cycles per second, of the modulator.</span>
+<span class="sd">            Defaults to 100.</span>
+
+<span class="sd">    &gt;&gt;&gt; s = Server().boot()</span>
+<span class="sd">    &gt;&gt;&gt; s.start()</span>
+<span class="sd">    &gt;&gt;&gt; src = SfPlayer(SNDS_PATH+&quot;/transparent.aif&quot;, loop=True, mul=.3)</span>
+<span class="sd">    &gt;&gt;&gt; lfo = Sine(.25, phase=[0,.5], mul=.5, add=.5)</span>
+<span class="sd">    &gt;&gt;&gt; ring = RingMod(src, freq=[800,1000], mul=lfo).out()</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">mul</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">add</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="n">PyoObject</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mul</span><span class="p">,</span> <span class="n">add</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_input</span> <span class="o">=</span> <span class="nb">input</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_freq</span> <span class="o">=</span> <span class="n">freq</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_in_fader</span> <span class="o">=</span> <span class="n">InputFader</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
+        <span class="n">in_fader</span><span class="p">,</span><span class="n">freq</span><span class="p">,</span><span class="n">mul</span><span class="p">,</span><span class="n">add</span><span class="p">,</span><span class="n">lmax</span> <span class="o">=</span> <span class="n">convertArgsToLists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_in_fader</span><span class="p">,</span><span class="n">freq</span><span class="p">,</span><span class="n">mul</span><span class="p">,</span><span class="n">add</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mod</span> <span class="o">=</span> <span class="n">Sine</span><span class="p">(</span><span class="n">freq</span><span class="o">=</span><span class="n">freq</span><span class="p">,</span> <span class="n">mul</span><span class="o">=</span><span class="n">in_fader</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ring</span> <span class="o">=</span> <span class="n">Sig</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_mod</span><span class="p">,</span> <span class="n">mul</span><span class="o">=</span><span class="n">mul</span><span class="p">,</span> <span class="n">add</span><span class="o">=</span><span class="n">add</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_base_objs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ring</span><span class="o">.</span><span class="n">getBaseObjects</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">setInput</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">fadetime</span><span class="o">=</span><span class="mf">0.05</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Replace the `input` attribute.</span>
+
+<span class="sd">        :Args:</span>
+
+<span class="sd">            x : PyoObject</span>
+<span class="sd">                New signal to process.</span>
+<span class="sd">            fadetime : float, optional</span>
+<span class="sd">                Crossfade time between old and new input. Defaults to 0.05.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_input</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_in_fader</span><span class="o">.</span><span class="n">setInput</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">fadetime</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">setFreq</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Replace the `freq` attribute.</span>
+
+<span class="sd">        :Args:</span>
+
+<span class="sd">            x : float or PyoObject</span>
+<span class="sd">                New `freq` attribute.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_freq</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mod</span><span class="o">.</span><span class="n">freq</span> <span class="o">=</span> <span class="n">x</span>
+
+    <span class="k">def</span> <span class="nf">play</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dur</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mod</span><span class="o">.</span><span class="n">play</span><span class="p">(</span><span class="n">dur</span><span class="p">,</span> <span class="n">delay</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">PyoObject</span><span class="o">.</span><span class="n">play</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dur</span><span class="p">,</span> <span class="n">delay</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mod</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">PyoObject</span><span class="o">.</span><span class="n">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">out</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chnl</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">inc</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">dur</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mod</span><span class="o">.</span><span class="n">play</span><span class="p">(</span><span class="n">dur</span><span class="p">,</span> <span class="n">delay</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">PyoObject</span><span class="o">.</span><span class="n">out</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chnl</span><span class="p">,</span> <span class="n">inc</span><span class="p">,</span> <span class="n">dur</span><span class="p">,</span> <span class="n">delay</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">ctrl</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">map_list</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">wxnoserver</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_map_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">SLMap</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2000</span><span class="p">,</span> <span class="s">&quot;log&quot;</span><span class="p">,</span> <span class="s">&quot;freq&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_freq</span><span class="p">),</span>
+                          <span class="n">SLMapMul</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_mul</span><span class="p">)]</span>
+        <span class="n">PyoObject</span><span class="o">.</span><span class="n">ctrl</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">map_list</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">wxnoserver</span><span class="p">)</span>
+
+    <span class="nd">@property</span> <span class="c"># getter</span>
+    <span class="k">def</span> <span class="nf">input</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;PyoObject. Input signal to process.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_input</span>
+    <span class="nd">@input.setter</span> <span class="c"># setter</span>
+    <span class="k">def</span> <span class="nf">input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setInput</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">freq</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;float or PyoObject. Frequency of the modulator.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_freq</span>
+    <span class="nd">@freq.setter</span>
+    <span class="k">def</span> <span class="nf">freq</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setFreq</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="c"># Run the script to test the RingMod object.</span>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+    <span class="n">src</span> <span class="o">=</span> <span class="n">SfPlayer</span><span class="p">(</span><span class="n">SNDS_PATH</span><span class="o">+</span><span class="s">&quot;/transparent.aif&quot;</span><span class="p">,</span> <span class="n">loop</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">lfo</span> <span class="o">=</span> <span class="n">Sine</span><span class="p">(</span><span class="o">.</span><span class="mi">25</span><span class="p">,</span> <span class="n">phase</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="o">.</span><span class="mi">5</span><span class="p">],</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">5</span><span class="p">,</span> <span class="n">add</span><span class="o">=.</span><span class="mi">5</span><span class="p">)</span>
+    <span class="n">ring</span> <span class="o">=</span> <span class="n">RingMod</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="p">[</span><span class="mi">800</span><span class="p">,</span><span class="mi">1000</span><span class="p">],</span> <span class="n">mul</span><span class="o">=</span><span class="n">lfo</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">gui</span><span class="p">(</span><span class="nb">locals</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Tutorial on creating a custom PyoObject (RingMod)</a><ul>
+<li><a class="reference internal" href="#step-1-declaring-the-class">Step 1 - Declaring the class</a></li>
+<li><a class="reference internal" href="#step-2-the-init-method">Step 2 - The __init__ method</a></li>
+<li><a class="reference internal" href="#step-3-setxxx-methods-and-attributes">Step 3 - setXXX methods and attributes</a></li>
+<li><a class="reference internal" href="#step-4-the-ctrl-method">Step 4 - The ctrl() method</a></li>
+<li><a class="reference internal" href="#step-5-overriding-the-play-stop-and-out-methods">Step 5 - Overriding the .play(), .stop() and .out() methods</a></li>
+<li><a class="reference internal" href="#complete-class-definition-and-test">Complete class definition and test</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Tutorials</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="pyoobject2.html"
+                        title="next chapter">Tutorial on creating a custom PyoObject (Flanger)</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="pyoobject2.html" title="Tutorial on creating a custom PyoObject (Flanger)"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Tutorials"
+             >previous</a> |</li>
+        <li><a href="../index.html">Pyo 0.7.7 documentation</a> &raquo;</li>
+          <li><a href="index.html" >Tutorials</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Olivier Bélanger.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

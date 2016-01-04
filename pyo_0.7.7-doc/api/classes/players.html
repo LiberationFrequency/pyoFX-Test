@@ -1,0 +1,614 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Soundfile Players &mdash; Pyo 0.7.7 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.7.7',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../../_static/E-PyoIcon.ico"/>
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="top" title="Pyo 0.7.7 documentation" href="../../index.html" />
+    <link rel="up" title="Classes by category" href="index.html" />
+    <link rel="next" title="Random generators" href="randoms.html" />
+    <link rel="prev" title="Event Sequencing" href="pattern.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="randoms.html" title="Random generators"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="pattern.html" title="Event Sequencing"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">Pyo 0.7.7 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >API Documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Classes by category</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-pyo">
+<span id="soundfile-players"></span><h1>Soundfile Players</h1>
+<p>Play soundfiles from the disk.</p>
+<p>SfMarkerXXX objects use markers features (store in the header) from
+an AIFF file to create more specific reading patterns.</p>
+<div class="section" id="sfplayer">
+<h2><em>SfPlayer</em></h2>
+<dl class="class">
+<dt id="pyo.SfPlayer">
+<em class="property">class </em><tt class="descname">SfPlayer</tt><big>(</big><em>path</em>, <em>speed=1</em>, <em>loop=False</em>, <em>offset=0</em>, <em>interp=2</em>, <em>mul=1</em>, <em>add=0</em><big>)</big></dt>
+<dd><p>Soundfile player.</p>
+<p>Reads audio data from a file using one of several available interpolation
+types. User can alter its pitch with the <cite>speed</cite> attribute. The object
+takes care of sampling rate conversion to match the Server sampling
+rate setting.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoObject" title="pyo.PyoObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>path <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
+<dd><p class="first last">Full path name of the sound to read.</p>
+</dd>
+<dt>speed <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject, optional</span></dt>
+<dd><p class="first">Transpose the pitch of input sound by this factor.
+Defaults to 1.</p>
+<p>1 is the original pitch, lower values play sound slower, and higher
+values play sound faster.</p>
+<p>Negative values results in playing sound backward.</p>
+<p class="last">Although the <cite>speed</cite> attribute accepts audio
+rate signal, its value is updated only once per buffer size.</p>
+</dd>
+<dt>loop <span class="classifier-delimiter">:</span> <span class="classifier">bool, optional</span></dt>
+<dd><p class="first last">If set to True, sound will play in loop. Defaults to False.</p>
+</dd>
+<dt>offset <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Time in seconds of input sound to be skipped, assuming speed = 1.
+Defaults to 0.</p>
+</dd>
+<dt>interp <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><dl class="first last docutils">
+<dt>Interpolation type. Defaults to 2.</dt>
+<dd><ol class="first last arabic simple">
+<li>no interpolation</li>
+<li>linear</li>
+<li>cosinus</li>
+<li>cubic</li>
+</ol>
+</dd>
+</dl>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>SfPlayer will sends a trigger signal at the end of the playback if
+loop is off or any time it wraps around if loop is on. User can
+retrieve the trigger streams by calling obj[&#8216;trig&#8217;]:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">sf</span> <span class="o">=</span> <span class="n">SfPlayer</span><span class="p">(</span><span class="n">SNDS_PATH</span> <span class="o">+</span> <span class="s">&quot;/transparent.aif&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">trig</span> <span class="o">=</span> <span class="n">TrigRand</span><span class="p">(</span><span class="n">sf</span><span class="p">[</span><span class="s">&#39;trig&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">snd</span> <span class="o">=</span> <span class="n">SNDS_PATH</span> <span class="o">+</span> <span class="s">&quot;/transparent.aif&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sf</span> <span class="o">=</span> <span class="n">SfPlayer</span><span class="p">(</span><span class="n">snd</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="p">[</span><span class="o">.</span><span class="mi">75</span><span class="p">,</span><span class="o">.</span><span class="mi">8</span><span class="p">],</span> <span class="n">loop</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.SfPlayer.setPath">
+<tt class="descname">setPath</tt><big>(</big><em>path</em><big>)</big></dt>
+<dd><p>Sets a new sound to read.</p>
+<p>The number of channels of the new sound must match those
+of the sound loaded at initialization time.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>path <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
+<dd><p class="first last">Full path of the new sound.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.SfPlayer.setSound">
+<tt class="descname">setSound</tt><big>(</big><em>path</em><big>)</big></dt>
+<dd><p>Sets a new sound to read.</p>
+<p>The number of channels of the new sound must match those
+of the sound loaded at initialization time.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>path <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
+<dd><p class="first last">Full path of the new sound.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.SfPlayer.setSpeed">
+<tt class="descname">setSpeed</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>speed</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">new <cite>speed</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.SfPlayer.setLoop">
+<tt class="descname">setLoop</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>loop</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">bool {True, False}</span></dt>
+<dd><p class="first last">new <cite>loop</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.SfPlayer.setOffset">
+<tt class="descname">setOffset</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>offset</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">new <cite>offset</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.SfPlayer.setInterp">
+<tt class="descname">setInterp</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>interp</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">int {1, 2, 3, 4}</span></dt>
+<dd><p class="first last">new <cite>interp</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.SfPlayer.path">
+<tt class="descname">path</tt></dt>
+<dd><p>string. Full path of the sound.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.SfPlayer.sound">
+<tt class="descname">sound</tt></dt>
+<dd><p>string. Alias to the <cite>path</cite> attribute.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.SfPlayer.speed">
+<tt class="descname">speed</tt></dt>
+<dd><p>float or PyoObject. Transposition factor.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.SfPlayer.loop">
+<tt class="descname">loop</tt></dt>
+<dd><p>bool. Looping mode.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.SfPlayer.offset">
+<tt class="descname">offset</tt></dt>
+<dd><p>float. Time, in seconds, of the first sample to read.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.SfPlayer.interp">
+<tt class="descname">interp</tt></dt>
+<dd><p>int {1, 2, 3, 4}. Interpolation method.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="sfmarkerlooper">
+<h2><em>SfMarkerLooper</em></h2>
+<dl class="class">
+<dt id="pyo.SfMarkerLooper">
+<em class="property">class </em><tt class="descname">SfMarkerLooper</tt><big>(</big><em>path</em>, <em>speed=1</em>, <em>mark=0</em>, <em>interp=2</em>, <em>mul=1</em>, <em>add=0</em><big>)</big></dt>
+<dd><p>AIFF with markers soundfile looper.</p>
+<p>Reads audio data from a AIFF file using one of several available
+interpolation types. User can alter its pitch with the <cite>speed</cite>
+attribute. The object takes care of sampling rate conversion to
+match the Server sampling rate setting.</p>
+<p>The reading pointer loops a specific marker (from the MARK chunk
+in the header of the AIFF file) until it received a new integer
+in the <cite>mark</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoObject" title="pyo.PyoObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>path <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
+<dd><p class="first last">Full path name of the sound to read.</p>
+</dd>
+<dt>speed <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject, optional</span></dt>
+<dd><p class="first">Transpose the pitch of input sound by this factor.
+Defaults to 1.</p>
+<p>1 is the original pitch, lower values play sound slower, and higher
+values play sound faster.</p>
+<p>Negative values results in playing sound backward.</p>
+<p class="last">Although the <cite>speed</cite> attribute accepts audio
+rate signal, its value is updated only once per buffer size.</p>
+</dd>
+<dt>mark <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject, optional</span></dt>
+<dd><p class="first last">Integer denoting the marker to loop, in the range
+0 -&gt; len(getMarkers()). Defaults to 0.</p>
+</dd>
+<dt>interp <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><dl class="first last docutils">
+<dt>Choice of the interpolation method. Defaults to 2.</dt>
+<dd><ol class="first last arabic simple">
+<li>no interpolation</li>
+<li>linear</li>
+<li>cosinus</li>
+<li>cubic</li>
+</ol>
+</dd>
+</dl>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">SfMarkerLooper</span><span class="p">(</span><span class="n">SNDS_PATH</span> <span class="o">+</span> <span class="s">&#39;/transparent.aif&#39;</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="p">[</span><span class="o">.</span><span class="mi">999</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rnd</span> <span class="o">=</span> <span class="n">RandInt</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">getMarkers</span><span class="p">()),</span> <span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">mark</span> <span class="o">=</span> <span class="n">rnd</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.SfMarkerLooper.setSpeed">
+<tt class="descname">setSpeed</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>speed</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">new <cite>speed</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.SfMarkerLooper.setMark">
+<tt class="descname">setMark</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>mark</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">new <cite>mark</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.SfMarkerLooper.setInterp">
+<tt class="descname">setInterp</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>interp</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">int {1, 2, 3, 4}</span></dt>
+<dd><p class="first last">new <cite>interp</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.SfMarkerLooper.getMarkers">
+<tt class="descname">getMarkers</tt><big>(</big><big>)</big></dt>
+<dd><p>Returns a list of marker time values in samples.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.SfMarkerLooper.speed">
+<tt class="descname">speed</tt></dt>
+<dd><p>float or PyoObject. Transposition factor.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.SfMarkerLooper.mark">
+<tt class="descname">mark</tt></dt>
+<dd><p>float or PyoObject. Marker to loop.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.SfMarkerLooper.interp">
+<tt class="descname">interp</tt></dt>
+<dd><p>int {1, 2, 3, 4}. Interpolation method.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="sfmarkershuffler">
+<h2><em>SfMarkerShuffler</em></h2>
+<dl class="class">
+<dt id="pyo.SfMarkerShuffler">
+<em class="property">class </em><tt class="descname">SfMarkerShuffler</tt><big>(</big><em>path</em>, <em>speed=1</em>, <em>interp=2</em>, <em>mul=1</em>, <em>add=0</em><big>)</big></dt>
+<dd><p>AIFF with markers soundfile shuffler.</p>
+<p>Reads audio data from a AIFF file using one of several available
+interpolation types. User can alter its pitch with the <cite>speed</cite>
+attribute. The object takes care of sampling rate conversion to
+match the Server sampling rate setting.</p>
+<p>The reading pointer randomly choose a marker (from the MARK chunk
+in the header of the AIFF file) as its starting point and reads
+the samples until it reaches the following marker. Then, it choose
+another marker and reads from the new position and so on...</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoObject" title="pyo.PyoObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>path <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
+<dd><p class="first last">Full path name of the sound to read. Can&#8217;t e changed after
+initialization.</p>
+</dd>
+<dt>speed <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject, optional</span></dt>
+<dd><p class="first">Transpose the pitch of input sound by this factor.
+Defaults to 1.</p>
+<p>1 is the original pitch, lower values play sound slower, and higher
+values play sound faster.</p>
+<p>Negative values results in playing sound backward.</p>
+<p class="last">Although the <cite>speed</cite> attribute accepts audio
+rate signal, its value is updated only once per buffer size.</p>
+</dd>
+<dt>interp <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><dl class="first last docutils">
+<dt>Choice of the interpolation method. Defaults to 2.</dt>
+<dd><ol class="first last arabic simple">
+<li>no interpolation</li>
+<li>linear</li>
+<li>cosinus</li>
+<li>cubic</li>
+</ol>
+</dd>
+</dl>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sf</span> <span class="o">=</span> <span class="n">SfMarkerShuffler</span><span class="p">(</span><span class="n">SNDS_PATH</span> <span class="o">+</span> <span class="s">&quot;/transparent.aif&quot;</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.SfMarkerShuffler.setSpeed">
+<tt class="descname">setSpeed</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>speed</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">new <cite>speed</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.SfMarkerShuffler.setInterp">
+<tt class="descname">setInterp</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>interp</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">int {1, 2, 3, 4}</span></dt>
+<dd><p class="first last">new <cite>interp</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.SfMarkerShuffler.getMarkers">
+<tt class="descname">getMarkers</tt><big>(</big><big>)</big></dt>
+<dd><p>Returns a list of marker time values in samples.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.SfMarkerShuffler.speed">
+<tt class="descname">speed</tt></dt>
+<dd><p>float or PyoObject. Transposition factor.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.SfMarkerShuffler.interp">
+<tt class="descname">interp</tt></dt>
+<dd><p>int {1, 2, 3, 4}. Interpolation method.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Soundfile Players</a><ul>
+<li><a class="reference internal" href="#sfplayer"><em>SfPlayer</em></a></li>
+<li><a class="reference internal" href="#sfmarkerlooper"><em>SfMarkerLooper</em></a></li>
+<li><a class="reference internal" href="#sfmarkershuffler"><em>SfMarkerShuffler</em></a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="pattern.html"
+                        title="previous chapter">Event Sequencing</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="randoms.html"
+                        title="next chapter">Random generators</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="randoms.html" title="Random generators"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="pattern.html" title="Event Sequencing"
+             >previous</a> |</li>
+        <li><a href="../../index.html">Pyo 0.7.7 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >API Documentation</a> &raquo;</li>
+          <li><a href="index.html" >Classes by category</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Olivier Bélanger.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

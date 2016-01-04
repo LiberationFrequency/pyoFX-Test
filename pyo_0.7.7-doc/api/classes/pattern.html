@@ -1,0 +1,357 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Event Sequencing &mdash; Pyo 0.7.7 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.7.7',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../../_static/E-PyoIcon.ico"/>
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="top" title="Pyo 0.7.7 documentation" href="../../index.html" />
+    <link rel="up" title="Classes by category" href="index.html" />
+    <link rel="next" title="Soundfile Players" href="players.html" />
+    <link rel="prev" title="Routing" href="pan.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="players.html" title="Soundfile Players"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="pan.html" title="Routing"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">Pyo 0.7.7 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >API Documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Classes by category</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-pyo">
+<span id="event-sequencing"></span><h1>Event Sequencing</h1>
+<p>Set of objects that call Python functions from triggers or number counts.
+Useful for event sequencing.</p>
+<div class="section" id="callafter">
+<h2><em>CallAfter</em></h2>
+<dl class="class">
+<dt id="pyo.CallAfter">
+<em class="property">class </em><tt class="descname">CallAfter</tt><big>(</big><em>function</em>, <em>time=1</em>, <em>arg=None</em><big>)</big></dt>
+<dd><p>Calls a Python function after a given time.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoObject" title="pyo.PyoObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>function <span class="classifier-delimiter">:</span> <span class="classifier">Python function</span></dt>
+<dd><p class="first last">Python callable execute after <cite>time</cite> seconds.</p>
+</dd>
+<dt>time <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Time, in seconds, before the call. Default to 1.</p>
+</dd>
+<dt>arg <span class="classifier-delimiter">:</span> <span class="classifier">any Python object, optional</span></dt>
+<dd><p class="first last">Argument sent to the called function. Default to None.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The out() method is bypassed. CallAfter doesn&#8217;t return signal.</p>
+<p>CallAfter has no <cite>mul</cite> and <cite>add</cite> attributes.</p>
+<p class="last">The object is not deleted after the call. The user must delete it himself.</p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Start an oscillator with a frequency of 250 Hz</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">syn</span> <span class="o">=</span> <span class="n">SineLoop</span><span class="p">(</span><span class="n">freq</span><span class="o">=</span><span class="p">[</span><span class="mi">250</span><span class="p">,</span><span class="mi">251</span><span class="p">],</span> <span class="n">feedback</span><span class="o">=.</span><span class="mo">07</span><span class="p">,</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">callback</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="c"># Change the oscillator&#39;s frequency to 300 Hz after 2 seconds</span>
+<span class="gp">... </span>    <span class="n">syn</span><span class="o">.</span><span class="n">freq</span> <span class="o">=</span> <span class="n">arg</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">CallAfter</span><span class="p">(</span><span class="n">callback</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="mi">300</span><span class="p">,</span><span class="mi">301</span><span class="p">])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="pattern">
+<h2><em>Pattern</em></h2>
+<dl class="class">
+<dt id="pyo.Pattern">
+<em class="property">class </em><tt class="descname">Pattern</tt><big>(</big><em>function</em>, <em>time=1</em><big>)</big></dt>
+<dd><p>Periodically calls a Python function.</p>
+<p>The play() method starts the pattern timer and is not called
+at the object creation time.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoObject" title="pyo.PyoObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>function <span class="classifier-delimiter">:</span> <span class="classifier">Python function</span></dt>
+<dd><p class="first last">Python function to be called periodically.</p>
+</dd>
+<dt>time <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject, optional</span></dt>
+<dd><p class="first last">Time, in seconds, between each call. Default to 1.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The out() method is bypassed. Pattern doesn&#8217;t return signal.</p>
+<p class="last">Pattern has no <cite>mul</cite> and <cite>add</cite> attributes.</p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">HarmTable</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">.</span><span class="mi">33</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">.</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">.</span><span class="mi">143</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">.</span><span class="mi">111</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">Osc</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">t</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="p">[</span><span class="mi">250</span><span class="p">,</span><span class="mi">251</span><span class="p">],</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">pat</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="n">f</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randrange</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">401</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">a</span><span class="o">.</span><span class="n">freq</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span><span class="p">,</span> <span class="n">f</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">Pattern</span><span class="p">(</span><span class="n">pat</span><span class="p">,</span> <span class="o">.</span><span class="mi">125</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="o">.</span><span class="n">play</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.Pattern.setFunction">
+<tt class="descname">setFunction</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>function</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">Python function</span></dt>
+<dd><p class="first last">new <cite>function</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Pattern.setTime">
+<tt class="descname">setTime</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>time</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">New <cite>time</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Pattern.function">
+<tt class="descname">function</tt></dt>
+<dd><p>Python function. Function to be called.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Pattern.time">
+<tt class="descname">time</tt></dt>
+<dd><p>float or PyoObject. Time, in seconds, between each call.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="score">
+<h2><em>Score</em></h2>
+<dl class="class">
+<dt id="pyo.Score">
+<em class="property">class </em><tt class="descname">Score</tt><big>(</big><em>input</em>, <em>fname='event_'</em><big>)</big></dt>
+<dd><p>Calls functions by incrementation of a preformatted name.</p>
+<p>Score takes audio stream containning integers in input and calls
+a function whose name is the concatenation of <cite>fname</cite> and the changing
+integer.</p>
+<p>Can be used to sequence events, first by creating functions p0, p1,
+p2, etc. and then, by passing a counter to a Score object with &#8220;p&#8221;
+as <cite>fname</cite> argument. Functions are called without parameters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoObject" title="pyo.PyoObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>input <span class="classifier-delimiter">:</span> <span class="classifier">PyoObject</span></dt>
+<dd><p class="first last">Audio signal. Must contains integer numbers. Integer must change
+before calling its function again.</p>
+</dd>
+<dt>fname <span class="classifier-delimiter">:</span> <span class="classifier">string, optional</span></dt>
+<dd><p class="first last">Name of the functions to be called. Defaults to &#8220;<a href="#id1"><span class="problematic" id="id2">event_</span></a>&#8221;, meaning
+that the object will call the function &#8220;event_0&#8221;, &#8220;event_1&#8221;, &#8220;event_2&#8221;,
+and so on... Available at initialization time only.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The out() method is bypassed. Score&#8217;s signal can not be sent
+to audio outs.</p>
+<p class="last">Score has no <cite>mul</cite> and <cite>add</cite> attributes.</p>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#pyo.Pattern" title="pyo.Pattern"><tt class="xref py py-class docutils literal"><span class="pre">Pattern</span></tt></a>, <a class="reference internal" href="triggers.html#pyo.TrigFunc" title="pyo.TrigFunc"><tt class="xref py py-class docutils literal"><span class="pre">TrigFunc</span></tt></a></p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">SineLoop</span><span class="p">(</span><span class="n">freq</span><span class="o">=</span><span class="p">[</span><span class="mi">200</span><span class="p">,</span><span class="mi">300</span><span class="p">,</span><span class="mi">400</span><span class="p">,</span><span class="mi">500</span><span class="p">],</span> <span class="n">feedback</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">event_0</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="n">a</span><span class="o">.</span><span class="n">freq</span><span class="o">=</span><span class="p">[</span><span class="mi">200</span><span class="p">,</span><span class="mi">300</span><span class="p">,</span><span class="mi">400</span><span class="p">,</span><span class="mi">500</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">event_1</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="n">a</span><span class="o">.</span><span class="n">freq</span><span class="o">=</span><span class="p">[</span><span class="mi">300</span><span class="p">,</span><span class="mi">400</span><span class="p">,</span><span class="mi">450</span><span class="p">,</span><span class="mi">600</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">event_2</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="n">a</span><span class="o">.</span><span class="n">freq</span><span class="o">=</span><span class="p">[</span><span class="mi">150</span><span class="p">,</span><span class="mi">375</span><span class="p">,</span><span class="mi">450</span><span class="p">,</span><span class="mi">525</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="n">Metro</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">play</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sc</span> <span class="o">=</span> <span class="n">Score</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.Score.setInput">
+<tt class="descname">setInput</tt><big>(</big><em>x</em>, <em>fadetime=0.05</em><big>)</big></dt>
+<dd><p>Replace the <cite>input</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoObject</span></dt>
+<dd><p class="first last">New signal to process.</p>
+</dd>
+<dt>fadetime <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Crossfade time between old and new input. Defaults to 0.05.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Score.input">
+<tt class="descname">input</tt></dt>
+<dd><p>PyoObject. Audio signal sending integer numbers.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Event Sequencing</a><ul>
+<li><a class="reference internal" href="#callafter"><em>CallAfter</em></a></li>
+<li><a class="reference internal" href="#pattern"><em>Pattern</em></a></li>
+<li><a class="reference internal" href="#score"><em>Score</em></a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="pan.html"
+                        title="previous chapter">Routing</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="players.html"
+                        title="next chapter">Soundfile Players</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="players.html" title="Soundfile Players"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="pan.html" title="Routing"
+             >previous</a> |</li>
+        <li><a href="../../index.html">Pyo 0.7.7 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >API Documentation</a> &raquo;</li>
+          <li><a href="index.html" >Classes by category</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Olivier Bélanger.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Getting Started &mdash; Pyo 0.7.7 documentation</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.7.7',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="_static/E-PyoIcon.ico"/>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="top" title="Pyo 0.7.7 documentation" href="index.html" />
+    <link rel="next" title="Tutorials" href="tutorials/index.html" />
+    <link rel="prev" title="Compiling" href="compiling.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="tutorials/index.html" title="Tutorials"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="compiling.html" title="Compiling"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Pyo 0.7.7 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="getting-started">
+<h1>Getting Started</h1>
+<p>Here is quick introduction to Pyo. It assumes you already know Python and basics about Object-oriented programming.</p>
+<div class="section" id="the-pyo-server-and-gui">
+<h2>The Pyo Server and GUI</h2>
+<p>The first thing you need to do to use Pyo is import the pyo python module and boot the server. This audio server will open audio and midi interfaces and will be ready to send to them the audio and MIDI produced by other pyo objects. You then need to make some sound:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyo</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">Sine</span><span class="p">(</span><span class="n">mul</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The <cite>s</cite> variable holds the Server instance, which has been booted, using the boot function. Booting the server includes opening audio and MIDI interfaces, and setting up the sample rate and number of channels, but the server will not be processing audio until its start() method is called. Then we create a Sine object, and store it in variable a, after calling its out method. The Sine class defines a Sine wave oscillator. The out method from this class connects the output of the oscillator to the server audio outputs. I have set the mul attribute of the Sine object to make sure you don&#8217;t blow your ears when you play this, as the default amplitude multiplier is 1, i.e. a sine wave at the maximum amplitude before clipping! (But I&#8217;ll talk about attributes later...) You can stop the server with:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="to-interact-or-not-to-interact">
+<h2>To interact or not to interact</h2>
+<p>If you tried the above script from an interactive python shell you would have heard a sine tone, but if you ran it from a python script non-interactively, you are probably asking yourself why you haven&#8217;t heard anything. The reason is that the script has finished before the server has sent any audio to the outputs! So if you are using python non-interactively, the way to hear this example is:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pyo</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">Sine</span><span class="p">(</span><span class="n">mul</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+<span class="n">s</span><span class="o">.</span><span class="n">gui</span><span class="p">(</span><span class="nb">locals</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>In the last line, you can see a very handy method from the Server class, which creates a small control GUI for the current instance. The gui method for the Server object, keeps a script running and allows you to start and stop the server, control the output volume and record to an audio file the sound generated in the server. A handy feature of the server GUI is the interpreter text box in the bottom. From it you can send commands interactively to the interpreter, to start and stop objects, create or destroy them, etc.</p>
+</div>
+<div class="section" id="changing-object-characteristics">
+<h2>Changing Object Characteristics</h2>
+<p>The Sine class constructor is defined as:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">Sine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">phase</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">mul</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">add</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>So you can give it a frequency, starting phase, multiplier and DC offset value when you create it. Also, if you want to do without the server gui, you can use the server method start() from your script, but you might need to use the sleep function from the time module to have your script run the server for a while if you are running Python non-interactively:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pyo</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">Sine</span><span class="p">(</span><span class="mi">440</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+<span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">s</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Notice that you can set the parameters for Sine in the order in which they are defined, but you can also give the parameters a name if you want to leave the rest at their default:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">a</span> <span class="o">=</span> <span class="n">Sine</span><span class="p">(</span><span class="n">mul</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Once the object has been created, you can modify its attributes using the access methods. For example, to modify the frequency of the a oscillator object after it has been created you can use:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">a</span><span class="o">.</span><span class="n">setFreq</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>But you can also set the attributes directly:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">a</span><span class="o">.</span><span class="n">freq</span> <span class="o">=</span> <span class="mi">1000</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="chaining-objects">
+<h2>Chaining objects</h2>
+<p>Oscillators like the Sine class can be used as inputs to other classes, for example for frequency modulation:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pyo</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="n">mod</span> <span class="o">=</span> <span class="n">Sine</span><span class="p">(</span><span class="n">freq</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">mul</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">Sine</span><span class="p">(</span><span class="n">freq</span><span class="o">=</span><span class="n">mod</span> <span class="o">+</span> <span class="mi">440</span><span class="p">,</span> <span class="n">mul</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+<span class="n">s</span><span class="o">.</span><span class="n">gui</span><span class="p">(</span><span class="nb">locals</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>You can create an envelope for a sine wave like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pyo</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">Adsr</span><span class="p">(</span><span class="n">attack</span><span class="o">=.</span><span class="mo">01</span><span class="p">,</span> <span class="n">decay</span><span class="o">=.</span><span class="mi">2</span><span class="p">,</span> <span class="n">sustain</span><span class="o">=.</span><span class="mi">5</span><span class="p">,</span> <span class="n">release</span><span class="o">=.</span><span class="mi">1</span><span class="p">,</span> <span class="n">dur</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">Sine</span><span class="p">(</span><span class="n">mul</span><span class="o">=</span><span class="n">f</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+<span class="n">f</span><span class="o">.</span><span class="n">play</span><span class="p">()</span>
+<span class="n">s</span><span class="o">.</span><span class="n">gui</span><span class="p">(</span><span class="nb">locals</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="class-examples">
+<h2>Class examples</h2>
+<p>All Classes in Pyo come with an example which shows how it can be used. To execute the example you can do:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyo</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">example</span><span class="p">(</span><span class="n">Harmonizer</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This will show and execute the example for the Harmonizer class.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Getting Started</a><ul>
+<li><a class="reference internal" href="#the-pyo-server-and-gui">The Pyo Server and GUI</a></li>
+<li><a class="reference internal" href="#to-interact-or-not-to-interact">To interact or not to interact</a></li>
+<li><a class="reference internal" href="#changing-object-characteristics">Changing Object Characteristics</a></li>
+<li><a class="reference internal" href="#chaining-objects">Chaining objects</a></li>
+<li><a class="reference internal" href="#class-examples">Class examples</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="compiling.html"
+                        title="previous chapter">Compiling</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="tutorials/index.html"
+                        title="next chapter">Tutorials</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="tutorials/index.html" title="Tutorials"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="compiling.html" title="Compiling"
+             >previous</a> |</li>
+        <li><a href="index.html">Pyo 0.7.7 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Olivier Bélanger.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

@@ -27,10 +27,10 @@ from pyo import *
 
 # Server Settings:
 ## Latency is buffer size / sampling rate in seconds.
-s = Server(sr=96000, buffersize=128, audio='portaudio', nchnls=1)
+s = Server(sr=96000, buffersize=256, audio='jack', nchnls=1)
 #s = Server(sr=96000, buffersize=128, audio='portaudio', ichnls=1, nchnls=2)    #stereo out
-s.setInputDevice(9)
-s.setOutputDevice(9)
+#s.setInputDevice(9)
+#s.setOutputDevice(9)
 s.boot()
 s.start()
 # set master volume to -20 dB to protect your ears and equipment

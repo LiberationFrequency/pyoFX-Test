@@ -14,7 +14,7 @@ from pyo import *
 ## Latency is buffer size / sampling rate in seconds.
 s = Server(sr=96000, buffersize=128, audio='portaudio', nchnls=1)
 #s = Server(sr=96000, buffersize=128, audio='portaudio', ichnls=1, nchnls=2)    #stereo out
-s.setInputDevice(10)
+s.setInputDevice(9)
 s.setOutputDevice(9)
 s.boot()
 s.start()
@@ -38,7 +38,7 @@ instr = Input(chnl=[0], mul=0.9)    # chnl=[0,1] for stereo input
 ##    Blackman-Harris 7-term
 ##    Tuckey (alpha = 0.66)
 ##    Sine (half-sine window)
-env = WinTable(type=3, size=8192)
+env = WinTable(type=2, size=8192)
 
 
 wsize = .1
@@ -48,7 +48,7 @@ wsize = .1
 #rate = -(ratio-1) / wsize
 
 #ind = Phasor(freq=rate, phase=[0,0.5])
-ind = Phasor(freq=30, phase=[0,0.5])
+ind = Phasor(freq=30, phase=[0,0.5], mul=.97)
 ind.ctrl()
 win = Pointer(table=env, index=ind, mul=.7)
 snd = Delay(instr, delay=ind*wsize, mul=win).out()

@@ -1,0 +1,2361 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Tables &mdash; Pyo 0.7.7 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.7.7',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../../_static/E-PyoIcon.ico"/>
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="top" title="Pyo 0.7.7 documentation" href="../../index.html" />
+    <link rel="up" title="Classes by category" href="index.html" />
+    <link rel="next" title="Matrices" href="matrices.html" />
+    <link rel="prev" title="Utilities" href="utils.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="matrices.html" title="Matrices"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="utils.html" title="Utilities"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">Pyo 0.7.7 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >API Documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Classes by category</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-pyo">
+<span id="tables"></span><h1>Tables</h1>
+<p>Tables are one-dimension containers to keep samples (sounds, envelopes, algorithmic patterns, etc.)
+in memory and access them quickly.</p>
+<div class="section" id="chebytable">
+<h2><em>ChebyTable</em></h2>
+<dl class="class">
+<dt id="pyo.ChebyTable">
+<em class="property">class </em><tt class="descname">ChebyTable</tt><big>(</big><em>list=[1.0, 0.0], size=8192</em><big>)</big></dt>
+<dd><p>Chebyshev polynomials of the first kind.</p>
+<p>Uses Chebyshev coefficients to generate stored polynomial functions
+which, under waveshaping, can be used to split a sinusoid into
+harmonic partials having a pre-definable spectrum.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoTableObject" title="pyo.PyoTableObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoTableObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>list <span class="classifier-delimiter">:</span> <span class="classifier">list, optional</span></dt>
+<dd><p class="first last">Relative strengths of partials numbers 1,2,3, ..., 12 that will
+result when a sinusoid of amplitude 1 is waveshaped using this
+function table. Up to 12 partials can be specified. Defaults to [1].</p>
+</dd>
+<dt>size <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">Table size in samples. Defaults to 8192.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">ChebyTable</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">.</span><span class="mi">33</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">.</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">.</span><span class="mi">143</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">.</span><span class="mi">111</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lfo</span> <span class="o">=</span> <span class="n">Sine</span><span class="p">(</span><span class="n">freq</span><span class="o">=.</span><span class="mi">25</span><span class="p">,</span> <span class="n">mul</span><span class="o">=</span><span class="mf">0.45</span><span class="p">,</span> <span class="n">add</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">Sine</span><span class="p">(</span><span class="n">freq</span><span class="o">=</span><span class="p">[</span><span class="mi">200</span><span class="p">,</span><span class="mi">201</span><span class="p">],</span> <span class="n">mul</span><span class="o">=</span><span class="n">lfo</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">Lookup</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">t</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">a</span><span class="p">,</span> <span class="n">mul</span><span class="o">=</span><span class="mi">1</span><span class="o">-</span><span class="n">lfo</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.ChebyTable.replace">
+<tt class="descname">replace</tt><big>(</big><em>list</em><big>)</big></dt>
+<dd><p>Redraw the waveform according to a new set of harmonics
+relative strengths that will result when a sinusoid of
+amplitude 1 is waveshaped using this function table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>list <span class="classifier-delimiter">:</span> <span class="classifier">list</span></dt>
+<dd><p class="first last">Relative strengths of the fixed harmonic partial
+numbers 1,2,3, ..., 12. Up to 12 partials can be specified.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.ChebyTable.getNormTable">
+<tt class="descname">getNormTable</tt><big>(</big><big>)</big></dt>
+<dd><p>Return a DataTable filled with the normalization function
+corresponding to the current polynomial.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.ChebyTable.list">
+<tt class="descname">list</tt></dt>
+<dd><p>list. Relative strengths of the fixed harmonic partial numbers.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="coslogtable">
+<h2><em>CosLogTable</em></h2>
+<dl class="class">
+<dt id="pyo.CosLogTable">
+<em class="property">class </em><tt class="descname">CosLogTable</tt><big>(</big><em>list=[(0, 0.0), (8191, 1.0)], size=8192</em><big>)</big></dt>
+<dd><p>Construct a table from logarithmic-cosine segments in breakpoint fashion.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoTableObject" title="pyo.PyoTableObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoTableObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>list <span class="classifier-delimiter">:</span> <span class="classifier">list, optional</span></dt>
+<dd><p class="first last">List of tuples indicating location and value of each points
+in the table. The default, [(0,0.), (8191, 1.)], creates a
+logarithmic line from 0.0 at location 0 to 1.0 at the end of
+the table (size - 1). Location must be an integer.</p>
+</dd>
+<dt>size <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">Table size in samples. Defaults to 8192.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Locations in the list must be in increasing order. If the last value
+is less than size, the rest of the table will be filled with zeros.</p>
+<p class="last">Values must be greater than 0.0.</p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">CosLogTable</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">4095</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">8192</span><span class="p">,</span><span class="mi">0</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">Osc</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">t</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">25</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">SineLoop</span><span class="p">(</span><span class="n">freq</span><span class="o">=</span><span class="p">[</span><span class="mi">599</span><span class="p">,</span><span class="mi">600</span><span class="p">],</span> <span class="n">feedback</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">mul</span><span class="o">=</span><span class="n">a</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.CosLogTable.replace">
+<tt class="descname">replace</tt><big>(</big><em>list</em><big>)</big></dt>
+<dd><p>Draw a new envelope according to the new <cite>list</cite> parameter.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>list <span class="classifier-delimiter">:</span> <span class="classifier">list</span></dt>
+<dd><p class="first last">List of tuples indicating location and value of each points
+in the table. Location must be integer.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.CosLogTable.loadRecFile">
+<tt class="descname">loadRecFile</tt><big>(</big><em>filename</em>, <em>tolerance=0.02</em><big>)</big></dt>
+<dd><p>Import an automation recording file in the table.</p>
+<p>loadRecFile takes a recording file, usually from a ControlRec object,
+as <cite>filename</cite> parameter, applies a filtering pre-processing to eliminate
+redundancies and loads the result in the table as a list of points.
+Filtering process can be controled with the <cite>tolerance</cite> parameter.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>filename <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
+<dd><p class="first last">Full path of an automation recording file.</p>
+</dd>
+<dt>tolerance <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Tolerance of the filter. A higher value will eliminate more points.
+Defaults to 0.02.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.CosLogTable.getPoints">
+<tt class="descname">getPoints</tt><big>(</big><big>)</big></dt>
+<dd><p>Returns list of points of the current table.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.CosLogTable.graph">
+<tt class="descname">graph</tt><big>(</big><em>yrange=(0.0</em>, <em>1.0)</em>, <em>title=None</em>, <em>wxnoserver=False</em><big>)</big></dt>
+<dd><p>Opens a grapher window to control the shape of the envelope.</p>
+<p>When editing the grapher with the mouse, the new set of points
+will be send to the object on mouse up.</p>
+<p>Ctrl+C with focus on the grapher will copy the list of points to the
+clipboard, giving an easy way to insert the new shape in a script.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>yrange <span class="classifier-delimiter">:</span> <span class="classifier">tuple, optional</span></dt>
+<dd><p class="first last">Set the min and max values of the Y axis of the graph.
+Defaults to (0.0, 1.0).</p>
+</dd>
+<dt>title <span class="classifier-delimiter">:</span> <span class="classifier">string, optional</span></dt>
+<dd><p class="first last">Title of the window. If none is provided, the name of the
+class is used.</p>
+</dd>
+<dt>wxnoserver <span class="classifier-delimiter">:</span> <span class="classifier">boolean, optional</span></dt>
+<dd><p class="first last">With wxPython graphical toolkit, if True, tells the
+interpreter that there will be no server window.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p>If <cite>wxnoserver</cite> is set to True, the interpreter will not wait for
+the server GUI before showing the controller window.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.CosLogTable.list">
+<tt class="descname">list</tt></dt>
+<dd><p>list. List of tuples indicating location and value of each points in the table.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="costable">
+<h2><em>CosTable</em></h2>
+<dl class="class">
+<dt id="pyo.CosTable">
+<em class="property">class </em><tt class="descname">CosTable</tt><big>(</big><em>list=[(0, 0.0), (8191, 1.0)], size=8192</em><big>)</big></dt>
+<dd><p>Construct a table from cosine interpolated segments.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoTableObject" title="pyo.PyoTableObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoTableObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>list <span class="classifier-delimiter">:</span> <span class="classifier">list, optional</span></dt>
+<dd><p class="first last">List of tuples indicating location and value of each points
+in the table. The default, [(0,0.), (8191, 1.)], creates a
+cosine line from 0.0 at location 0 to 1.0 at the end of the
+table (size - 1). Location must be an integer.</p>
+</dd>
+<dt>size <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">Table size in samples. Defaults to 8192.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Locations in the list must be in increasing order. If the last value
+is less than size, the rest of the table will be filled with zeros.</p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Sharp attack envelope</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">CosTable</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1000</span><span class="p">,</span><span class="o">.</span><span class="mi">25</span><span class="p">),</span> <span class="p">(</span><span class="mi">8191</span><span class="p">,</span><span class="mi">0</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">Osc</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">t</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">25</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">SineLoop</span><span class="p">(</span><span class="n">freq</span><span class="o">=</span><span class="p">[</span><span class="mi">299</span><span class="p">,</span><span class="mi">300</span><span class="p">],</span> <span class="n">feedback</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">mul</span><span class="o">=</span><span class="n">a</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.CosTable.replace">
+<tt class="descname">replace</tt><big>(</big><em>list</em><big>)</big></dt>
+<dd><p>Draw a new envelope according to the new <cite>list</cite> parameter.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>list <span class="classifier-delimiter">:</span> <span class="classifier">list</span></dt>
+<dd><p class="first last">List of tuples indicating location and value of each points
+in the table. Location must be integer.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.CosTable.loadRecFile">
+<tt class="descname">loadRecFile</tt><big>(</big><em>filename</em>, <em>tolerance=0.02</em><big>)</big></dt>
+<dd><p>Import an automation recording file in the table.</p>
+<p>loadRecFile takes a recording file, usually from a ControlRec object,
+as <cite>filename</cite> parameter, applies a filtering pre-processing to eliminate
+redundancies and loads the result in the table as a list of points.
+Filtering process can be controled with the <cite>tolerance</cite> parameter.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>filename <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
+<dd><p class="first last">Full path of an automation recording file.</p>
+</dd>
+<dt>tolerance <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Tolerance of the filter. A higher value will eliminate more points.
+Defaults to 0.02.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.CosTable.getPoints">
+<tt class="descname">getPoints</tt><big>(</big><big>)</big></dt>
+<dd><p>Returns list of points of the current table.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.CosTable.graph">
+<tt class="descname">graph</tt><big>(</big><em>yrange=(0.0</em>, <em>1.0)</em>, <em>title=None</em>, <em>wxnoserver=False</em><big>)</big></dt>
+<dd><p>Opens a grapher window to control the shape of the envelope.</p>
+<p>When editing the grapher with the mouse, the new set of points
+will be send to the object on mouse up.</p>
+<p>Ctrl+C with focus on the grapher will copy the list of points to the
+clipboard, giving an easy way to insert the new shape in a script.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>yrange <span class="classifier-delimiter">:</span> <span class="classifier">tuple, optional</span></dt>
+<dd><p class="first last">Set the min and max values of the Y axis of the graph.
+Defaults to (0.0, 1.0).</p>
+</dd>
+<dt>title <span class="classifier-delimiter">:</span> <span class="classifier">string, optional</span></dt>
+<dd><p class="first last">Title of the window. If none is provided, the name of the
+class is used.</p>
+</dd>
+<dt>wxnoserver <span class="classifier-delimiter">:</span> <span class="classifier">boolean, optional</span></dt>
+<dd><p class="first last">With wxPython graphical toolkit, if True, tells the
+interpreter that there will be no server window.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p>If <cite>wxnoserver</cite> is set to True, the interpreter will not wait for
+the server GUI before showing the controller window.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.CosTable.list">
+<tt class="descname">list</tt></dt>
+<dd><p>list. List of tuples indicating location and value of each points in the table.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="curvetable">
+<h2><em>CurveTable</em></h2>
+<dl class="class">
+<dt id="pyo.CurveTable">
+<em class="property">class </em><tt class="descname">CurveTable</tt><big>(</big><em>list=[(0, 0.0), (8191, 1.0)], tension=0, bias=0, size=8192</em><big>)</big></dt>
+<dd><p>Construct a table from curve interpolated segments.</p>
+<p>CurveTable uses Hermite interpolation (sort of cubic interpolation)
+to calculate each points of the curve. This algorithm allows tension
+and biasing controls. Tension can be used to tighten up the curvature
+at the known points. The bias is used to twist the curve about the
+known points.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoTableObject" title="pyo.PyoTableObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoTableObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>list <span class="classifier-delimiter">:</span> <span class="classifier">list, optional</span></dt>
+<dd><p class="first last">List of tuples indicating location and value of each points
+in the table. The default, [(0,0.), (8191, 1.)], creates a
+curved line from 0.0 at location 0 to 1.0 at the end of the
+table (size - 1). Location must be an integer.</p>
+</dd>
+<dt>tension <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Curvature at the known points. 1 is high, 0 normal, -1 is low.
+Defaults to 0.</p>
+</dd>
+<dt>bias <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Curve attraction (for each segments) toward bundary points.
+0 is even, positive is towards first point, negative is towards
+the second point. Defaults to 0.</p>
+</dd>
+<dt>size <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">Table size in samples. Defaults to 8192.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Locations in the list must be in increasing order. If the last value
+is less than size, the rest of the table will be filled with zeros.</p>
+<p class="last">High tension or bias values can create unstable or very loud table,
+use normalize method to keep the curve between -1 and 1.</p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">CurveTable</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),(</span><span class="mi">2048</span><span class="p">,</span><span class="o">.</span><span class="mi">5</span><span class="p">),(</span><span class="mi">4096</span><span class="p">,</span><span class="o">.</span><span class="mi">2</span><span class="p">),(</span><span class="mi">6144</span><span class="p">,</span><span class="o">.</span><span class="mi">5</span><span class="p">),(</span><span class="mi">8192</span><span class="p">,</span><span class="mi">0</span><span class="p">)],</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span><span class="o">.</span><span class="n">normalize</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">Osc</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">t</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">25</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">SineLoop</span><span class="p">(</span><span class="n">freq</span><span class="o">=</span><span class="p">[</span><span class="mi">299</span><span class="p">,</span><span class="mi">300</span><span class="p">],</span> <span class="n">feedback</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">mul</span><span class="o">=</span><span class="n">a</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.CurveTable.setTension">
+<tt class="descname">setTension</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>tension</cite> attribute.</p>
+<p>1 is high, 0 normal, -1 is low.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">New <cite>tension</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.CurveTable.setBias">
+<tt class="descname">setBias</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>bias</cite> attribute.</p>
+<p>0 is even, positive is towards first point, negative is towards
+the second point.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">New <cite>bias</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.CurveTable.replace">
+<tt class="descname">replace</tt><big>(</big><em>list</em><big>)</big></dt>
+<dd><p>Draw a new envelope according to the new <cite>list</cite> parameter.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>list <span class="classifier-delimiter">:</span> <span class="classifier">list</span></dt>
+<dd><p class="first last">List of tuples indicating location and value of each points
+in the table. Location must be integer.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.CurveTable.loadRecFile">
+<tt class="descname">loadRecFile</tt><big>(</big><em>filename</em>, <em>tolerance=0.02</em><big>)</big></dt>
+<dd><p>Import an automation recording file in the table.</p>
+<p>loadRecFile takes a recording file, usually from a ControlRec object,
+as <cite>filename</cite> parameter, applies a filtering pre-processing to eliminate
+redundancies and loads the result in the table as a list of points.
+Filtering process can be controled with the <cite>tolerance</cite> parameter.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>filename <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
+<dd><p class="first last">Full path of an automation recording file.</p>
+</dd>
+<dt>tolerance <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Tolerance of the filter. A higher value will eliminate more points.
+Defaults to 0.02.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.CurveTable.getPoints">
+<tt class="descname">getPoints</tt><big>(</big><big>)</big></dt>
+<dd><p>Returns list of points of the current table.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.CurveTable.graph">
+<tt class="descname">graph</tt><big>(</big><em>yrange=(0.0</em>, <em>1.0)</em>, <em>title=None</em>, <em>wxnoserver=False</em><big>)</big></dt>
+<dd><p>Opens a grapher window to control the shape of the envelope.</p>
+<p>When editing the grapher with the mouse, the new set of points
+will be send to the object on mouse up.</p>
+<p>Ctrl+C with focus on the grapher will copy the list of points to the
+clipboard, giving an easy way to insert the new shape in a script.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>yrange <span class="classifier-delimiter">:</span> <span class="classifier">tuple, optional</span></dt>
+<dd><p class="first last">Set the min and max values of the Y axis of the graph.
+Defaults to (0.0, 1.0).</p>
+</dd>
+<dt>title <span class="classifier-delimiter">:</span> <span class="classifier">string, optional</span></dt>
+<dd><p class="first last">Title of the window. If none is provided, the name of the
+class is used.</p>
+</dd>
+<dt>wxnoserver <span class="classifier-delimiter">:</span> <span class="classifier">boolean, optional</span></dt>
+<dd><p class="first last">With wxPython graphical toolkit, if True, tells the
+interpreter that there will be no server window.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p>If <cite>wxnoserver</cite> is set to True, the interpreter will not wait for
+the server GUI before showing the controller window.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.CurveTable.tension">
+<tt class="descname">tension</tt></dt>
+<dd><p>float. Curvature tension.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.CurveTable.bias">
+<tt class="descname">bias</tt></dt>
+<dd><p>float. Curve Attraction.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.CurveTable.list">
+<tt class="descname">list</tt></dt>
+<dd><p>list. List of tuples indicating location and value of each points in the table.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="datatable">
+<h2><em>DataTable</em></h2>
+<dl class="class">
+<dt id="pyo.DataTable">
+<em class="property">class </em><tt class="descname">DataTable</tt><big>(</big><em>size</em>, <em>chnls=1</em>, <em>init=None</em><big>)</big></dt>
+<dd><p>Create an empty table ready for data recording.</p>
+<p>See <a class="reference internal" href="tableprocess.html#pyo.TableRec" title="pyo.TableRec"><tt class="xref py py-class docutils literal"><span class="pre">TableRec</span></tt></a> to write samples in the table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoTableObject" title="pyo.PyoTableObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoTableObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>size <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">Size of the table in samples.</p>
+</dd>
+<dt>chnls <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">Number of channels that will be handled by the table.
+Defaults to 1.</p>
+</dd>
+<dt>init <span class="classifier-delimiter">:</span> <span class="classifier">list of floats, optional</span></dt>
+<dd><p class="first last">Initial table. List of list can match the number of channels,
+otherwise, the list will be loaded in all tablestreams.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#pyo.NewTable" title="pyo.NewTable"><tt class="xref py py-class docutils literal"><span class="pre">NewTable</span></tt></a>, <a class="reference internal" href="tableprocess.html#pyo.TableRec" title="pyo.TableRec"><tt class="xref py py-class docutils literal"><span class="pre">TableRec</span></tt></a></p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">random</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">notes</span> <span class="o">=</span> <span class="p">[</span><span class="n">midiToHz</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">48</span><span class="p">,</span><span class="mi">72</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tab</span> <span class="o">=</span> <span class="n">DataTable</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="n">notes</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ind</span> <span class="o">=</span> <span class="n">RandInt</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pit</span> <span class="o">=</span> <span class="n">TableIndex</span><span class="p">(</span><span class="n">tab</span><span class="p">,</span> <span class="n">ind</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">SineLoop</span><span class="p">(</span><span class="n">freq</span><span class="o">=</span><span class="p">[</span><span class="n">pit</span><span class="p">,</span><span class="n">pit</span><span class="o">*</span><span class="mf">0.99</span><span class="p">],</span> <span class="n">feedback</span> <span class="o">=</span> <span class="mf">0.07</span><span class="p">,</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.DataTable.replace">
+<tt class="descname">replace</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replaces the actual table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">list of floats</span></dt>
+<dd><p class="first">New table. Must be of the same size as the actual table.</p>
+<p class="last">List of list can match the number of channels, otherwise,
+the list will be loaded in all tablestreams.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.DataTable.getRate">
+<tt class="descname">getRate</tt><big>(</big><big>)</big></dt>
+<dd><p>Returns the frequency (cycle per second) to give to an
+oscillator to read the sound at its original pitch.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.DataTable.graph">
+<tt class="descname">graph</tt><big>(</big><em>yrange=(0.0</em>, <em>1.0)</em>, <em>title=None</em>, <em>wxnoserver=False</em><big>)</big></dt>
+<dd><p>Opens a multislider window to control the data values.</p>
+<p>When editing the grapher with the mouse, the new values are
+sent to the object to replace the table content.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>yrange <span class="classifier-delimiter">:</span> <span class="classifier">tuple, optional</span></dt>
+<dd><p class="first last">Set the min and max values of the Y axis of the multislider.
+Defaults to (0.0, 1.0).</p>
+</dd>
+<dt>title <span class="classifier-delimiter">:</span> <span class="classifier">string, optional</span></dt>
+<dd><p class="first last">Title of the window. If none is provided, the name of the
+class is used.</p>
+</dd>
+<dt>wxnoserver <span class="classifier-delimiter">:</span> <span class="classifier">boolean, optional</span></dt>
+<dd><p class="first last">With wxPython graphical toolkit, if True, tells the
+interpreter that there will be no server window.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p>If <cite>wxnoserver</cite> is set to True, the interpreter will not wait for
+the server GUI before showing the controller window.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.DataTable.size">
+<tt class="descname">size</tt></dt>
+<dd><p>int. Length of the table in samples.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.DataTable.chnls">
+<tt class="descname">chnls</tt></dt>
+<dd><p>int. Number of channels that will be handled by the table.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.DataTable.init">
+<tt class="descname">init</tt></dt>
+<dd><p>list of floats. Initial table.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="exptable">
+<h2><em>ExpTable</em></h2>
+<dl class="class">
+<dt id="pyo.ExpTable">
+<em class="property">class </em><tt class="descname">ExpTable</tt><big>(</big><em>list=[(0, 0.0), (8192, 1.0)], exp=10, inverse=True, size=8192</em><big>)</big></dt>
+<dd><p>Construct a table from exponential interpolated segments.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoTableObject" title="pyo.PyoTableObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoTableObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>list <span class="classifier-delimiter">:</span> <span class="classifier">list, optional</span></dt>
+<dd><p class="first last">List of tuples indicating location and value of each points
+in the table. The default, [(0,0.), (8192, 1.)], creates a
+exponential line from 0.0 at location 0 to 1.0 at the end of
+the table. Location must be an integer.</p>
+</dd>
+<dt>exp <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Exponent factor. Used to control the slope of the curve.
+Defaults to 10.</p>
+</dd>
+<dt>inverse <span class="classifier-delimiter">:</span> <span class="classifier">boolean, optional</span></dt>
+<dd><p class="first last">If True, downward slope will be inversed. Useful to create
+biexponential curves. Defaults to True.</p>
+</dd>
+<dt>size <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">Table size in samples. Defaults to 8192.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Locations in the list must be in increasing order. If the last value
+is less than size, the rest of the table will be filled with zeros.</p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">ExpTable</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),(</span><span class="mi">4096</span><span class="p">,</span><span class="mi">1</span><span class="p">),(</span><span class="mi">8192</span><span class="p">,</span><span class="mi">0</span><span class="p">)],</span> <span class="n">exp</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">inverse</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">Osc</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">t</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">Sine</span><span class="p">(</span><span class="n">freq</span><span class="o">=</span><span class="p">[</span><span class="mi">299</span><span class="p">,</span><span class="mi">300</span><span class="p">],</span> <span class="n">mul</span><span class="o">=</span><span class="n">a</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.ExpTable.setExp">
+<tt class="descname">setExp</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>exp</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">New <cite>exp</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.ExpTable.setInverse">
+<tt class="descname">setInverse</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>inverse</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
+<dd><p class="first last">New <cite>inverse</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.ExpTable.replace">
+<tt class="descname">replace</tt><big>(</big><em>list</em><big>)</big></dt>
+<dd><p>Draw a new envelope according to the new <cite>list</cite> parameter.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>list <span class="classifier-delimiter">:</span> <span class="classifier">list</span></dt>
+<dd><p class="first last">List of tuples indicating location and value of each points
+in the table. Location must be integer.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.ExpTable.loadRecFile">
+<tt class="descname">loadRecFile</tt><big>(</big><em>filename</em>, <em>tolerance=0.02</em><big>)</big></dt>
+<dd><p>Import an automation recording file in the table.</p>
+<p>loadRecFile takes a recording file, usually from a ControlRec object,
+as <cite>filename</cite> parameter, applies a filtering pre-processing to eliminate
+redundancies and loads the result in the table as a list of points.
+Filtering process can be controled with the <cite>tolerance</cite> parameter.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>filename <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
+<dd><p class="first last">Full path of an automation recording file.</p>
+</dd>
+<dt>tolerance <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Tolerance of the filter. A higher value will eliminate more points.
+Defaults to 0.02.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.ExpTable.getPoints">
+<tt class="descname">getPoints</tt><big>(</big><big>)</big></dt>
+<dd><p>Returns list of points of the current table.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.ExpTable.graph">
+<tt class="descname">graph</tt><big>(</big><em>yrange=(0.0</em>, <em>1.0)</em>, <em>title=None</em>, <em>wxnoserver=False</em><big>)</big></dt>
+<dd><p>Opens a grapher window to control the shape of the envelope.</p>
+<p>When editing the grapher with the mouse, the new set of points
+will be send to the object on mouse up.</p>
+<p>Ctrl+C with focus on the grapher will copy the list of points to the
+clipboard, giving an easy way to insert the new shape in a script.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>yrange <span class="classifier-delimiter">:</span> <span class="classifier">tuple, optional</span></dt>
+<dd><p class="first last">Set the min and max values of the Y axis of the graph.
+Defaults to (0.0, 1.0).</p>
+</dd>
+<dt>title <span class="classifier-delimiter">:</span> <span class="classifier">string, optional</span></dt>
+<dd><p class="first last">Title of the window. If none is provided, the name of the
+class is used.</p>
+</dd>
+<dt>wxnoserver <span class="classifier-delimiter">:</span> <span class="classifier">boolean, optional</span></dt>
+<dd><p class="first last">With wxPython graphical toolkit, if True, tells the
+interpreter that there will be no server window.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p>If <cite>wxnoserver</cite> is set to True, the interpreter will not wait for
+the server GUI before showing the controller window.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.ExpTable.exp">
+<tt class="descname">exp</tt></dt>
+<dd><p>float. Exponent factor.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.ExpTable.inverse">
+<tt class="descname">inverse</tt></dt>
+<dd><p>boolean. Inverse factor.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.ExpTable.list">
+<tt class="descname">list</tt></dt>
+<dd><p>list. List of tuples indicating location and value of each points in the table.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="hanntable">
+<h2><em>HannTable</em></h2>
+<dl class="class">
+<dt id="pyo.HannTable">
+<em class="property">class </em><tt class="descname">HannTable</tt><big>(</big><em>size=8192</em><big>)</big></dt>
+<dd><p>Generates Hanning window function.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoTableObject" title="pyo.PyoTableObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoTableObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>size <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">Table size in samples. Defaults to 8192.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Hanning envelope</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">HannTable</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">Osc</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">t</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">Sine</span><span class="p">(</span><span class="n">freq</span><span class="o">=</span><span class="p">[</span><span class="mi">299</span><span class="p">,</span><span class="mi">300</span><span class="p">],</span> <span class="n">mul</span><span class="o">=</span><span class="n">a</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="harmtable">
+<h2><em>HarmTable</em></h2>
+<dl class="class">
+<dt id="pyo.HarmTable">
+<em class="property">class </em><tt class="descname">HarmTable</tt><big>(</big><em>list=[1.0, 0.0], size=8192</em><big>)</big></dt>
+<dd><p>Harmonic waveform generator.</p>
+<p>Generates composite waveforms made up of weighted sums
+of simple sinusoids.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoTableObject" title="pyo.PyoTableObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoTableObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>list <span class="classifier-delimiter">:</span> <span class="classifier">list, optional</span></dt>
+<dd><p class="first last">Relative strengths of the fixed harmonic partial numbers 1,2,3, etc.
+Defaults to [1].</p>
+</dd>
+<dt>size <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">Table size in samples. Defaults to 8192.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Square wave up to 9th harmonic</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">HarmTable</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">.</span><span class="mi">33</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">.</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">.</span><span class="mi">143</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">.</span><span class="mi">111</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">Osc</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">t</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="p">[</span><span class="mi">199</span><span class="p">,</span><span class="mi">200</span><span class="p">],</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.HarmTable.replace">
+<tt class="descname">replace</tt><big>(</big><em>list</em><big>)</big></dt>
+<dd><p>Redraw the waveform according to a new set of harmonics
+relative strengths.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>list <span class="classifier-delimiter">:</span> <span class="classifier">list</span></dt>
+<dd><p class="first last">Relative strengths of the fixed harmonic partial
+numbers 1,2,3, etc.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.HarmTable.list">
+<tt class="descname">list</tt></dt>
+<dd><p>list. Relative strengths of the fixed harmonic partial numbers.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="lintable">
+<h2><em>LinTable</em></h2>
+<dl class="class">
+<dt id="pyo.LinTable">
+<em class="property">class </em><tt class="descname">LinTable</tt><big>(</big><em>list=[(0, 0.0), (8191, 1.0)], size=8192</em><big>)</big></dt>
+<dd><p>Construct a table from segments of straight lines in breakpoint fashion.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoTableObject" title="pyo.PyoTableObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoTableObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>list <span class="classifier-delimiter">:</span> <span class="classifier">list, optional</span></dt>
+<dd><p class="first last">List of tuples indicating location and value of each points
+in the table. The default, [(0,0.), (8191, 1.)], creates a
+straight line from 0.0 at location 0 to 1.0 at the end of the
+table (size - 1). Location must be an integer.</p>
+</dd>
+<dt>size <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">Table size in samples. Defaults to 8192.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Locations in the list must be in increasing order. If the last value
+is less than size, the rest of the table will be filled with zeros.</p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Sharp attack envelope</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">LinTable</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1000</span><span class="p">,</span><span class="o">.</span><span class="mi">25</span><span class="p">),</span> <span class="p">(</span><span class="mi">8191</span><span class="p">,</span><span class="mi">0</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">Osc</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">t</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">25</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">SineLoop</span><span class="p">(</span><span class="n">freq</span><span class="o">=</span><span class="p">[</span><span class="mi">299</span><span class="p">,</span><span class="mi">300</span><span class="p">],</span> <span class="n">feedback</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">mul</span><span class="o">=</span><span class="n">a</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.LinTable.replace">
+<tt class="descname">replace</tt><big>(</big><em>list</em><big>)</big></dt>
+<dd><p>Draw a new envelope according to the new <cite>list</cite> parameter.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>list <span class="classifier-delimiter">:</span> <span class="classifier">list</span></dt>
+<dd><p class="first last">List of tuples indicating location and value of each points
+in the table. Location must be integer.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.LinTable.loadRecFile">
+<tt class="descname">loadRecFile</tt><big>(</big><em>filename</em>, <em>tolerance=0.02</em><big>)</big></dt>
+<dd><p>Import an automation recording file in the table.</p>
+<p>loadRecFile takes a recording file, usually from a ControlRec object,
+as <cite>filename</cite> parameter, applies a filtering pre-processing to eliminate
+redundancies and loads the result in the table as a list of points.
+Filtering process can be controled with the <cite>tolerance</cite> parameter.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>filename <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
+<dd><p class="first last">Full path of an automation recording file.</p>
+</dd>
+<dt>tolerance <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Tolerance of the filter. A higher value will eliminate more points.
+Defaults to 0.02.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.LinTable.getPoints">
+<tt class="descname">getPoints</tt><big>(</big><big>)</big></dt>
+<dd><p>Returns list of points of the current table.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.LinTable.graph">
+<tt class="descname">graph</tt><big>(</big><em>yrange=(0.0</em>, <em>1.0)</em>, <em>title=None</em>, <em>wxnoserver=False</em><big>)</big></dt>
+<dd><p>Opens a grapher window to control the shape of the envelope.</p>
+<p>When editing the grapher with the mouse, the new set of points
+will be send to the object on mouse up.</p>
+<p>Ctrl+C with focus on the grapher will copy the list of points to the
+clipboard, giving an easy way to insert the new shape in a script.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>yrange <span class="classifier-delimiter">:</span> <span class="classifier">tuple, optional</span></dt>
+<dd><p class="first last">Set the min and max values of the Y axis of the graph.
+Defaults to (0.0, 1.0).</p>
+</dd>
+<dt>title <span class="classifier-delimiter">:</span> <span class="classifier">string, optional</span></dt>
+<dd><p class="first last">Title of the window. If none is provided, the name of the
+class is used.</p>
+</dd>
+<dt>wxnoserver <span class="classifier-delimiter">:</span> <span class="classifier">boolean, optional</span></dt>
+<dd><p class="first last">With wxPython graphical toolkit, if True, tells the
+interpreter that there will be no server window.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p>If <cite>wxnoserver</cite> is set to True, the interpreter will not wait for
+the server GUI before showing the controller window.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.LinTable.list">
+<tt class="descname">list</tt></dt>
+<dd><p>list. List of tuples indicating location and value of each points in the table.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="logtable">
+<h2><em>LogTable</em></h2>
+<dl class="class">
+<dt id="pyo.LogTable">
+<em class="property">class </em><tt class="descname">LogTable</tt><big>(</big><em>list=[(0, 0.0), (8191, 1.0)], size=8192</em><big>)</big></dt>
+<dd><p>Construct a table from logarithmic segments in breakpoint fashion.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoTableObject" title="pyo.PyoTableObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoTableObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>list <span class="classifier-delimiter">:</span> <span class="classifier">list, optional</span></dt>
+<dd><p class="first last">List of tuples indicating location and value of each points
+in the table. The default, [(0,0.), (8191, 1.)], creates a
+logarithmic line from 0.0 at location 0 to 1.0 at the end of
+the table (size - 1). Location must be an integer.</p>
+</dd>
+<dt>size <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">Table size in samples. Defaults to 8192.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Locations in the list must be in increasing order. If the last value
+is less than size, the rest of the table will be filled with zeros.</p>
+<p class="last">Values must be greater than 0.0.</p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">LogTable</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">4095</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">8192</span><span class="p">,</span><span class="mi">0</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">Osc</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">t</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">25</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">SineLoop</span><span class="p">(</span><span class="n">freq</span><span class="o">=</span><span class="p">[</span><span class="mi">599</span><span class="p">,</span><span class="mi">600</span><span class="p">],</span> <span class="n">feedback</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">mul</span><span class="o">=</span><span class="n">a</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.LogTable.replace">
+<tt class="descname">replace</tt><big>(</big><em>list</em><big>)</big></dt>
+<dd><p>Draw a new envelope according to the new <cite>list</cite> parameter.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>list <span class="classifier-delimiter">:</span> <span class="classifier">list</span></dt>
+<dd><p class="first last">List of tuples indicating location and value of each points
+in the table. Location must be integer.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.LogTable.loadRecFile">
+<tt class="descname">loadRecFile</tt><big>(</big><em>filename</em>, <em>tolerance=0.02</em><big>)</big></dt>
+<dd><p>Import an automation recording file in the table.</p>
+<p>loadRecFile takes a recording file, usually from a ControlRec object,
+as <cite>filename</cite> parameter, applies a filtering pre-processing to eliminate
+redundancies and loads the result in the table as a list of points.
+Filtering process can be controled with the <cite>tolerance</cite> parameter.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>filename <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
+<dd><p class="first last">Full path of an automation recording file.</p>
+</dd>
+<dt>tolerance <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Tolerance of the filter. A higher value will eliminate more points.
+Defaults to 0.02.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.LogTable.getPoints">
+<tt class="descname">getPoints</tt><big>(</big><big>)</big></dt>
+<dd><p>Returns list of points of the current table.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.LogTable.graph">
+<tt class="descname">graph</tt><big>(</big><em>yrange=(0.0</em>, <em>1.0)</em>, <em>title=None</em>, <em>wxnoserver=False</em><big>)</big></dt>
+<dd><p>Opens a grapher window to control the shape of the envelope.</p>
+<p>When editing the grapher with the mouse, the new set of points
+will be send to the object on mouse up.</p>
+<p>Ctrl+C with focus on the grapher will copy the list of points to the
+clipboard, giving an easy way to insert the new shape in a script.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>yrange <span class="classifier-delimiter">:</span> <span class="classifier">tuple, optional</span></dt>
+<dd><p class="first last">Set the min and max values of the Y axis of the graph.
+Defaults to (0.0, 1.0).</p>
+</dd>
+<dt>title <span class="classifier-delimiter">:</span> <span class="classifier">string, optional</span></dt>
+<dd><p class="first last">Title of the window. If none is provided, the name of the
+class is used.</p>
+</dd>
+<dt>wxnoserver <span class="classifier-delimiter">:</span> <span class="classifier">boolean, optional</span></dt>
+<dd><p class="first last">With wxPython graphical toolkit, if True, tells the
+interpreter that there will be no server window.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p>If <cite>wxnoserver</cite> is set to True, the interpreter will not wait for
+the server GUI before showing the controller window.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.LogTable.list">
+<tt class="descname">list</tt></dt>
+<dd><p>list. List of tuples indicating location and value of each points in the table.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="newtable">
+<h2><em>NewTable</em></h2>
+<dl class="class">
+<dt id="pyo.NewTable">
+<em class="property">class </em><tt class="descname">NewTable</tt><big>(</big><em>length</em>, <em>chnls=1</em>, <em>init=None</em>, <em>feedback=0.0</em><big>)</big></dt>
+<dd><p>Create an empty table ready for recording.</p>
+<p>See <a class="reference internal" href="tableprocess.html#pyo.TableRec" title="pyo.TableRec"><tt class="xref py py-class docutils literal"><span class="pre">TableRec</span></tt></a> to write samples in the table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoTableObject" title="pyo.PyoTableObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoTableObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>length <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">Length of the table in seconds.</p>
+</dd>
+<dt>chnls <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">Number of channels that will be handled by the table.
+Defaults to 1.</p>
+</dd>
+<dt>init <span class="classifier-delimiter">:</span> <span class="classifier">list of floats, optional</span></dt>
+<dd><p class="first last">Initial table. List of list can match the number of channels,
+otherwise, the list will be loaded in all tablestreams.
+Defaults to None.</p>
+</dd>
+<dt>feedback <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Amount of old data to mix with a new recording. Defaults to 0.0.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#pyo.DataTable" title="pyo.DataTable"><tt class="xref py py-class docutils literal"><span class="pre">DataTable</span></tt></a>, <a class="reference internal" href="tableprocess.html#pyo.TableRec" title="pyo.TableRec"><tt class="xref py py-class docutils literal"><span class="pre">TableRec</span></tt></a></p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">(</span><span class="n">duplex</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">NewTable</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">chnls</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">TableRec</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="o">.</span><span class="mo">01</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">amp</span> <span class="o">=</span> <span class="n">Iter</span><span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="s">&quot;trig&quot;</span><span class="p">],</span> <span class="p">[</span><span class="o">.</span><span class="mi">5</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">freq</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">getRate</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">Osc</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">t</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="p">[</span><span class="n">freq</span><span class="p">,</span> <span class="n">freq</span><span class="o">*.</span><span class="mi">99</span><span class="p">],</span> <span class="n">mul</span><span class="o">=</span><span class="n">amp</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># to record in the empty table, call:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># b.play()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.NewTable.replace">
+<tt class="descname">replace</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replaces the actual table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">list of floats</span></dt>
+<dd><p class="first">New table. Must be of the same size as the actual table.</p>
+<p class="last">List of list can match the number of channels, otherwise,
+the list will be loaded in all tablestreams.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.NewTable.setFeedback">
+<tt class="descname">setFeedback</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replaces the`feedback` attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">New <cite>feedback</cite> value.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.NewTable.getLength">
+<tt class="descname">getLength</tt><big>(</big><big>)</big></dt>
+<dd><p>Returns the length of the table in seconds.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.NewTable.getDur">
+<tt class="descname">getDur</tt><big>(</big><em>all=True</em><big>)</big></dt>
+<dd><p>Returns the length of the table in seconds.</p>
+<p>The <cite>all</cite> argument is there for compatibility with SndTable but
+is not used for now.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.NewTable.getRate">
+<tt class="descname">getRate</tt><big>(</big><big>)</big></dt>
+<dd><p>Returns the frequency (cycle per second) to give to an
+oscillator to read the sound at its original pitch.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.NewTable.getViewTable">
+<tt class="descname">getViewTable</tt><big>(</big><em>size</em>, <em>begin=0</em>, <em>end=0</em><big>)</big></dt>
+<dd><p>Return a list of points (in X, Y pixel values) for each channel in the table.
+These lists can be draw on a DC (WxPython) with a DrawLines method.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>size <span class="classifier-delimiter">:</span> <span class="classifier">tuple</span></dt>
+<dd><p class="first last">Size, (X, Y) pixel values, of the waveform container window.</p>
+</dd>
+<dt>begin <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">First position in the the table, in seconds, where to get samples.
+Defaults to 0.</p>
+</dd>
+<dt>end <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first">Last position in the table, in seconds, where to get samples.</p>
+<p class="last">if this value is set to 0, that means the end of the table. Defaults to 0.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.NewTable.view">
+<tt class="descname">view</tt><big>(</big><em>title='Sound waveform'</em>, <em>wxnoserver=False</em>, <em>mouse_callback=None</em><big>)</big></dt>
+<dd><p>Opens a window showing the contents of the table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>title <span class="classifier-delimiter">:</span> <span class="classifier">string, optional</span></dt>
+<dd><p class="first last">Window title. Defaults to &#8220;Table waveform&#8221;.</p>
+</dd>
+<dt>wxnoserver <span class="classifier-delimiter">:</span> <span class="classifier">boolean, optional</span></dt>
+<dd><p class="first last">With wxPython graphical toolkit, if True, tells the
+interpreter that there will be no server window.</p>
+</dd>
+<dt>mouse_callback <span class="classifier-delimiter">:</span> <span class="classifier">callable</span></dt>
+<dd><p class="first last">If provided, this function will be called with the mouse
+position, inside the frame, as argument. Defaults to None.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p>If <cite>wxnoserver</cite> is set to True, the interpreter will not wait for
+the server GUI before showing the controller window.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.NewTable.length">
+<tt class="descname">length</tt></dt>
+<dd><p>float. Length of the table in seconds.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.NewTable.chnls">
+<tt class="descname">chnls</tt></dt>
+<dd><p>int. Number of channels that will be handled by the table.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.NewTable.init">
+<tt class="descname">init</tt></dt>
+<dd><p>list of floats. Initial table.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.NewTable.feedback">
+<tt class="descname">feedback</tt></dt>
+<dd><p>float. Amount of old data to mix with a new recording.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="paratable">
+<h2><em>ParaTable</em></h2>
+<dl class="class">
+<dt id="pyo.ParaTable">
+<em class="property">class </em><tt class="descname">ParaTable</tt><big>(</big><em>size=8192</em><big>)</big></dt>
+<dd><p>Generates parabola window function.</p>
+<p>The parabola is a conic section, the intersection of a right circular conical
+surface and a plane parallel to a generating straight line of that surface.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoTableObject" title="pyo.PyoTableObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoTableObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>size <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">Table size in samples. Defaults to 8192.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Parabola envelope</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">ParaTable</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">Osc</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">t</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">SineLoop</span><span class="p">(</span><span class="n">freq</span><span class="o">=</span><span class="p">[</span><span class="mi">299</span><span class="p">,</span><span class="mi">300</span><span class="p">],</span> <span class="n">feedback</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">mul</span><span class="o">=</span><span class="n">a</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="partialtable">
+<h2><em>PartialTable</em></h2>
+<dl class="class">
+<dt id="pyo.PartialTable">
+<em class="property">class </em><tt class="descname">PartialTable</tt><big>(</big><em>list=[(1, 1), (1.33, 0.5), (1.67, 0.3)], size=65536</em><big>)</big></dt>
+<dd><p>Inharmonic waveform generator.</p>
+<p>Generates waveforms made of inharmonic components. Partials are
+given as a list of 2-values tuple, where the first one is the
+partial number (can be float) and the second one is the strength
+of the partial.</p>
+<p>The object uses the first two decimal values of each partial to
+compute a higher harmonic at a multiple of 100 (so each component
+is in reality truly harmonic). If the oscillator has a frequency
+divided by 100, the real desired partials will be restituted.</p>
+<p>The list:</p>
+<p>[(1, 1), (1.1, 0.7), (1.15, 0.5)] will draw a table with:</p>
+<p>harmonic 100 : amplitude = 1
+harmonic 110 : amplitude = 0.7
+harmonic 115 : amplitude = 0.5</p>
+<p>To listen to a signal composed of 200, 220 and 230 Hz, one should
+declared an oscillator like this (frequency of 200Hz divided by 100):</p>
+<p>a = Osc(t, freq=2, mul=0.5).out()</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoTableObject" title="pyo.PyoTableObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoTableObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>list <span class="classifier-delimiter">:</span> <span class="classifier">list of tuple, optional</span></dt>
+<dd><p class="first last">List of 2-values tuples. First value is the partial number (float up
+to two decimal values) and second value is its amplitude (relative to
+the other harmonics). Defaults to [(1,1), (1.33,0.5),(1.67,0.3)].</p>
+</dd>
+<dt>size <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">Table size in samples. Because computed harmonics are very high in
+frequency, the table size must be bigger than a classic HarmTable.
+Defaults to 65536.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">PartialTable</span><span class="p">([(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mf">2.37</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="p">(</span><span class="mf">4.55</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">)])</span><span class="o">.</span><span class="n">normalize</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Play with fundamentals 199 and 200 Hz</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">Osc</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">t</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="p">[</span><span class="mf">1.99</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.PartialTable.replace">
+<tt class="descname">replace</tt><big>(</big><em>list</em><big>)</big></dt>
+<dd><p>Redraw the waveform according to a new set of harmonics
+relative strengths.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>list <span class="classifier-delimiter">:</span> <span class="classifier">list of tuples</span></dt>
+<dd><p class="first last">Each tuple contains the partial number, as a float,
+and its strength.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.PartialTable.list">
+<tt class="descname">list</tt></dt>
+<dd><p>list. List of partial numbers and strength.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="sawtable">
+<h2><em>SawTable</em></h2>
+<dl class="class">
+<dt id="pyo.SawTable">
+<em class="property">class </em><tt class="descname">SawTable</tt><big>(</big><em>order=10</em>, <em>size=8192</em><big>)</big></dt>
+<dd><p>Sawtooth waveform generator.</p>
+<p>Generates sawtooth waveforms made up of fixed number of harmonics.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoTableObject" title="pyo.PyoTableObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoTableObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>order <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">Number of harmonics sawtooth is made of.
+Defaults to 10.</p>
+</dd>
+<dt>size <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">Table size in samples. Defaults to 8192.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">SawTable</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span><span class="o">.</span><span class="n">normalize</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">Osc</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">t</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="p">[</span><span class="mi">199</span><span class="p">,</span><span class="mi">200</span><span class="p">],</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.SawTable.setOrder">
+<tt class="descname">setOrder</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Change the <cite>order</cite> attribute and redraw the waveform.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">New number of harmonics</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.SawTable.order">
+<tt class="descname">order</tt></dt>
+<dd><p>int. Number of harmonics sawtooth is made of.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="sinctable">
+<h2><em>SincTable</em></h2>
+<dl class="class">
+<dt id="pyo.SincTable">
+<em class="property">class </em><tt class="descname">SincTable</tt><big>(</big><em>freq=6.283185307179586</em>, <em>windowed=False</em>, <em>size=8192</em><big>)</big></dt>
+<dd><p>Generates sinc window function.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoTableObject" title="pyo.PyoTableObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoTableObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>freq <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Frequency, in radians, of the sinc function. Defaults to pi*2.</p>
+</dd>
+<dt>windowed <span class="classifier-delimiter">:</span> <span class="classifier">boolean, optional</span></dt>
+<dd><p class="first last">If True, an hanning window is applied on the sinc function. Defaults to False.</p>
+</dd>
+<dt>size <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">Table size in samples. Defaults to 8192.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">math</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">SincTable</span><span class="p">(</span><span class="n">freq</span><span class="o">=</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="mi">6</span><span class="p">,</span> <span class="n">windowed</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">Osc</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="p">[</span><span class="mi">199</span><span class="p">,</span><span class="mi">200</span><span class="p">],</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.SincTable.setFreq">
+<tt class="descname">setFreq</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Change the frequency of the sinc function. This will redraw the envelope.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">New frequency in radians.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.SincTable.setWindowed">
+<tt class="descname">setWindowed</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Change the windowed flag. This will redraw the envelope.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
+<dd><p class="first last">New windowed flag.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.SincTable.freq">
+<tt class="descname">freq</tt></dt>
+<dd><p>float. Frequency of the sinc function.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.SincTable.windowed">
+<tt class="descname">windowed</tt></dt>
+<dd><p>boolean. Windowed flag.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="sndtable">
+<h2><em>SndTable</em></h2>
+<dl class="class">
+<dt id="pyo.SndTable">
+<em class="property">class </em><tt class="descname">SndTable</tt><big>(</big><em>path=None</em>, <em>chnl=None</em>, <em>start=0</em>, <em>stop=None</em>, <em>initchnls=1</em><big>)</big></dt>
+<dd><p>Transfers data from a soundfile into a function table.</p>
+<p>If <cite>chnl</cite> is None, the table will contain as many table streams as
+necessary to read all channels of the loaded sound.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoTableObject" title="pyo.PyoTableObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoTableObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>path <span class="classifier-delimiter">:</span> <span class="classifier">string, optional</span></dt>
+<dd><p class="first last">Full path name of the sound. The defaults, None, creates an empty
+table.</p>
+</dd>
+<dt>chnl <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">Channel number to read in. Available at initialization time only.
+The default (None) reads all channels.</p>
+</dd>
+<dt>start <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Begins reading at <cite>start</cite> seconds into the file. Available at
+initialization time only. Defaults to 0.</p>
+</dd>
+<dt>stop <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Stops reading at <cite>stop</cite> seconds into the file. Available at
+initialization time only. The default (None) means the end of
+the file.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">snd_path</span> <span class="o">=</span> <span class="n">SNDS_PATH</span> <span class="o">+</span> <span class="s">&#39;/transparent.aif&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">SndTable</span><span class="p">(</span><span class="n">snd_path</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">freq</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">getRate</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">Osc</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">t</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="p">[</span><span class="n">freq</span><span class="p">,</span> <span class="n">freq</span><span class="o">*.</span><span class="mi">995</span><span class="p">],</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.SndTable.setSound">
+<tt class="descname">setSound</tt><big>(</big><em>path</em>, <em>start=0</em>, <em>stop=None</em><big>)</big></dt>
+<dd><p>Load a new sound in the table.</p>
+<p>Keeps the number of channels of the sound loaded at initialization.
+If the new sound has less channels, it will wrap around and load
+the same channels many times. If the new sound has more channels,
+the extra channels will be skipped.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>path <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
+<dd><p class="first last">Full path of the new sound.</p>
+</dd>
+<dt>start <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Begins reading at <cite>start</cite> seconds into the file. Defaults to 0.</p>
+</dd>
+<dt>stop <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Stops reading at <cite>stop</cite> seconds into the file. The default (None)
+means the end of the file.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.SndTable.append">
+<tt class="descname">append</tt><big>(</big><em>path</em>, <em>crossfade=0</em>, <em>start=0</em>, <em>stop=None</em><big>)</big></dt>
+<dd><p>Append a sound to the one already in the table with crossfade.</p>
+<p>Keeps the number of channels of the sound loaded at initialization.
+If the new sound has less channels, it will wrap around and load
+the same channels many times. If the new sound has more channels,
+the extra channels will be skipped.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>path <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
+<dd><p class="first last">Full path of the new sound.</p>
+</dd>
+<dt>crossfade <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Crossfade time, in seconds, between the sound already in the table
+and the new one. Defaults to 0.</p>
+</dd>
+<dt>start <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Begins reading at <cite>start</cite> seconds into the file. Defaults to 0.</p>
+</dd>
+<dt>stop <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Stops reading at <cite>stop</cite> seconds into the file. The default, None,
+means the end of the file.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.SndTable.insert">
+<tt class="descname">insert</tt><big>(</big><em>path</em>, <em>pos=0</em>, <em>crossfade=0</em>, <em>start=0</em>, <em>stop=None</em><big>)</big></dt>
+<dd><p>Insert a sound into the one already in the table with crossfade.</p>
+<p>Insert a sound at position <cite>pos</cite>, specified in seconds,
+with crossfading at the beginning and the end of the insertion.</p>
+<p>Keeps the number of channels of the sound loaded at initialization.
+If the new sound has less channels, it will wrap around and load
+the same channels many times. If the new sound has more channels,
+the extra channels will be skipped.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>path <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
+<dd><p class="first last">Full path of the new sound.</p>
+</dd>
+<dt>pos <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Position in the table, in seconds, where to insert the new sound.
+Defaults to 0.</p>
+</dd>
+<dt>crossfade <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Crossfade time, in seconds, between the sound already in the table
+and the new one. Defaults to 0.</p>
+</dd>
+<dt>start <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Begins reading at <cite>start</cite> seconds into the file. Defaults to 0.</p>
+</dd>
+<dt>stop <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Stops reading at <cite>stop</cite> seconds into the file. The default, None,
+means the end of the file.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.SndTable.getRate">
+<tt class="descname">getRate</tt><big>(</big><big>)</big></dt>
+<dd><p>Return the frequency in cps at which the sound will be read at its
+original pitch.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.SndTable.getDur">
+<tt class="descname">getDur</tt><big>(</big><em>all=True</em><big>)</big></dt>
+<dd><p>Return the duration of the sound in seconds.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>all <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
+<dd><p class="first last">If the table contains more than one sound and <cite>all</cite> is True,
+returns a list of all durations. Otherwise, returns only the
+first duration as a float.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.SndTable.getSize">
+<tt class="descname">getSize</tt><big>(</big><em>all=True</em><big>)</big></dt>
+<dd><p>Return the size of the table in samples.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>all <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
+<dd><p class="first last">If the table contains more than one sound and <cite>all</cite> is True,
+returns a list of all sizes. Otherwise, returns only the
+first size as an int.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.SndTable.getViewTable">
+<tt class="descname">getViewTable</tt><big>(</big><em>size</em>, <em>begin=0</em>, <em>end=0</em><big>)</big></dt>
+<dd><p>Return a list of points (in X, Y pixel values) for each channel in the table.
+These lists can be draw on a DC (WxPython) with a DrawLines method.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>size <span class="classifier-delimiter">:</span> <span class="classifier">tuple</span></dt>
+<dd><p class="first last">Size, (X, Y) pixel values, of the waveform container window.</p>
+</dd>
+<dt>begin <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">First position in the the table, in seconds, where to get samples.
+Defaults to 0.</p>
+</dd>
+<dt>end <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first">Last position in the table, in seconds, where to get samples.</p>
+<p class="last">if this value is set to 0, that means the end of the table. Defaults to 0.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.SndTable.getEnvelope">
+<tt class="descname">getEnvelope</tt><big>(</big><em>points</em><big>)</big></dt>
+<dd><p>Return the amplitude envelope of the table.</p>
+<p>Return a list, of length <cite>chnl</cite>, of lists of length <cite>points</cite> filled
+with the amplitude envelope of the table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>points <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">Number of points of the amplitude analysis.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.SndTable.view">
+<tt class="descname">view</tt><big>(</big><em>title='Sound waveform'</em>, <em>wxnoserver=False</em>, <em>mouse_callback=None</em><big>)</big></dt>
+<dd><p>Opens a window showing the contents of the table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>title <span class="classifier-delimiter">:</span> <span class="classifier">string, optional</span></dt>
+<dd><p class="first last">Window title. Defaults to &#8220;Table waveform&#8221;.</p>
+</dd>
+<dt>wxnoserver <span class="classifier-delimiter">:</span> <span class="classifier">boolean, optional</span></dt>
+<dd><p class="first last">With wxPython graphical toolkit, if True, tells the
+interpreter that there will be no server window.</p>
+</dd>
+<dt>mouse_callback <span class="classifier-delimiter">:</span> <span class="classifier">callable</span></dt>
+<dd><p class="first last">If provided, this function will be called with the mouse
+position, inside the frame, as argument. Defaults to None.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p>If <cite>wxnoserver</cite> is set to True, the interpreter will not wait for
+the server GUI before showing the controller window.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.SndTable.sound">
+<tt class="descname">sound</tt></dt>
+<dd><p>string. Full path of the sound.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.SndTable.path">
+<tt class="descname">path</tt></dt>
+<dd><p>string. Full path of the sound.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.SndTable.chnl">
+<tt class="descname">chnl</tt></dt>
+<dd><p>int. Channel to read in.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.SndTable.start">
+<tt class="descname">start</tt></dt>
+<dd><p>float. Start point, in seconds, to read into the file.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.SndTable.stop">
+<tt class="descname">stop</tt></dt>
+<dd><p>float. Stop point, in seconds, to read into the file.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="squaretable">
+<h2><em>SquareTable</em></h2>
+<dl class="class">
+<dt id="pyo.SquareTable">
+<em class="property">class </em><tt class="descname">SquareTable</tt><big>(</big><em>order=10</em>, <em>size=8192</em><big>)</big></dt>
+<dd><p>Square waveform generator.</p>
+<p>Generates square waveforms made up of fixed number of harmonics.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoTableObject" title="pyo.PyoTableObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoTableObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>order <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">Number of harmonics square waveform is made of. The waveform will
+contains <cite>order</cite> odd harmonics. Defaults to 10.</p>
+</dd>
+<dt>size <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">Table size in samples. Defaults to 8192.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">SquareTable</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span><span class="o">.</span><span class="n">normalize</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">Osc</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">t</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="p">[</span><span class="mi">199</span><span class="p">,</span><span class="mi">200</span><span class="p">],</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.SquareTable.setOrder">
+<tt class="descname">setOrder</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Change the <cite>order</cite> attribute and redraw the waveform.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">New number of harmonics</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.SquareTable.order">
+<tt class="descname">order</tt></dt>
+<dd><p>int. Number of harmonics square waveform is made of.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="wintable">
+<h2><em>WinTable</em></h2>
+<dl class="class">
+<dt id="pyo.WinTable">
+<em class="property">class </em><tt class="descname">WinTable</tt><big>(</big><em>type=2</em>, <em>size=8192</em><big>)</big></dt>
+<dd><p>Generates different kind of windowing functions.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoTableObject" title="pyo.PyoTableObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoTableObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>type <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><dl class="first last docutils">
+<dt>Windowing function. Possible choices are:</dt>
+<dd><ol class="first last arabic simple" start="0">
+<li>Rectangular (no window)</li>
+<li>Hamming</li>
+<li>Hanning (default)</li>
+<li>Bartlett (triangular)</li>
+<li>Blackman 3-term</li>
+<li>Blackman-Harris 4-term</li>
+<li>Blackman-Harris 7-term</li>
+<li>Tuckey (alpha = 0.66)</li>
+<li>Sine (half-sine window)</li>
+</ol>
+</dd>
+</dl>
+</dd>
+<dt>size <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">Table size in samples. Defaults to 8192.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Triangular envelope</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">WinTable</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">Osc</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">t</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">SineLoop</span><span class="p">(</span><span class="n">freq</span><span class="o">=</span><span class="p">[</span><span class="mi">199</span><span class="p">,</span><span class="mi">200</span><span class="p">],</span> <span class="n">feedback</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">mul</span><span class="o">=</span><span class="n">a</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.WinTable.setType">
+<tt class="descname">setType</tt><big>(</big><em>type</em><big>)</big></dt>
+<dd><p>Sets the windowing function.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>type <span class="classifier-delimiter">:</span> <span class="classifier">int {0 -&gt; 8}</span></dt>
+<dd><p class="first last">Windowing function.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.WinTable.type">
+<tt class="descname">type</tt></dt>
+<dd><p>int. Windowing function.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="atantable">
+<h2><em>AtanTable</em></h2>
+<dl class="class">
+<dt id="pyo.AtanTable">
+<em class="property">class </em><tt class="descname">AtanTable</tt><big>(</big><em>slope=0.5</em>, <em>size=8192</em><big>)</big></dt>
+<dd><p>Generates an arctangent transfert function.</p>
+<p>This table allow the creation the classic arctangent transfert functions,
+useful in distortion design. See Lookup object for a simple table lookup
+process.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoTableObject" title="pyo.PyoTableObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoTableObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>slope <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Slope of the arctangent function, between 0 and 1. Defaults to 0.5.</p>
+</dd>
+<dt>size <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">Table size in samples. Defaults to 8192.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">math</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">AtanTable</span><span class="p">(</span><span class="n">slope</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">Sine</span><span class="p">(</span><span class="n">freq</span><span class="o">=</span><span class="p">[</span><span class="mi">149</span><span class="p">,</span><span class="mi">150</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">l</span> <span class="o">=</span> <span class="n">Lookup</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">t</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">a</span><span class="p">,</span> <span class="n">mul</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.AtanTable.setSlope">
+<tt class="descname">setSlope</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Change the slope of the arctangent function. This will redraw the table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">New slope between 0 and 1.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.AtanTable.slope">
+<tt class="descname">slope</tt></dt>
+<dd><p>float. slope of the arctangent function.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Tables</a><ul>
+<li><a class="reference internal" href="#chebytable"><em>ChebyTable</em></a></li>
+<li><a class="reference internal" href="#coslogtable"><em>CosLogTable</em></a></li>
+<li><a class="reference internal" href="#costable"><em>CosTable</em></a></li>
+<li><a class="reference internal" href="#curvetable"><em>CurveTable</em></a></li>
+<li><a class="reference internal" href="#datatable"><em>DataTable</em></a></li>
+<li><a class="reference internal" href="#exptable"><em>ExpTable</em></a></li>
+<li><a class="reference internal" href="#hanntable"><em>HannTable</em></a></li>
+<li><a class="reference internal" href="#harmtable"><em>HarmTable</em></a></li>
+<li><a class="reference internal" href="#lintable"><em>LinTable</em></a></li>
+<li><a class="reference internal" href="#logtable"><em>LogTable</em></a></li>
+<li><a class="reference internal" href="#newtable"><em>NewTable</em></a></li>
+<li><a class="reference internal" href="#paratable"><em>ParaTable</em></a></li>
+<li><a class="reference internal" href="#partialtable"><em>PartialTable</em></a></li>
+<li><a class="reference internal" href="#sawtable"><em>SawTable</em></a></li>
+<li><a class="reference internal" href="#sinctable"><em>SincTable</em></a></li>
+<li><a class="reference internal" href="#sndtable"><em>SndTable</em></a></li>
+<li><a class="reference internal" href="#squaretable"><em>SquareTable</em></a></li>
+<li><a class="reference internal" href="#wintable"><em>WinTable</em></a></li>
+<li><a class="reference internal" href="#atantable"><em>AtanTable</em></a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="utils.html"
+                        title="previous chapter">Utilities</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="matrices.html"
+                        title="next chapter">Matrices</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="matrices.html" title="Matrices"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="utils.html" title="Utilities"
+             >previous</a> |</li>
+        <li><a href="../../index.html">Pyo 0.7.7 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >API Documentation</a> &raquo;</li>
+          <li><a href="index.html" >Classes by category</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Olivier Bélanger.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>
