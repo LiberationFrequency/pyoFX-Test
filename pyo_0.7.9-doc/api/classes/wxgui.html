@@ -1,0 +1,1215 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Additional WxPython widgets &mdash; Pyo 0.7.9 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.7.9',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../../_static/E-PyoIcon.ico"/>
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="top" title="Pyo 0.7.9 documentation" href="../../index.html" />
+    <link rel="up" title="Classes by category" href="index.html" />
+    <link rel="prev" title="Value Converters (SLMap)" href="map.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="map.html" title="Value Converters (SLMap)"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">Pyo 0.7.9 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >API Documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Classes by category</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-pyo">
+<span id="additional-wxpython-widgets"></span><h1>Additional WxPython widgets</h1>
+<p>The classes in this module are based on internal classes that where
+originally designed to help the creation of graphical tools for the
+control and the visualization of audio signals. WxPython must be installed
+under the current Python distribution to access these classes.</p>
+<div class="section" id="pyoguicontrolslider">
+<h2><em>PyoGuiControlSlider</em></h2>
+<dl class="class">
+<dt id="pyo.PyoGuiControlSlider">
+<em class="property">class </em><tt class="descname">PyoGuiControlSlider</tt><big>(</big><em>parent</em>, <em>minvalue</em>, <em>maxvalue</em>, <em>init=None</em>, <em>pos=(0</em>, <em>0)</em>, <em>size=(200</em>, <em>16)</em>, <em>log=False</em>, <em>integer=False</em>, <em>powoftwo=False</em>, <em>orient=4</em><big>)</big></dt>
+<dd><p>Floating-point control slider.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first">wx.Panel</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Events:</th><td class="field-body"><dl class="first docutils">
+<dt>EVT_PYO_GUI_CONTROL_SLIDER</dt>
+<dd><p class="first last">Sent after any change of the slider position. The current 
+value of the slider can be retrieve with the <cite>value</cite> 
+attribute of the generated event.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>parent <span class="classifier-delimiter">:</span> <span class="classifier">wx.Window</span></dt>
+<dd><p class="first last">The parent window.</p>
+</dd>
+<dt>minvalue <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">The minimum value of the slider.</p>
+</dd>
+<dt>maxvalue <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">The maximum value of the slider.</p>
+</dd>
+<dt>init <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">The initial value of the slider. If None, the slider
+inits to the minimum value. Defaults to None.</p>
+</dd>
+<dt>pos <span class="classifier-delimiter">:</span> <span class="classifier">tuple, optional</span></dt>
+<dd><p class="first last">The slider&#8217;s position in pixel (x, y). Defaults to (0, 0).</p>
+</dd>
+<dt>size <span class="classifier-delimiter">:</span> <span class="classifier">tuple, optional</span></dt>
+<dd><p class="first last">The slider&#8217;s size in pixel (x, y). Defaults to (200, 16).</p>
+</dd>
+<dt>log <span class="classifier-delimiter">:</span> <span class="classifier">boolean, optional</span></dt>
+<dd><p class="first last">If True, creates a logarithmic slider (minvalue must be
+greater than 0). Defaults to False.</p>
+</dd>
+<dt>integer <span class="classifier-delimiter">:</span> <span class="classifier">boolean, optional</span></dt>
+<dd><p class="first last">If True, creates an integer slider. Defaults to False.</p>
+</dd>
+<dt>powoftwo <span class="classifier-delimiter">:</span> <span class="classifier">boolean, optional</span></dt>
+<dd><p class="first last">If True, creates a power-of-two slider (log is automatically
+False and integer is True). If True, minvalue and maxvalue
+must be exponents to base 2 but init is a real power-of-two
+value. Defaults to False.</p>
+</dd>
+<dt>orient <span class="classifier-delimiter">:</span> <span class="classifier">{wx.HORIZONTAL or wx.VERTICAL}, optional</span></dt>
+<dd><p class="first last">The slider&#8217;s orientation. Defaults to wx.HORIZONTAL.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pyo.PyoGuiControlSlider.enable">
+<tt class="descname">enable</tt><big>(</big><big>)</big></dt>
+<dd><p>Enable the slider for user input.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoGuiControlSlider.disable">
+<tt class="descname">disable</tt><big>(</big><big>)</big></dt>
+<dd><p>Disable the slider for user input.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoGuiControlSlider.setValue">
+<tt class="descname">setValue</tt><big>(</big><em>x</em>, <em>propagate=True</em><big>)</big></dt>
+<dd><p>Sets a new value to the slider.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">int or float</span></dt>
+<dd><p class="first last">The controller number.</p>
+</dd>
+<dt>propagate <span class="classifier-delimiter">:</span> <span class="classifier">boolean, optional</span></dt>
+<dd><p class="first last">If True, an event will be sent after the call.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoGuiControlSlider.setMidiCtl">
+<tt class="descname">setMidiCtl</tt><big>(</big><em>x</em>, <em>propagate=True</em><big>)</big></dt>
+<dd><p>Sets the midi controller number to show on the slider.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">The controller number.</p>
+</dd>
+<dt>propagate <span class="classifier-delimiter">:</span> <span class="classifier">boolean, optional</span></dt>
+<dd><p class="first last">If True, an event will be sent after the call.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoGuiControlSlider.setRange">
+<tt class="descname">setRange</tt><big>(</big><em>minvalue</em>, <em>maxvalue</em><big>)</big></dt>
+<dd><p>Sets new minimum and maximum values.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>minvalue <span class="classifier-delimiter">:</span> <span class="classifier">int or float</span></dt>
+<dd><p class="first last">The new minimum value.</p>
+</dd>
+<dt>maxvalue <span class="classifier-delimiter">:</span> <span class="classifier">int or float</span></dt>
+<dd><p class="first last">The new maximum value.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoGuiControlSlider.getValue">
+<tt class="descname">getValue</tt><big>(</big><big>)</big></dt>
+<dd><p>Returns the current value of the slider.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoGuiControlSlider.getMidiCtl">
+<tt class="descname">getMidiCtl</tt><big>(</big><big>)</big></dt>
+<dd><p>Returns the midi controller number, if any, assigned to the slider.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoGuiControlSlider.getMinValue">
+<tt class="descname">getMinValue</tt><big>(</big><big>)</big></dt>
+<dd><p>Returns the current minimum value.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoGuiControlSlider.getMaxValue">
+<tt class="descname">getMaxValue</tt><big>(</big><big>)</big></dt>
+<dd><p>Returns the current maximum value.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoGuiControlSlider.getInit">
+<tt class="descname">getInit</tt><big>(</big><big>)</big></dt>
+<dd><p>Returns the initial value.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoGuiControlSlider.getRange">
+<tt class="descname">getRange</tt><big>(</big><big>)</big></dt>
+<dd><p>Returns minimum and maximum values as a list.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoGuiControlSlider.isInteger">
+<tt class="descname">isInteger</tt><big>(</big><big>)</big></dt>
+<dd><p>Returns True if the slider manage only integer, False otherwise.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoGuiControlSlider.isLog">
+<tt class="descname">isLog</tt><big>(</big><big>)</big></dt>
+<dd><p>Returns True if the slider is logarithmic, False otherwise.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoGuiControlSlider.isPowOfTwo">
+<tt class="descname">isPowOfTwo</tt><big>(</big><big>)</big></dt>
+<dd><p>Returns True if the slider manage only power-of-two values, False otherwise.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="pyoguivumeter">
+<h2><em>PyoGuiVuMeter</em></h2>
+<dl class="class">
+<dt id="pyo.PyoGuiVuMeter">
+<em class="property">class </em><tt class="descname">PyoGuiVuMeter</tt><big>(</big><em>parent</em>, <em>nchnls=2</em>, <em>pos=(0</em>, <em>0)</em>, <em>size=(200</em>, <em>11)</em>, <em>orient=4</em>, <em>style=0</em><big>)</big></dt>
+<dd><p>Multi-channels Vu Meter.</p>
+<p>When registered as the Server&#8217;s meter, its internal method <cite>setRms</cite>
+will be called each buffer size with a list of normalized amplitudes
+as argument. The <cite>setRms</cite> method can also be registered as the 
+function callback of a PeakAmp object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first">wx.Panel</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>parent <span class="classifier-delimiter">:</span> <span class="classifier">wx.Window</span></dt>
+<dd><p class="first last">The parent window.</p>
+</dd>
+<dt>nchnls <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">The initial number of channels of the meter. Defaults to 2.</p>
+</dd>
+<dt>pos <span class="classifier-delimiter">:</span> <span class="classifier">wx.Point, optional</span></dt>
+<dd><p class="first last">Window position in pixels. Defaults to (0, 0).</p>
+</dd>
+<dt>size <span class="classifier-delimiter">:</span> <span class="classifier">tuple, optional</span></dt>
+<dd><p class="first last">The meter&#8217;s size in pixels (x, y). Defaults to (200, 11).</p>
+</dd>
+<dt>orient <span class="classifier-delimiter">:</span> <span class="classifier">{wx.HORIZONTAL or wx.VERTICAL}, optional</span></dt>
+<dd><p class="first last">The meter&#8217;s orientation. Defaults to wx.HORIZONTAL.</p>
+</dd>
+<dt>style <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">Window style (see wx.Window documentation). Defaults to 0.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pyo.PyoGuiVuMeter.setNchnls">
+<tt class="descname">setNchnls</tt><big>(</big><em>nchnls</em><big>)</big></dt>
+<dd><p>Sets the number of channels of the meter.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>nchnls <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">The number of channels.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="pyoguigrapher">
+<h2><em>PyoGuiGrapher</em></h2>
+<dl class="class">
+<dt id="pyo.PyoGuiGrapher">
+<em class="property">class </em><tt class="descname">PyoGuiGrapher</tt><big>(</big><em>parent, xlen=8192, yrange=(0, 1), init=[(0.0, 0.0), (1.0, 1.0)], mode=0, exp=10, inverse=True, tension=0, bias=0, pos=(0, 0), size=(300, 200), style=0</em><big>)</big></dt>
+<dd><p>Multi-modes break-points function editor.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first">wx.Panel</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Events:</th><td class="field-body"><dl class="first docutils">
+<dt>EVT_PYO_GUI_GRAPHER</dt>
+<dd><p class="first last">Sent after any change of the grapher function. The current 
+list of points of the grapher can be retrieve with the <cite>value</cite> 
+attribute of the generated event.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>parent <span class="classifier-delimiter">:</span> <span class="classifier">wx.Window</span></dt>
+<dd><p class="first last">The parent window.</p>
+</dd>
+<dt>xlen <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">The length, in samples, of the grapher. Defaults to 8192.</p>
+</dd>
+<dt>yrange <span class="classifier-delimiter">:</span> <span class="classifier">two-values tuple, optional</span></dt>
+<dd><p class="first last">A tuple indicating the minimum and maximum values of the Y-axis.
+Defaults to (0, 1).</p>
+</dd>
+<dt>init <span class="classifier-delimiter">:</span> <span class="classifier">list of two-values tuples, optional</span></dt>
+<dd><p class="first last">The initial break-points function set as normalized values. 
+A point is defined with its X and Y positions as a tuple. 
+Defaults to [(0.0, 0.0), (1.0, 1.0)].</p>
+</dd>
+<dt>mode <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first">The grapher mode definning how line segments will be draw. 
+Possible modes are:</p>
+<blockquote class="last">
+<div><ol class="arabic simple" start="0">
+<li>linear (default)</li>
+<li>cosine</li>
+<li>exponential (uses <cite>exp</cite> and <cite>inverse</cite> arguments)</li>
+<li>curve       (uses <cite>tension</cite> and <cite>bias</cite> arguments)</li>
+<li>logarithmic</li>
+<li>logarithmic cosine</li>
+</ol>
+</div></blockquote>
+</dd>
+<dt>exp <span class="classifier-delimiter">:</span> <span class="classifier">int or float, optional</span></dt>
+<dd><p class="first last">The exponent factor for an exponential graph. Defaults to 10.0.</p>
+</dd>
+<dt>inverse <span class="classifier-delimiter">:</span> <span class="classifier">boolean, optional</span></dt>
+<dd><p class="first last">If True, downward slope will be inversed. Useful to create
+biexponential curves. Defaults to True.</p>
+</dd>
+<dt>tension <span class="classifier-delimiter">:</span> <span class="classifier">int or float, optional</span></dt>
+<dd><p class="first last">Curvature at the known points. 1 is high, 0 normal, -1 is low.
+Defaults to 0.</p>
+</dd>
+<dt>bias <span class="classifier-delimiter">:</span> <span class="classifier">int or float, optional</span></dt>
+<dd><p class="first last">Curve attraction (for each segments) toward bundary points.
+0 is even, positive is towards first point, negative is towards
+the second point. Defaults to 0.</p>
+</dd>
+<dt>pos <span class="classifier-delimiter">:</span> <span class="classifier">wx.Point, optional</span></dt>
+<dd><p class="first last">Window position in pixels. Defaults to (0, 0).</p>
+</dd>
+<dt>size <span class="classifier-delimiter">:</span> <span class="classifier">wx.Size, optional</span></dt>
+<dd><p class="first last">Window size in pixels. Defaults to (300, 200).</p>
+</dd>
+<dt>style <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">Window style (see wx.Window documentation). Defaults to 0.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pyo.PyoGuiGrapher.reset">
+<tt class="descname">reset</tt><big>(</big><big>)</big></dt>
+<dd><p>Resets the points to the initial state.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoGuiGrapher.getPoints">
+<tt class="descname">getPoints</tt><big>(</big><big>)</big></dt>
+<dd><p>Returns the current normalized points of the grapher.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoGuiGrapher.getValues">
+<tt class="descname">getValues</tt><big>(</big><big>)</big></dt>
+<dd><p>Returns the current points, according to Y-axis range, of the grapher.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoGuiGrapher.setPoints">
+<tt class="descname">setPoints</tt><big>(</big><em>pts</em><big>)</big></dt>
+<dd><p>Sets a new group of normalized points in the grapher.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>pts <span class="classifier-delimiter">:</span> <span class="classifier">list of two-values tuples</span></dt>
+<dd><p class="first last">New normalized (between 0 and 1) points.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoGuiGrapher.setValues">
+<tt class="descname">setValues</tt><big>(</big><em>vals</em><big>)</big></dt>
+<dd><p>Sets a new group of points, according to Y-axis range, in the grapher.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>vals <span class="classifier-delimiter">:</span> <span class="classifier">list of two-values tuples</span></dt>
+<dd><p class="first last">New real points.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoGuiGrapher.setYrange">
+<tt class="descname">setYrange</tt><big>(</big><em>yrange</em><big>)</big></dt>
+<dd><p>Sets a new Y-axis range to the grapher.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>yrange <span class="classifier-delimiter">:</span> <span class="classifier">two-values tuple</span></dt>
+<dd><p class="first last">New Y-axis range.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoGuiGrapher.setInitPoints">
+<tt class="descname">setInitPoints</tt><big>(</big><em>pts</em><big>)</big></dt>
+<dd><p>Sets a new initial normalized points list to the grapher.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>pts <span class="classifier-delimiter">:</span> <span class="classifier">list of two-values tuples</span></dt>
+<dd><p class="first last">New normalized (between 0 and 1) initial points.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoGuiGrapher.setMode">
+<tt class="descname">setMode</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Changes the grapher&#8217;s mode.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><dl class="first last docutils">
+<dt>New mode. Possible modes are:</dt>
+<dd><ol class="first last arabic simple" start="0">
+<li>linear (default)</li>
+<li>cosine</li>
+<li>exponential (uses <cite>exp</cite> and <cite>inverse</cite> arguments)</li>
+<li>curve       (uses <cite>tension</cite> and <cite>bias</cite> arguments)</li>
+<li>logarithmic</li>
+<li>logarithmic cosine</li>
+</ol>
+</dd>
+</dl>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoGuiGrapher.setExp">
+<tt class="descname">setExp</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Changes the grapher&#8217;s exponent factor for exponential graph.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">New exponent factor.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoGuiGrapher.setInverse">
+<tt class="descname">setInverse</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Changes the grapher&#8217;s inverse boolean for exponential graph.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
+<dd><p class="first last">New inverse factor.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoGuiGrapher.setTension">
+<tt class="descname">setTension</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Changes the grapher&#8217;s tension factor for curved graph.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">New tension factor.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoGuiGrapher.setBias">
+<tt class="descname">setBias</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Changes the grapher&#8217;s bias factor for curved graph.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">New bias factor.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="pyoguimultislider">
+<h2><em>PyoGuiMultiSlider</em></h2>
+<dl class="class">
+<dt id="pyo.PyoGuiMultiSlider">
+<em class="property">class </em><tt class="descname">PyoGuiMultiSlider</tt><big>(</big><em>parent</em>, <em>xlen=16</em>, <em>yrange=(0</em>, <em>1)</em>, <em>init=None</em>, <em>pos=(0</em>, <em>0)</em>, <em>size=(300</em>, <em>200)</em>, <em>style=0</em><big>)</big></dt>
+<dd><p>Data multi-sliders editor.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first">wx.Panel</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Events:</th><td class="field-body"><dl class="first docutils">
+<dt>EVT_PYO_GUI_MULTI_SLIDER</dt>
+<dd><p class="first last">Sent after any change of the multi-sliders values. The current 
+list of values of the multi-sliders can be retrieve with the 
+<cite>value</cite> attribute of the generated event.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>parent <span class="classifier-delimiter">:</span> <span class="classifier">wx.Window</span></dt>
+<dd><p class="first last">The parent window.</p>
+</dd>
+<dt>xlen <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">The number of sliders in the multi-sliders. Defaults to 16.</p>
+</dd>
+<dt>yrange <span class="classifier-delimiter">:</span> <span class="classifier">two-values tuple</span></dt>
+<dd><p class="first last">A tuple indicating the minimum and maximum values of the Y-axis.
+Defaults to (0, 1).</p>
+</dd>
+<dt>init <span class="classifier-delimiter">:</span> <span class="classifier">list values, optional</span></dt>
+<dd><p class="first last">The initial list of values of the multi-sliders. 
+Defaults to None, meaning all sliders initialized to the 
+minimum value.</p>
+</dd>
+<dt>pos <span class="classifier-delimiter">:</span> <span class="classifier">wx.Point, optional</span></dt>
+<dd><p class="first last">Window position in pixels. Defaults to (0, 0).</p>
+</dd>
+<dt>size <span class="classifier-delimiter">:</span> <span class="classifier">wx.Size, optional</span></dt>
+<dd><p class="first last">Window size in pixels. Defaults to (300, 200).</p>
+</dd>
+<dt>style <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">Window style (see wx.Window documentation). Defaults to 0.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pyo.PyoGuiMultiSlider.reset">
+<tt class="descname">reset</tt><big>(</big><big>)</big></dt>
+<dd><p>Resets the sliders to their initial state.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoGuiMultiSlider.getValues">
+<tt class="descname">getValues</tt><big>(</big><big>)</big></dt>
+<dd><p>Returns the current values of the sliders.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoGuiMultiSlider.setValues">
+<tt class="descname">setValues</tt><big>(</big><em>vals</em><big>)</big></dt>
+<dd><p>Sets new values to the sliders.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>vals <span class="classifier-delimiter">:</span> <span class="classifier">list of values</span></dt>
+<dd><p class="first last">New values.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoGuiMultiSlider.setYrange">
+<tt class="descname">setYrange</tt><big>(</big><em>yrange</em><big>)</big></dt>
+<dd><p>Sets a new Y-axis range to the multi-sliders.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>yrange <span class="classifier-delimiter">:</span> <span class="classifier">two-values tuple</span></dt>
+<dd><p class="first last">New Y-axis range.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="pyoguispectrum">
+<h2><em>PyoGuiSpectrum</em></h2>
+<dl class="class">
+<dt id="pyo.PyoGuiSpectrum">
+<em class="property">class </em><tt class="descname">PyoGuiSpectrum</tt><big>(</big><em>parent</em>, <em>lowfreq=0</em>, <em>highfreq=22050</em>, <em>fscaling=0</em>, <em>mscaling=0</em>, <em>pos=(0</em>, <em>0)</em>, <em>size=(300</em>, <em>200)</em>, <em>style=0</em><big>)</big></dt>
+<dd><p>Frequency spectrum display.</p>
+<p>This widget should be used with the Spectrum object, which measures 
+the magnitude of an input signal versus frequency within a user 
+defined range. It can show both magnitude and frequency on linear 
+or logarithmic scale.</p>
+<p>To create the bridge between the analyzer and the display, the
+Spectrum object must be registered in the PyoGuiSpectrum object
+with the setAnalyzer(obj) method. The Spectrum object will 
+automatically call the update(points) method to refresh the display.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first">wx.Panel</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>parent <span class="classifier-delimiter">:</span> <span class="classifier">wx.Window</span></dt>
+<dd><p class="first last">The parent window.</p>
+</dd>
+<dt>lowfreq <span class="classifier-delimiter">:</span> <span class="classifier">int or float, optional</span></dt>
+<dd><p class="first last">The lowest frequency, in Hz, to display on the X-axis.
+Defaults to 0.</p>
+</dd>
+<dt>highfreq <span class="classifier-delimiter">:</span> <span class="classifier">int or float, optional</span></dt>
+<dd><p class="first last">The highest frequency, in Hz, to display on the X-axis.
+Defaults to 22050.</p>
+</dd>
+<dt>fscaling <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">The frequency scaling on the X-axis. 0 means linear, 1 means 
+logarithmic. Defaults to 0.</p>
+</dd>
+<dt>mscaling <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">The magnitude scaling on the Y-axis. 0 means linear, 1 means 
+logarithmic. Defaults to 0.</p>
+</dd>
+<dt>pos <span class="classifier-delimiter">:</span> <span class="classifier">wx.Point, optional</span></dt>
+<dd><p class="first last">Window position in pixels. Defaults to (0, 0).</p>
+</dd>
+<dt>size <span class="classifier-delimiter">:</span> <span class="classifier">wx.Size, optional</span></dt>
+<dd><p class="first last">Window size in pixels. Defaults to (300, 200).</p>
+</dd>
+<dt>style <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">Window style (see wx.Window documentation). Defaults to 0.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pyo.PyoGuiSpectrum.update">
+<tt class="descname">update</tt><big>(</big><em>points</em><big>)</big></dt>
+<dd><p>Display updating method.</p>
+<p>This method is automatically called by the audio analyzer
+object (Spectrum) with points to draw as arguments. The points
+are already formatted for the current drawing surface to save
+CPU cycles.</p>
+<p>The method setAnalyzer(obj) must be used to register the audio
+analyzer object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>points <span class="classifier-delimiter">:</span> <span class="classifier">list of list of tuples</span></dt>
+<dd><p class="first last">A list containing n-channels list of tuples. A tuple
+is a point (X-Y coordinates) to draw.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoGuiSpectrum.setAnalyzer">
+<tt class="descname">setAnalyzer</tt><big>(</big><em>object</em><big>)</big></dt>
+<dd><p>Register an audio analyzer object (Spectrum).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>object <span class="classifier-delimiter">:</span> <span class="classifier">Spectrum object</span></dt>
+<dd><p class="first last">The audio object performing the frequency analysis.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoGuiSpectrum.setLowFreq">
+<tt class="descname">setLowFreq</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Changes the lowest frequency of the display.</p>
+<p>This method propagates the value to the audio analyzer.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">int or float</span></dt>
+<dd><p class="first last">New lowest frequency.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoGuiSpectrum.setHighFreq">
+<tt class="descname">setHighFreq</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Changes the highest frequency of the display.</p>
+<p>This method propagates the value to the audio analyzer.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">int or float</span></dt>
+<dd><p class="first last">New highest frequency.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoGuiSpectrum.setFscaling">
+<tt class="descname">setFscaling</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Changes the frequency scaling (X-axis) of the display.</p>
+<p>This method propagates the value to the audio analyzer.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">0 means linear scaling, 1 means logarithmic scaling.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoGuiSpectrum.setMscaling">
+<tt class="descname">setMscaling</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Changes the magnitude scaling (Y-axis) of the display.</p>
+<p>This method propagates the value to the audio analyzer.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">0 means linear scaling, 1 means logarithmic scaling.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="pyoguiscope">
+<h2><em>PyoGuiScope</em></h2>
+<dl class="class">
+<dt id="pyo.PyoGuiScope">
+<em class="property">class </em><tt class="descname">PyoGuiScope</tt><big>(</big><em>parent</em>, <em>length=0.05</em>, <em>gain=0.67</em>, <em>pos=(0</em>, <em>0)</em>, <em>size=(300</em>, <em>200)</em>, <em>style=0</em><big>)</big></dt>
+<dd><p>Oscilloscope display.</p>
+<p>This widget should be used with the Scope object, which computes
+the waveform of an input signal to display on a GUI.</p>
+<p>To create the bridge between the analyzer and the display, the
+Scope object must be registered in the PyoGuiScope object with 
+the setAnalyzer(obj) method. The Scope object will automatically 
+call the update(points) method to refresh the display.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first">wx.Panel</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>parent <span class="classifier-delimiter">:</span> <span class="classifier">wx.Window</span></dt>
+<dd><p class="first last">The parent window.</p>
+</dd>
+<dt>length <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Length, in seconds, of the waveform segment displayed on
+the window. Defaults to 0.05.</p>
+</dd>
+<dt>gain <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Linear gain applied to the signal to be displayed.
+Defaults to 0.67.</p>
+</dd>
+<dt>pos <span class="classifier-delimiter">:</span> <span class="classifier">wx.Point, optional</span></dt>
+<dd><p class="first last">Window position in pixels. Defaults to (0, 0).</p>
+</dd>
+<dt>size <span class="classifier-delimiter">:</span> <span class="classifier">wx.Size, optional</span></dt>
+<dd><p class="first last">Window size in pixels. Defaults to (300, 200).</p>
+</dd>
+<dt>style <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">Window style (see wx.Window documentation). Defaults to 0.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pyo.PyoGuiScope.update">
+<tt class="descname">update</tt><big>(</big><em>points</em><big>)</big></dt>
+<dd><p>Display updating method.</p>
+<p>This method is automatically called by the audio analyzer
+object (Scope) with points to draw as arguments. The points
+are already formatted for the current drawing surface to save
+CPU cycles.</p>
+<p>The method setAnalyzer(obj) must be used to register the audio
+analyzer object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>points <span class="classifier-delimiter">:</span> <span class="classifier">list of list of tuples</span></dt>
+<dd><p class="first last">A list containing n-channels list of tuples. A tuple
+is a point (X-Y coordinates) to draw.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoGuiScope.setAnalyzer">
+<tt class="descname">setAnalyzer</tt><big>(</big><em>object</em><big>)</big></dt>
+<dd><p>Register an audio analyzer object (Scope).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>object <span class="classifier-delimiter">:</span> <span class="classifier">Scope object</span></dt>
+<dd><p class="first last">The audio object performing the waveform analysis.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoGuiScope.setLength">
+<tt class="descname">setLength</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Changes the length, in seconds, of the displayed audio segment.</p>
+<p>This method propagates the value to the audio analyzer.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">New segment length in seconds.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoGuiScope.setGain">
+<tt class="descname">setGain</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Changes the gain applied to the input signal.</p>
+<p>This method propagates the value to the audio analyzer.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">New linear gain.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="pyoguisndview">
+<h2><em>PyoGuiSndView</em></h2>
+<dl class="class">
+<dt id="pyo.PyoGuiSndView">
+<em class="property">class </em><tt class="descname">PyoGuiSndView</tt><big>(</big><em>parent</em>, <em>pos=(0</em>, <em>0)</em>, <em>size=(300</em>, <em>200)</em>, <em>style=0</em><big>)</big></dt>
+<dd><p>Soundfile display.</p>
+<p>This widget should be used with the SndTable object, which keeps
+soundfile in memory and computes the waveform to display on the GUI.</p>
+<p>To create the bridge between the audio memory and the display, the
+SndTable object must be registered in the PyoGuiSndView object with 
+the setTable(object) method.</p>
+<p>The SndTable object will automatically call the update() method to 
+refresh the display when the table is modified.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first">wx.Panel</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Events:</th><td class="field-body"><dl class="first docutils">
+<dt>EVT_PYO_GUI_SNDVIEW_MOUSE_POSITION</dt>
+<dd><p class="first last">Sent when the mouse is moving on the panel with the left
+button pressed. The <cite>value</cite> attribute of the event will
+hold the normalized position of the mouse into the sound.
+For X-axis value, 0.0 is the beginning of the sound and 1.0
+is the end of the sound. For the Y-axis, 0.0 is the bottom 
+of the panel and 1.0 is the top.</p>
+</dd>
+<dt>EVT_PYO_GUI_SNDVIEW_SELECTION</dt>
+<dd><p class="first last">Sent when a new region is selected on the panel. A new 
+selection is created with a Right-click and drag on the panel. 
+The current selection can be moved with Shift+Right-click and 
+drag. Ctrl+Right-click (Cmd on OSX) remove the selected region.
+The <cite>value</cite> attribute of the event will hold the normalized 
+selection as a tuple (min, max). 0.0 means the beginning of 
+the sound and 1.0 means the end of the sound.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>parent <span class="classifier-delimiter">:</span> <span class="classifier">wx.Window</span></dt>
+<dd><p class="first last">The parent window.</p>
+</dd>
+<dt>pos <span class="classifier-delimiter">:</span> <span class="classifier">wx.Point, optional</span></dt>
+<dd><p class="first last">Window position in pixels. Defaults to (0, 0).</p>
+</dd>
+<dt>size <span class="classifier-delimiter">:</span> <span class="classifier">wx.Size, optional</span></dt>
+<dd><p class="first last">Window size in pixels. Defaults to (300, 200).</p>
+</dd>
+<dt>style <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">Window style (see wx.Window documentation). Defaults to 0.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pyo.PyoGuiSndView.update">
+<tt class="descname">update</tt><big>(</big><big>)</big></dt>
+<dd><p>Display updating method.</p>
+<p>This method is automatically called by the audio memory
+object (SndTable) when the table is modified.</p>
+<p>The method setTable(obj) must be used to register the audio
+memory object.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoGuiSndView.setTable">
+<tt class="descname">setTable</tt><big>(</big><em>object</em><big>)</big></dt>
+<dd><p>Register an audio memory object (SndTable).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>object <span class="classifier-delimiter">:</span> <span class="classifier">SndTable object</span></dt>
+<dd><p class="first last">The audio table keeping the sound in memory.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoGuiSndView.setSelection">
+<tt class="descname">setSelection</tt><big>(</big><em>start</em>, <em>stop</em><big>)</big></dt>
+<dd><p>Changes the selected region.</p>
+<p>This method will trigger a EVT_PYO_GUI_SNDVIEW_SELECTION event
+with a tuple (start, stop) as value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>start <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">The starting point of the selected region. This value
+must be normalized between 0 and 1 (0 is the beginning
+of the sound, 1 is the end).</p>
+</dd>
+<dt>stop <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">The ending point of the selected region. This value
+must be normalized between 0 and 1 (0 is the beginning
+of the sound, 1 is the end).</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoGuiSndView.resetSelection">
+<tt class="descname">resetSelection</tt><big>(</big><big>)</big></dt>
+<dd><p>Removes the selected region.</p>
+<p>This method will trigger a EVT_PYO_GUI_SNDVIEW_SELECTION event
+with a tuple (0.0, 1.0) as value.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Additional WxPython widgets</a><ul>
+<li><a class="reference internal" href="#pyoguicontrolslider"><em>PyoGuiControlSlider</em></a></li>
+<li><a class="reference internal" href="#pyoguivumeter"><em>PyoGuiVuMeter</em></a></li>
+<li><a class="reference internal" href="#pyoguigrapher"><em>PyoGuiGrapher</em></a></li>
+<li><a class="reference internal" href="#pyoguimultislider"><em>PyoGuiMultiSlider</em></a></li>
+<li><a class="reference internal" href="#pyoguispectrum"><em>PyoGuiSpectrum</em></a></li>
+<li><a class="reference internal" href="#pyoguiscope"><em>PyoGuiScope</em></a></li>
+<li><a class="reference internal" href="#pyoguisndview"><em>PyoGuiSndView</em></a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="map.html"
+                        title="previous chapter">Value Converters (SLMap)</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="map.html" title="Value Converters (SLMap)"
+             >previous</a> |</li>
+        <li><a href="../../index.html">Pyo 0.7.9 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >API Documentation</a> &raquo;</li>
+          <li><a href="index.html" >Classes by category</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Olivier Bélanger.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

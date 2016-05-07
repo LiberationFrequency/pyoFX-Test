@@ -1,0 +1,2500 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Phase Vocoder &mdash; Pyo 0.7.9 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.7.9',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../../_static/E-PyoIcon.ico"/>
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="top" title="Pyo 0.7.9 documentation" href="../../index.html" />
+    <link rel="up" title="Classes by category" href="index.html" />
+    <link rel="next" title="Signal Generators" href="generators.html" />
+    <link rel="prev" title="Fast Fourier Transform" href="fourier.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="generators.html" title="Signal Generators"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="fourier.html" title="Fast Fourier Transform"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">Pyo 0.7.9 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >API Documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Classes by category</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-pyo">
+<span id="phase-vocoder"></span><h1>Phase Vocoder</h1>
+<p>The phase vocoder is a digital signal processing technique of potentially
+great musical significance. It can be used to perform very high fidelity
+time scaling, pitch transposition, and myriad other modifications of sounds.</p>
+<div class="section" id="pvanal">
+<h2><em>PVAnal</em></h2>
+<dl class="class">
+<dt id="pyo.PVAnal">
+<em class="property">class </em><tt class="descname">PVAnal</tt><big>(</big><em>input</em>, <em>size=1024</em>, <em>overlaps=4</em>, <em>wintype=2</em><big>)</big></dt>
+<dd><p>Phase Vocoder analysis object.</p>
+<p>PVAnal takes an input sound and performs the phase vocoder
+analysis on it. This results in two streams, one for the bin&#8217;s
+magnitudes and the other for the bin&#8217;s true frequencies. These
+two streams are used by the PVxxx object family to transform
+the input signal using spectral domain algorithms. The last
+object in the phase vocoder chain must be a PVSynth to perform
+the spectral to time domain conversion.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoPVObject" title="pyo.PyoPVObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoPVObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>input <span class="classifier-delimiter">:</span> <span class="classifier">PyoObject</span></dt>
+<dd><p class="first last">Input signal to process.</p>
+</dd>
+<dt>size <span class="classifier-delimiter">:</span> <span class="classifier">int {pow-of-two &gt; 4}, optional</span></dt>
+<dd><p class="first">FFT size. Must be a power of two greater than 4.
+Defaults to 1024.</p>
+<p class="last">The FFT size is the number of samples used in each
+analysis frame.</p>
+</dd>
+<dt>overlaps <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first">The number of overlaped analysis block. Must be a
+power of two. Defaults to 4.</p>
+<p class="last">More overlaps can greatly improved sound quality
+synthesis but it is also more CPU expensive.</p>
+</dd>
+<dt>wintype <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first">Shape of the envelope used to filter each input frame.
+Possible shapes are:</p>
+<blockquote class="last">
+<div><ol class="arabic simple" start="0">
+<li>rectangular (no windowing)</li>
+<li>Hamming</li>
+<li>Hanning (default)</li>
+<li>Bartlett (triangular)</li>
+<li>Blackman 3-term</li>
+<li>Blackman-Harris 4-term</li>
+<li>Blackman-Harris 7-term</li>
+<li>Tuckey (alpha = 0.66)</li>
+<li>Sine (half-sine window)</li>
+</ol>
+</div></blockquote>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">SfPlayer</span><span class="p">(</span><span class="n">SNDS_PATH</span><span class="o">+</span><span class="s">&quot;/transparent.aif&quot;</span><span class="p">,</span> <span class="n">loop</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">mul</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pva</span> <span class="o">=</span> <span class="n">PVAnal</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span> <span class="n">overlaps</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">wintype</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pvs</span> <span class="o">=</span> <span class="n">PVSynth</span><span class="p">(</span><span class="n">pva</span><span class="p">)</span><span class="o">.</span><span class="n">mix</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.PVAnal.setInput">
+<tt class="descname">setInput</tt><big>(</big><em>x</em>, <em>fadetime=0.05</em><big>)</big></dt>
+<dd><p>Replace the <cite>input</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoObject</span></dt>
+<dd><p class="first last">New signal to process.</p>
+</dd>
+<dt>fadetime <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Crossfade time between old and new input. Default to 0.05.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PVAnal.setSize">
+<tt class="descname">setSize</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>size</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">new <cite>size</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PVAnal.setOverlaps">
+<tt class="descname">setOverlaps</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>overlaps</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">new <cite>overlaps</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PVAnal.setWinType">
+<tt class="descname">setWinType</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>wintype</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">new <cite>wintype</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.PVAnal.input">
+<tt class="descname">input</tt></dt>
+<dd><p>PyoObject. Input signal to process.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.PVAnal.size">
+<tt class="descname">size</tt></dt>
+<dd><p>int. FFT size.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.PVAnal.overlaps">
+<tt class="descname">overlaps</tt></dt>
+<dd><p>int. FFT overlap factor.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.PVAnal.wintype">
+<tt class="descname">wintype</tt></dt>
+<dd><p>int. Windowing method.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="pvsynth">
+<h2><em>PVSynth</em></h2>
+<dl class="class">
+<dt id="pyo.PVSynth">
+<em class="property">class </em><tt class="descname">PVSynth</tt><big>(</big><em>input</em>, <em>wintype=2</em>, <em>mul=1</em>, <em>add=0</em><big>)</big></dt>
+<dd><p>Phase Vocoder synthesis object.</p>
+<p>PVSynth takes a PyoPVObject as its input and performed
+the spectral to time domain conversion on it. This step
+converts phase vocoder magnitude and true frequency&#8217;s
+streams back to a real signal.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoObject" title="pyo.PyoObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>input <span class="classifier-delimiter">:</span> <span class="classifier">PyoPVObject</span></dt>
+<dd><p class="first last">Phase vocoder streaming object to process.</p>
+</dd>
+<dt>wintype <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first">Shape of the envelope used to filter each input frame.
+Possible shapes are:</p>
+<blockquote class="last">
+<div><ol class="arabic simple" start="0">
+<li>rectangular (no windowing)</li>
+<li>Hamming</li>
+<li>Hanning (default)</li>
+<li>Bartlett (triangular)</li>
+<li>Blackman 3-term</li>
+<li>Blackman-Harris 4-term</li>
+<li>Blackman-Harris 7-term</li>
+<li>Tuckey (alpha = 0.66)</li>
+<li>Sine (half-sine window)</li>
+</ol>
+</div></blockquote>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">SfPlayer</span><span class="p">(</span><span class="n">SNDS_PATH</span><span class="o">+</span><span class="s">&quot;/transparent.aif&quot;</span><span class="p">,</span> <span class="n">loop</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">mul</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pva</span> <span class="o">=</span> <span class="n">PVAnal</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span> <span class="n">overlaps</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">wintype</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pvs</span> <span class="o">=</span> <span class="n">PVSynth</span><span class="p">(</span><span class="n">pva</span><span class="p">)</span><span class="o">.</span><span class="n">mix</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.PVSynth.setInput">
+<tt class="descname">setInput</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>input</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoPVObject</span></dt>
+<dd><p class="first last">New signal to process.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PVSynth.setWinType">
+<tt class="descname">setWinType</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>wintype</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">new <cite>wintype</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.PVSynth.input">
+<tt class="descname">input</tt></dt>
+<dd><p>PyoPVObject. Input signal to process.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.PVSynth.wintype">
+<tt class="descname">wintype</tt></dt>
+<dd><p>int. Windowing method.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="pvaddsynth">
+<h2><em>PVAddSynth</em></h2>
+<dl class="class">
+<dt id="pyo.PVAddSynth">
+<em class="property">class </em><tt class="descname">PVAddSynth</tt><big>(</big><em>input</em>, <em>pitch=1</em>, <em>num=100</em>, <em>first=0</em>, <em>inc=1</em>, <em>mul=1</em>, <em>add=0</em><big>)</big></dt>
+<dd><p>Phase Vocoder additive synthesis object.</p>
+<p>PVAddSynth takes a PyoPVObject as its input and resynthesize
+the real signal using the magnitude and true frequency&#8217;s
+streams to control amplitude and frequency envelopes of an
+oscillator bank.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoObject" title="pyo.PyoObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>input <span class="classifier-delimiter">:</span> <span class="classifier">PyoPVObject</span></dt>
+<dd><p class="first last">Phase vocoder streaming object to process.</p>
+</dd>
+<dt>pitch <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject, optional</span></dt>
+<dd><p class="first last">Transposition factor. Defaults to 1.</p>
+</dd>
+<dt>num <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">Number of oscillators used to synthesize the
+output sound. Defaults to 100.</p>
+</dd>
+<dt>first <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">The first bin to synthesize, starting from 0.
+Defaults to 0.</p>
+</dd>
+<dt>inc <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">Starting from bin <cite>first</cite>, resynthesize bins
+<cite>inc</cite> apart. Defaults to 1.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">SfPlayer</span><span class="p">(</span><span class="n">SNDS_PATH</span><span class="o">+</span><span class="s">&quot;/transparent.aif&quot;</span><span class="p">,</span> <span class="n">loop</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">mul</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pva</span> <span class="o">=</span> <span class="n">PVAnal</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span> <span class="n">overlaps</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">wintype</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pvs</span> <span class="o">=</span> <span class="n">PVAddSynth</span><span class="p">(</span><span class="n">pva</span><span class="p">,</span> <span class="n">pitch</span><span class="o">=</span><span class="mf">1.25</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">first</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">inc</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.PVAddSynth.setInput">
+<tt class="descname">setInput</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>input</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoPVObject</span></dt>
+<dd><p class="first last">New signal to process.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PVAddSynth.setPitch">
+<tt class="descname">setPitch</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>pitch</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">new <cite>pitch</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PVAddSynth.setNum">
+<tt class="descname">setNum</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>num</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">new <cite>num</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PVAddSynth.setFirst">
+<tt class="descname">setFirst</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>first</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">new <cite>first</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PVAddSynth.setInc">
+<tt class="descname">setInc</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>inc</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">new <cite>inc</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.PVAddSynth.input">
+<tt class="descname">input</tt></dt>
+<dd><p>PyoPVObject. Input signal to process.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.PVAddSynth.pitch">
+<tt class="descname">pitch</tt></dt>
+<dd><p>float or PyoObject. Transposition factor.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.PVAddSynth.num">
+<tt class="descname">num</tt></dt>
+<dd><p>int. Number of oscillators.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.PVAddSynth.first">
+<tt class="descname">first</tt></dt>
+<dd><p>int. First bin to synthesize.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.PVAddSynth.inc">
+<tt class="descname">inc</tt></dt>
+<dd><p>int. Synthesized bin increment.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="pvtranspose">
+<h2><em>PVTranspose</em></h2>
+<dl class="class">
+<dt id="pyo.PVTranspose">
+<em class="property">class </em><tt class="descname">PVTranspose</tt><big>(</big><em>input</em>, <em>transpo=1</em><big>)</big></dt>
+<dd><p>Transpose the frequency components of a pv stream.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoPVObject" title="pyo.PyoPVObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoPVObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>input <span class="classifier-delimiter">:</span> <span class="classifier">PyoPVObject</span></dt>
+<dd><p class="first last">Phase vocoder streaming object to process.</p>
+</dd>
+<dt>transpo <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject, optional</span></dt>
+<dd><p class="first last">Transposition factor. Defaults to 1.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sf</span> <span class="o">=</span> <span class="n">SfPlayer</span><span class="p">(</span><span class="n">SNDS_PATH</span><span class="o">+</span><span class="s">&quot;/transparent.aif&quot;</span><span class="p">,</span> <span class="n">loop</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">7</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pva</span> <span class="o">=</span> <span class="n">PVAnal</span><span class="p">(</span><span class="n">sf</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1024</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pvt</span> <span class="o">=</span> <span class="n">PVTranspose</span><span class="p">(</span><span class="n">pva</span><span class="p">,</span> <span class="n">transpo</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pvs</span> <span class="o">=</span> <span class="n">PVSynth</span><span class="p">(</span><span class="n">pvt</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dry</span> <span class="o">=</span> <span class="n">Delay</span><span class="p">(</span><span class="n">sf</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="mf">1024.</span><span class="o">/</span><span class="n">s</span><span class="o">.</span><span class="n">getSamplingRate</span><span class="p">(),</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">7</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.PVTranspose.setInput">
+<tt class="descname">setInput</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>input</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoPVObject</span></dt>
+<dd><p class="first last">New signal to process.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PVTranspose.setTranspo">
+<tt class="descname">setTranspo</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>transpo</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">new <cite>transpo</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.PVTranspose.input">
+<tt class="descname">input</tt></dt>
+<dd><p>PyoPVObject. Input signal to process.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.PVTranspose.transpo">
+<tt class="descname">transpo</tt></dt>
+<dd><p>float or PyoObject. Transposition factor.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="pvverb">
+<h2><em>PVVerb</em></h2>
+<dl class="class">
+<dt id="pyo.PVVerb">
+<em class="property">class </em><tt class="descname">PVVerb</tt><big>(</big><em>input</em>, <em>revtime=0.75</em>, <em>damp=0.75</em><big>)</big></dt>
+<dd><p>Spectral domain reverberation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoPVObject" title="pyo.PyoPVObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoPVObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>input <span class="classifier-delimiter">:</span> <span class="classifier">PyoPVObject</span></dt>
+<dd><p class="first last">Phase vocoder streaming object to process.</p>
+</dd>
+<dt>revtime <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject, optional</span></dt>
+<dd><p class="first last">Reverberation factor, between 0 and 1.
+Defaults to 0.75.</p>
+</dd>
+<dt>damp <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject, optional</span></dt>
+<dd><p class="first last">High frequency damping factor, between 0 and 1.
+1 means no damping and 0 is the most damping.
+Defaults to 0.75.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sf</span> <span class="o">=</span> <span class="n">SfPlayer</span><span class="p">(</span><span class="n">SNDS_PATH</span><span class="o">+</span><span class="s">&quot;/transparent.aif&quot;</span><span class="p">,</span> <span class="n">loop</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pva</span> <span class="o">=</span> <span class="n">PVAnal</span><span class="p">(</span><span class="n">sf</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">2048</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pvg</span> <span class="o">=</span> <span class="n">PVGate</span><span class="p">(</span><span class="n">pva</span><span class="p">,</span> <span class="n">thresh</span><span class="o">=-</span><span class="mi">36</span><span class="p">,</span> <span class="n">damp</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pvv</span> <span class="o">=</span> <span class="n">PVVerb</span><span class="p">(</span><span class="n">pvg</span><span class="p">,</span> <span class="n">revtime</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span> <span class="n">damp</span><span class="o">=</span><span class="mf">0.95</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pvs</span> <span class="o">=</span> <span class="n">PVSynth</span><span class="p">(</span><span class="n">pvv</span><span class="p">)</span><span class="o">.</span><span class="n">mix</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dry</span> <span class="o">=</span> <span class="n">Delay</span><span class="p">(</span><span class="n">sf</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="mf">2048.</span><span class="o">/</span><span class="n">s</span><span class="o">.</span><span class="n">getSamplingRate</span><span class="p">(),</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">mix</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.PVVerb.setInput">
+<tt class="descname">setInput</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>input</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoPVObject</span></dt>
+<dd><p class="first last">New signal to process.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PVVerb.setRevtime">
+<tt class="descname">setRevtime</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>revtime</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">new <cite>revtime</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PVVerb.setDamp">
+<tt class="descname">setDamp</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>damp</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">new <cite>damp</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.PVVerb.input">
+<tt class="descname">input</tt></dt>
+<dd><p>PyoPVObject. Input signal to process.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.PVVerb.revtime">
+<tt class="descname">revtime</tt></dt>
+<dd><p>float or PyoObject. Reverberation factor.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.PVVerb.damp">
+<tt class="descname">damp</tt></dt>
+<dd><p>float or PyoObject. High frequency damping factor.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="pvgate">
+<h2><em>PVGate</em></h2>
+<dl class="class">
+<dt id="pyo.PVGate">
+<em class="property">class </em><tt class="descname">PVGate</tt><big>(</big><em>input</em>, <em>thresh=-20</em>, <em>damp=0.0</em><big>)</big></dt>
+<dd><p>Spectral gate.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoObject" title="pyo.PyoObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>input <span class="classifier-delimiter">:</span> <span class="classifier">PyoPVObject</span></dt>
+<dd><p class="first last">Phase vocoder streaming object to process.</p>
+</dd>
+<dt>thresh <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject, optional</span></dt>
+<dd><p class="first last">Threshold factor in dB. Bins below that threshold
+will be scaled by <cite>damp</cite> factor. Defaults to -20.</p>
+</dd>
+<dt>damp <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject, optional</span></dt>
+<dd><p class="first last">Damping factor for low amplitude bins. Defaults to 0.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sf</span> <span class="o">=</span> <span class="n">SfPlayer</span><span class="p">(</span><span class="n">SNDS_PATH</span><span class="o">+</span><span class="s">&quot;/transparent.aif&quot;</span><span class="p">,</span> <span class="n">loop</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pva</span> <span class="o">=</span> <span class="n">PVAnal</span><span class="p">(</span><span class="n">sf</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">2048</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pvg</span> <span class="o">=</span> <span class="n">PVGate</span><span class="p">(</span><span class="n">pva</span><span class="p">,</span> <span class="n">thresh</span><span class="o">=-</span><span class="mi">50</span><span class="p">,</span> <span class="n">damp</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pvs</span> <span class="o">=</span> <span class="n">PVSynth</span><span class="p">(</span><span class="n">pvg</span><span class="p">)</span><span class="o">.</span><span class="n">mix</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.PVGate.setInput">
+<tt class="descname">setInput</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>input</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoPVObject</span></dt>
+<dd><p class="first last">New signal to process.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PVGate.setThresh">
+<tt class="descname">setThresh</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>thresh</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">new <cite>thresh</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PVGate.setDamp">
+<tt class="descname">setDamp</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>damp</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">new <cite>damp</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.PVGate.input">
+<tt class="descname">input</tt></dt>
+<dd><p>PyoPVObject. Input signal to process.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.PVGate.thresh">
+<tt class="descname">thresh</tt></dt>
+<dd><p>float or PyoObject. Threshold factor.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.PVGate.damp">
+<tt class="descname">damp</tt></dt>
+<dd><p>float or PyoObject. Damping factor for low amplitude bins.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="pvcross">
+<h2><em>PVCross</em></h2>
+<dl class="class">
+<dt id="pyo.PVCross">
+<em class="property">class </em><tt class="descname">PVCross</tt><big>(</big><em>input</em>, <em>input2</em>, <em>fade=1</em><big>)</big></dt>
+<dd><p>Performs cross-synthesis between two phase vocoder streaming object.</p>
+<p>The amplitudes from <cite>input</cite> and <cite>input2</cite> (scaled by <cite>fade</cite> argument)
+are applied to the frequencies of <cite>input</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoPVObject" title="pyo.PyoPVObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoPVObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>input <span class="classifier-delimiter">:</span> <span class="classifier">PyoPVObject</span></dt>
+<dd><p class="first last">Phase vocoder streaming object to process. Frequencies from
+this pv stream are used to compute the output signal.</p>
+</dd>
+<dt>input2 <span class="classifier-delimiter">:</span> <span class="classifier">PyoPVObject</span></dt>
+<dd><p class="first last">Phase vocoder streaming object which gives the second set of
+magnitudes. Frequencies from this pv stream are not used.</p>
+</dd>
+<dt>fade <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject, optional</span></dt>
+<dd><p class="first last">Scaling factor for the output amplitudes, between 0 and 1.
+0 means amplitudes from <cite>input</cite> and 1 means amplitudes from <cite>input2</cite>.
+Defaults to 1.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The two input pv stream must have the same size and overlaps. It is
+the responsibility of the user to be sure they are consistent. To change
+the size (or the overlaps) of the phase vocoder process, one must
+write a function to change both at the same time (see the example below).
+Another possibility is to use channel expansion to analyse both sounds
+with the same PVAnal object.</p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sf</span> <span class="o">=</span> <span class="n">SineLoop</span><span class="p">(</span><span class="n">freq</span><span class="o">=</span><span class="p">[</span><span class="mi">80</span><span class="p">,</span><span class="mi">81</span><span class="p">],</span> <span class="n">feedback</span><span class="o">=</span><span class="mf">0.07</span><span class="p">,</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sf2</span> <span class="o">=</span> <span class="n">SfPlayer</span><span class="p">(</span><span class="n">SNDS_PATH</span><span class="o">+</span><span class="s">&quot;/transparent.aif&quot;</span><span class="p">,</span> <span class="n">loop</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pva</span> <span class="o">=</span> <span class="n">PVAnal</span><span class="p">(</span><span class="n">sf</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pva2</span> <span class="o">=</span> <span class="n">PVAnal</span><span class="p">(</span><span class="n">sf2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pvc</span> <span class="o">=</span> <span class="n">PVCross</span><span class="p">(</span><span class="n">pva</span><span class="p">,</span> <span class="n">pva2</span><span class="p">,</span> <span class="n">fade</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pvs</span> <span class="o">=</span> <span class="n">PVSynth</span><span class="p">(</span><span class="n">pvc</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">size</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">pva</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">x</span>
+<span class="gp">... </span>    <span class="n">pva2</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">x</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">olaps</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">pva</span><span class="o">.</span><span class="n">overlaps</span> <span class="o">=</span> <span class="n">x</span>
+<span class="gp">... </span>    <span class="n">pva2</span><span class="o">.</span><span class="n">overlaps</span> <span class="o">=</span> <span class="n">x</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.PVCross.setInput">
+<tt class="descname">setInput</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>input</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoPVObject</span></dt>
+<dd><p class="first last">New signal to process.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PVCross.setInput2">
+<tt class="descname">setInput2</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>input2</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoPVObject</span></dt>
+<dd><p class="first last">New signal to process.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PVCross.setFade">
+<tt class="descname">setFade</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>fade</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">new <cite>fade</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.PVCross.input">
+<tt class="descname">input</tt></dt>
+<dd><p>PyoPVObject. Input signal to process.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.PVCross.input2">
+<tt class="descname">input2</tt></dt>
+<dd><p>PyoPVObject. Second set of amplitudes.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.PVCross.fade">
+<tt class="descname">fade</tt></dt>
+<dd><p>float or PyoObject. Scaling factor.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="pvmult">
+<h2><em>PVMult</em></h2>
+<dl class="class">
+<dt id="pyo.PVMult">
+<em class="property">class </em><tt class="descname">PVMult</tt><big>(</big><em>input</em>, <em>input2</em><big>)</big></dt>
+<dd><p>Multiply magnitudes from two phase vocoder streaming object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoPVObject" title="pyo.PyoPVObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoPVObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>input <span class="classifier-delimiter">:</span> <span class="classifier">PyoPVObject</span></dt>
+<dd><p class="first last">Phase vocoder streaming object to process. Frequencies from
+this pv stream are used to compute the output signal.</p>
+</dd>
+<dt>input2 <span class="classifier-delimiter">:</span> <span class="classifier">PyoPVObject</span></dt>
+<dd><p class="first last">Phase vocoder streaming object which gives the second set of
+magnitudes. Frequencies from this pv stream are not used.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The two input pv stream must have the same size and overlaps. It is
+the responsibility of the user to be sure they are consistent. To change
+the size (or the overlaps) of the phase vocoder process, one must
+write a function to change both at the same time (see the example below).
+Another possibility is to use channel expansion to analyse both sounds
+with the same PVAnal object.</p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sf</span> <span class="o">=</span> <span class="n">FM</span><span class="p">(</span><span class="n">carrier</span><span class="o">=</span><span class="p">[</span><span class="mi">100</span><span class="p">,</span><span class="mi">150</span><span class="p">],</span> <span class="n">ratio</span><span class="o">=</span><span class="p">[</span><span class="o">.</span><span class="mi">999</span><span class="p">,</span><span class="o">.</span><span class="mi">5005</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sf2</span> <span class="o">=</span> <span class="n">SfPlayer</span><span class="p">(</span><span class="n">SNDS_PATH</span><span class="o">+</span><span class="s">&quot;/transparent.aif&quot;</span><span class="p">,</span> <span class="n">loop</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pva</span> <span class="o">=</span> <span class="n">PVAnal</span><span class="p">(</span><span class="n">sf</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pva2</span> <span class="o">=</span> <span class="n">PVAnal</span><span class="p">(</span><span class="n">sf2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pvc</span> <span class="o">=</span> <span class="n">PVMult</span><span class="p">(</span><span class="n">pva</span><span class="p">,</span> <span class="n">pva2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pvs</span> <span class="o">=</span> <span class="n">PVSynth</span><span class="p">(</span><span class="n">pvc</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">size</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">pva</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">x</span>
+<span class="gp">... </span>    <span class="n">pva2</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">x</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">olaps</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">pva</span><span class="o">.</span><span class="n">overlaps</span> <span class="o">=</span> <span class="n">x</span>
+<span class="gp">... </span>    <span class="n">pva2</span><span class="o">.</span><span class="n">overlaps</span> <span class="o">=</span> <span class="n">x</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.PVMult.setInput">
+<tt class="descname">setInput</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>input</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoPVObject</span></dt>
+<dd><p class="first last">New signal to process.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PVMult.setInput2">
+<tt class="descname">setInput2</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>input2</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoPVObject</span></dt>
+<dd><p class="first last">New signal to process.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.PVMult.input">
+<tt class="descname">input</tt></dt>
+<dd><p>PyoPVObject. Input signal to process.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.PVMult.input2">
+<tt class="descname">input2</tt></dt>
+<dd><p>PyoPVObject. Second set of magnitudes.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="pvmorph">
+<h2><em>PVMorph</em></h2>
+<dl class="class">
+<dt id="pyo.PVMorph">
+<em class="property">class </em><tt class="descname">PVMorph</tt><big>(</big><em>input</em>, <em>input2</em>, <em>fade=0.5</em><big>)</big></dt>
+<dd><p>Performs spectral morphing between two phase vocoder streaming object.</p>
+<p>According to <cite>fade</cite> argument, the amplitudes from <cite>input</cite> and <cite>input2</cite>
+are interpolated linearly while the frequencies are interpolated
+exponentially.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoPVObject" title="pyo.PyoPVObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoPVObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>input <span class="classifier-delimiter">:</span> <span class="classifier">PyoPVObject</span></dt>
+<dd><p class="first last">Phase vocoder streaming object which gives the first set of
+magnitudes and frequencies.</p>
+</dd>
+<dt>input2 <span class="classifier-delimiter">:</span> <span class="classifier">PyoPVObject</span></dt>
+<dd><p class="first last">Phase vocoder streaming object which gives the second set of
+magnitudes and frequencies.</p>
+</dd>
+<dt>fade <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject, optional</span></dt>
+<dd><p class="first last">Scaling factor for the output amplitudes and frequencies,
+between 0 and 1. 0 is <cite>input</cite> and 1 in <cite>input2</cite>. Defaults to 0.5.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The two input pv stream must have the same size and overlaps. It is
+the responsibility of the user to be sure they are consistent. To change
+the size (or the overlaps) of the phase vocoder process, one must
+write a function to change both at the same time (see the example below).
+Another possibility is to use channel expansion to analyse both sounds
+with the same PVAnal object.</p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sf</span> <span class="o">=</span> <span class="n">SineLoop</span><span class="p">(</span><span class="n">freq</span><span class="o">=</span><span class="p">[</span><span class="mi">100</span><span class="p">,</span><span class="mi">101</span><span class="p">],</span> <span class="n">feedback</span><span class="o">=</span><span class="mf">0.12</span><span class="p">,</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sf2</span> <span class="o">=</span> <span class="n">SfPlayer</span><span class="p">(</span><span class="n">SNDS_PATH</span><span class="o">+</span><span class="s">&quot;/transparent.aif&quot;</span><span class="p">,</span> <span class="n">loop</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pva</span> <span class="o">=</span> <span class="n">PVAnal</span><span class="p">(</span><span class="n">sf</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pva2</span> <span class="o">=</span> <span class="n">PVAnal</span><span class="p">(</span><span class="n">sf2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pvc</span> <span class="o">=</span> <span class="n">PVMorph</span><span class="p">(</span><span class="n">pva</span><span class="p">,</span> <span class="n">pva2</span><span class="p">,</span> <span class="n">fade</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pvs</span> <span class="o">=</span> <span class="n">PVSynth</span><span class="p">(</span><span class="n">pvc</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">size</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">pva</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">x</span>
+<span class="gp">... </span>    <span class="n">pva2</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">x</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">olaps</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">pva</span><span class="o">.</span><span class="n">overlaps</span> <span class="o">=</span> <span class="n">x</span>
+<span class="gp">... </span>    <span class="n">pva2</span><span class="o">.</span><span class="n">overlaps</span> <span class="o">=</span> <span class="n">x</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.PVMorph.setInput">
+<tt class="descname">setInput</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>input</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoPVObject</span></dt>
+<dd><p class="first last">New signal to process.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PVMorph.setInput2">
+<tt class="descname">setInput2</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>input2</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoPVObject</span></dt>
+<dd><p class="first last">New signal to process.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PVMorph.setFade">
+<tt class="descname">setFade</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>fade</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">new <cite>fade</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.PVMorph.input">
+<tt class="descname">input</tt></dt>
+<dd><p>PyoPVObject. First input signal.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.PVMorph.input2">
+<tt class="descname">input2</tt></dt>
+<dd><p>PyoPVObject. Second input signal.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.PVMorph.fade">
+<tt class="descname">fade</tt></dt>
+<dd><p>float or PyoObject. Scaling factor.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="pvfilter">
+<h2><em>PVFilter</em></h2>
+<dl class="class">
+<dt id="pyo.PVFilter">
+<em class="property">class </em><tt class="descname">PVFilter</tt><big>(</big><em>input</em>, <em>table</em>, <em>gain=1</em>, <em>mode=0</em><big>)</big></dt>
+<dd><p>Spectral filter.</p>
+<p>PVFilter filters frequency components of a pv stream
+according to the shape drawn in the table given in
+argument.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoPVObject" title="pyo.PyoPVObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoPVObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>input <span class="classifier-delimiter">:</span> <span class="classifier">PyoPVObject</span></dt>
+<dd><p class="first last">Phase vocoder streaming object to process.</p>
+</dd>
+<dt>table <span class="classifier-delimiter">:</span> <span class="classifier">PyoTableObject</span></dt>
+<dd><p class="first last">Table containing the filter shape. If the
+table length is smaller than fftsize/2,
+remaining bins will be set to 0.</p>
+</dd>
+<dt>gain <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject, optional</span></dt>
+<dd><p class="first last">Gain of the filter applied to the input spectrum.
+Defaults to 1.</p>
+</dd>
+<dt>mode <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first">Table scanning mode. Defaults to 0.</p>
+<p class="last">If 0, bin indexes outside table size are set to 0.
+If 1, bin indexes are scaled over table length.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">ExpTable</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),(</span><span class="mi">61</span><span class="p">,</span><span class="mi">1</span><span class="p">),(</span><span class="mi">71</span><span class="p">,</span><span class="mi">0</span><span class="p">),(</span><span class="mi">131</span><span class="p">,</span><span class="mi">1</span><span class="p">),(</span><span class="mi">171</span><span class="p">,</span><span class="mi">0</span><span class="p">),(</span><span class="mi">511</span><span class="p">,</span><span class="mi">0</span><span class="p">)],</span> <span class="n">size</span><span class="o">=</span><span class="mi">512</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">src</span> <span class="o">=</span> <span class="n">Noise</span><span class="p">(</span><span class="o">.</span><span class="mi">4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pva</span> <span class="o">=</span> <span class="n">PVAnal</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1024</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pvf</span> <span class="o">=</span> <span class="n">PVFilter</span><span class="p">(</span><span class="n">pva</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pvs</span> <span class="o">=</span> <span class="n">PVSynth</span><span class="p">(</span><span class="n">pvf</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.PVFilter.setInput">
+<tt class="descname">setInput</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>input</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoPVObject</span></dt>
+<dd><p class="first last">New signal to process.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PVFilter.setTable">
+<tt class="descname">setTable</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>table</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoTableObject</span></dt>
+<dd><p class="first last">new <cite>table</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PVFilter.setGain">
+<tt class="descname">setGain</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>gain</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">new <cite>gain</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PVFilter.setMode">
+<tt class="descname">setMode</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>mode</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">new <cite>mode</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.PVFilter.input">
+<tt class="descname">input</tt></dt>
+<dd><p>PyoPVObject. Input signal to process.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.PVFilter.table">
+<tt class="descname">table</tt></dt>
+<dd><p>PyoTableObject. Table containing the filter shape.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.PVFilter.gain">
+<tt class="descname">gain</tt></dt>
+<dd><p>float or PyoObject. Gain of the filter.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.PVFilter.mode">
+<tt class="descname">mode</tt></dt>
+<dd><p>int. Table scanning mode.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="pvdelay">
+<h2><em>PVDelay</em></h2>
+<dl class="class">
+<dt id="pyo.PVDelay">
+<em class="property">class </em><tt class="descname">PVDelay</tt><big>(</big><em>input</em>, <em>deltable</em>, <em>feedtable</em>, <em>maxdelay=1.0</em>, <em>mode=0</em><big>)</big></dt>
+<dd><p>Spectral delays.</p>
+<p>PVDelay applies different delay times and feedbacks for
+each bin of a phase vocoder analysis. Delay times and
+feedbacks are specified with PyoTableObjects.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoPVObject" title="pyo.PyoPVObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoPVObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>input <span class="classifier-delimiter">:</span> <span class="classifier">PyoPVObject</span></dt>
+<dd><p class="first last">Phase vocoder streaming object to process.</p>
+</dd>
+<dt>deltable <span class="classifier-delimiter">:</span> <span class="classifier">PyoTableObject</span></dt>
+<dd><p class="first">Table containing delay times, as integer multipliers
+of the FFT hopsize (fftsize / overlaps).</p>
+<p class="last">If the table length is smaller than fftsize/2,
+remaining bins will be set to 0.</p>
+</dd>
+<dt>feedtable <span class="classifier-delimiter">:</span> <span class="classifier">PyoTableObject</span></dt>
+<dd><p class="first">Table containing feedback values, between -1 and 1.</p>
+<p class="last">If the table length is smaller than fftsize/2,
+remaining bins will be set to 0.</p>
+</dd>
+<dt>maxdelay <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Maximum delay time in seconds. Available at initialization
+time only. Defaults to 1.0.</p>
+</dd>
+<dt>mode <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first">Tables scanning mode. Defaults to 0.</p>
+<p class="last">If 0, bin indexes outside table size are set to 0.
+If 1, bin indexes are scaled over table length.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">SIZE</span> <span class="o">=</span> <span class="mi">1024</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">SIZE2</span> <span class="o">=</span> <span class="n">SIZE</span> <span class="o">/</span> <span class="mi">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">OLAPS</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">MAXDEL</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="c"># two seconds delay memories</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">FRAMES</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">MAXDEL</span> <span class="o">*</span> <span class="n">s</span><span class="o">.</span><span class="n">getSamplingRate</span><span class="p">()</span> <span class="o">/</span> <span class="p">(</span><span class="n">SIZE</span> <span class="o">/</span> <span class="n">OLAPS</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Edit tables with the graph() method. yrange=(0, FRAMES) for delays table</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dt</span> <span class="o">=</span> <span class="n">DataTable</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">SIZE2</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="p">[</span><span class="n">i</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">SIZE2</span><span class="p">)</span> <span class="o">*</span> <span class="n">FRAMES</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">SIZE2</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ft</span> <span class="o">=</span> <span class="n">DataTable</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">SIZE2</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="p">[</span><span class="mf">0.5</span><span class="p">]</span><span class="o">*</span><span class="n">SIZE2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">src</span> <span class="o">=</span> <span class="n">SfPlayer</span><span class="p">(</span><span class="n">SNDS_PATH</span><span class="o">+</span><span class="s">&quot;/transparent.aif&quot;</span><span class="p">,</span> <span class="n">loop</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">mul</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pva</span> <span class="o">=</span> <span class="n">PVAnal</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">SIZE</span><span class="p">,</span> <span class="n">overlaps</span><span class="o">=</span><span class="n">OLAPS</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pvd</span> <span class="o">=</span> <span class="n">PVDelay</span><span class="p">(</span><span class="n">pva</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">ft</span><span class="p">,</span> <span class="n">maxdelay</span><span class="o">=</span><span class="n">MAXDEL</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pvs</span> <span class="o">=</span> <span class="n">PVSynth</span><span class="p">(</span><span class="n">pvd</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.PVDelay.setInput">
+<tt class="descname">setInput</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>input</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoPVObject</span></dt>
+<dd><p class="first last">New signal to process.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PVDelay.setDeltable">
+<tt class="descname">setDeltable</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>deltable</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoTableObject</span></dt>
+<dd><p class="first last">new <cite>deltable</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PVDelay.setFeedtable">
+<tt class="descname">setFeedtable</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>feedtable</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoTableObject</span></dt>
+<dd><p class="first last">new <cite>feedtable</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PVDelay.setMode">
+<tt class="descname">setMode</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>mode</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">new <cite>mode</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.PVDelay.input">
+<tt class="descname">input</tt></dt>
+<dd><p>PyoPVObject. Input signal to process.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.PVDelay.deltable">
+<tt class="descname">deltable</tt></dt>
+<dd><p>PyoTableObject. Table containing the delay times.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.PVDelay.feedtable">
+<tt class="descname">feedtable</tt></dt>
+<dd><p>PyoTableObject. Table containing feedback values.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.PVDelay.mode">
+<tt class="descname">mode</tt></dt>
+<dd><p>int. Table scanning mode.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="pvbuffer">
+<h2><em>PVBuffer</em></h2>
+<dl class="class">
+<dt id="pyo.PVBuffer">
+<em class="property">class </em><tt class="descname">PVBuffer</tt><big>(</big><em>input</em>, <em>index</em>, <em>pitch=1.0</em>, <em>length=1.0</em><big>)</big></dt>
+<dd><p>Phase vocoder buffer and playback with transposition.</p>
+<p>PVBuffer keeps <cite>length</cite> seconds of pv analysis in memory
+and gives control on playback position and transposition.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoPVObject" title="pyo.PyoPVObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoPVObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>input <span class="classifier-delimiter">:</span> <span class="classifier">PyoPVObject</span></dt>
+<dd><p class="first last">Phase vocoder streaming object to process.</p>
+</dd>
+<dt>index <span class="classifier-delimiter">:</span> <span class="classifier">PyoObject</span></dt>
+<dd><p class="first last">Playback position, as audio stream, normalized
+between 0 and 1.</p>
+</dd>
+<dt>pitch <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject, optional</span></dt>
+<dd><p class="first last">Transposition factor. Defaults to 1.</p>
+</dd>
+<dt>length <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Memory length in seconds. Available at initialization
+time only. Defaults to 1.0.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The play() method can be called to start a new recording of
+the current pv input.</p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="n">SNDS_PATH</span><span class="o">+</span><span class="s">&#39;/transparent.aif&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f_len</span> <span class="o">=</span> <span class="n">sndinfo</span><span class="p">(</span><span class="n">f</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">src</span> <span class="o">=</span> <span class="n">SfPlayer</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">mul</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">index</span> <span class="o">=</span> <span class="n">Phasor</span><span class="p">(</span><span class="n">freq</span><span class="o">=</span><span class="mf">1.0</span><span class="o">/</span><span class="n">f_len</span><span class="o">*</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">phase</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pva</span> <span class="o">=</span> <span class="n">PVAnal</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span> <span class="n">overlaps</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pvb</span> <span class="o">=</span> <span class="n">PVBuffer</span><span class="p">(</span><span class="n">pva</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">pitch</span><span class="o">=</span><span class="mf">1.25</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="n">f_len</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pvs</span> <span class="o">=</span> <span class="n">PVSynth</span><span class="p">(</span><span class="n">pvb</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.PVBuffer.setInput">
+<tt class="descname">setInput</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>input</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoPVObject</span></dt>
+<dd><p class="first last">New signal to process.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PVBuffer.setIndex">
+<tt class="descname">setIndex</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>index</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoObject</span></dt>
+<dd><p class="first last">new <cite>index</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PVBuffer.setPitch">
+<tt class="descname">setPitch</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>pitch</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">new <cite>pitch</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.PVBuffer.input">
+<tt class="descname">input</tt></dt>
+<dd><p>PyoPVObject. Input signal to process.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.PVBuffer.index">
+<tt class="descname">index</tt></dt>
+<dd><p>PyoObject. Reader&#8217;s normalized position.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.PVBuffer.pitch">
+<tt class="descname">pitch</tt></dt>
+<dd><p>float or PyoObject. Transposition factor.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="pvshift">
+<h2><em>PVShift</em></h2>
+<dl class="class">
+<dt id="pyo.PVShift">
+<em class="property">class </em><tt class="descname">PVShift</tt><big>(</big><em>input</em>, <em>shift=0</em><big>)</big></dt>
+<dd><p>Spectral domain frequency shifter.</p>
+<p>PVShift linearly moves the analysis bins by the amount, in Hertz,
+specified by the the <cite>shift</cite> argument.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoPVObject" title="pyo.PyoPVObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoPVObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>input <span class="classifier-delimiter">:</span> <span class="classifier">PyoPVObject</span></dt>
+<dd><p class="first last">Phase vocoder streaming object to process.</p>
+</dd>
+<dt>shift <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject, optional</span></dt>
+<dd><p class="first last">Frequency shift factor. Defaults to 0.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sf</span> <span class="o">=</span> <span class="n">SfPlayer</span><span class="p">(</span><span class="n">SNDS_PATH</span><span class="o">+</span><span class="s">&quot;/transparent.aif&quot;</span><span class="p">,</span> <span class="n">loop</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">7</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pva</span> <span class="o">=</span> <span class="n">PVAnal</span><span class="p">(</span><span class="n">sf</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1024</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pvt</span> <span class="o">=</span> <span class="n">PVShift</span><span class="p">(</span><span class="n">pva</span><span class="p">,</span> <span class="n">shift</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pvs</span> <span class="o">=</span> <span class="n">PVSynth</span><span class="p">(</span><span class="n">pvt</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.PVShift.setInput">
+<tt class="descname">setInput</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>input</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoPVObject</span></dt>
+<dd><p class="first last">New signal to process.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PVShift.setShift">
+<tt class="descname">setShift</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>shift</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">new <cite>shift</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.PVShift.input">
+<tt class="descname">input</tt></dt>
+<dd><p>PyoPVObject. Input signal to process.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.PVShift.shift">
+<tt class="descname">shift</tt></dt>
+<dd><p>float or PyoObject. Frequency shift factor.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="pvampmod">
+<h2><em>PVAmpMod</em></h2>
+<dl class="class">
+<dt id="pyo.PVAmpMod">
+<em class="property">class </em><tt class="descname">PVAmpMod</tt><big>(</big><em>input</em>, <em>basefreq=1</em>, <em>spread=0</em><big>)</big></dt>
+<dd><p>Performs frequency independent amplitude modulations.</p>
+<p>PVAmpMod modulates the magnitude of each bin of a pv
+stream with an independent oscillator. <cite>basefreq</cite> and
+<cite>spread</cite> are used to derive the frequency of each
+modulating oscillator.</p>
+<p>Internally, the following operations are applied to
+derive oscillator frequencies (<cite>i</cite> is the bin number):</p>
+<blockquote>
+<div><p>spread = spread * 0.001 + 1.0</p>
+<p>f_i = basefreq * pow(spread, i)</p>
+</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoPVObject" title="pyo.PyoPVObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoPVObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>input <span class="classifier-delimiter">:</span> <span class="classifier">PyoPVObject</span></dt>
+<dd><p class="first last">Phase vocoder streaming object to process.</p>
+</dd>
+<dt>basefreq <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject, optional</span></dt>
+<dd><p class="first last">Base modulation frequency, in Hertz.
+Defaults to 1.</p>
+</dd>
+<dt>spread <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject, optional</span></dt>
+<dd><p class="first last">Spreading factor for oscillator frequencies, between
+-1 and 1. 0 means every oscillator has the same frequency.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">src</span> <span class="o">=</span> <span class="n">PinkNoise</span><span class="p">(</span><span class="o">.</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pva</span> <span class="o">=</span> <span class="n">PVAnal</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span> <span class="n">overlaps</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pvm</span> <span class="o">=</span> <span class="n">PVAmpMod</span><span class="p">(</span><span class="n">pva</span><span class="p">,</span> <span class="n">basefreq</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">spread</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pvs</span> <span class="o">=</span> <span class="n">PVSynth</span><span class="p">(</span><span class="n">pvm</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.PVAmpMod.setInput">
+<tt class="descname">setInput</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>input</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoPVObject</span></dt>
+<dd><p class="first last">New signal to process.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PVAmpMod.setBasefreq">
+<tt class="descname">setBasefreq</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>basefreq</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">new <cite>basefreq</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PVAmpMod.setSpread">
+<tt class="descname">setSpread</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>spread</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">new <cite>spread</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PVAmpMod.reset">
+<tt class="descname">reset</tt><big>(</big><big>)</big></dt>
+<dd><p>Resets modulation pointers to 0.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.PVAmpMod.input">
+<tt class="descname">input</tt></dt>
+<dd><p>PyoPVObject. Input signal to process.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.PVAmpMod.basefreq">
+<tt class="descname">basefreq</tt></dt>
+<dd><p>float or PyoObject. Modulator&#8217;s base frequency.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.PVAmpMod.spread">
+<tt class="descname">spread</tt></dt>
+<dd><p>float or PyoObject. Modulator&#8217;s frequency spreading factor.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="pvfreqmod">
+<h2><em>PVFreqMod</em></h2>
+<dl class="class">
+<dt id="pyo.PVFreqMod">
+<em class="property">class </em><tt class="descname">PVFreqMod</tt><big>(</big><em>input</em>, <em>basefreq=1</em>, <em>spread=0</em>, <em>depth=0.1</em><big>)</big></dt>
+<dd><p>Performs frequency independent frequency modulations.</p>
+<p>PVFreqMod modulates the frequency of each bin of a pv
+stream with an independent oscillator. <cite>basefreq</cite> and
+<cite>spread</cite> are used to derive the frequency of each
+modulating oscillator.</p>
+<p>Internally, the following operations are applied to
+derive oscillator frequencies (<cite>i</cite> is the bin number):</p>
+<blockquote>
+<div><p>spread = spread * 0.001 + 1.0</p>
+<p>f_i = basefreq * pow(spread, i)</p>
+</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoPVObject" title="pyo.PyoPVObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoPVObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>input <span class="classifier-delimiter">:</span> <span class="classifier">PyoPVObject</span></dt>
+<dd><p class="first last">Phase vocoder streaming object to process.</p>
+</dd>
+<dt>basefreq <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject, optional</span></dt>
+<dd><p class="first last">Base modulation frequency, in Hertz.
+Defaults to 1.</p>
+</dd>
+<dt>spread <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject, optional</span></dt>
+<dd><p class="first last">Spreading factor for oscillator frequencies, between
+-1 and 1. 0 means every oscillator has the same frequency.</p>
+</dd>
+<dt>depth <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject, optional</span></dt>
+<dd><p class="first last">Amplitude of the modulating oscillators, between 0 and 1.
+Defaults to 0.1.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">src</span> <span class="o">=</span> <span class="n">SfPlayer</span><span class="p">(</span><span class="n">SNDS_PATH</span><span class="o">+</span><span class="s">&quot;/accord.aif&quot;</span><span class="p">,</span> <span class="n">loop</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">mul</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pva</span> <span class="o">=</span> <span class="n">PVAnal</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span> <span class="n">overlaps</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pvm</span> <span class="o">=</span> <span class="n">PVFreqMod</span><span class="p">(</span><span class="n">pva</span><span class="p">,</span> <span class="n">basefreq</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">spread</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pvs</span> <span class="o">=</span> <span class="n">PVSynth</span><span class="p">(</span><span class="n">pvm</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.PVFreqMod.setInput">
+<tt class="descname">setInput</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>input</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoPVObject</span></dt>
+<dd><p class="first last">New signal to process.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PVFreqMod.setBasefreq">
+<tt class="descname">setBasefreq</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>basefreq</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">new <cite>basefreq</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PVFreqMod.setSpread">
+<tt class="descname">setSpread</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>spread</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">new <cite>spread</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PVFreqMod.setDepth">
+<tt class="descname">setDepth</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>depth</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">new <cite>depth</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PVFreqMod.reset">
+<tt class="descname">reset</tt><big>(</big><big>)</big></dt>
+<dd><p>Resets modulation pointers to 0.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.PVFreqMod.input">
+<tt class="descname">input</tt></dt>
+<dd><p>PyoPVObject. Input signal to process.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.PVFreqMod.basefreq">
+<tt class="descname">basefreq</tt></dt>
+<dd><p>float or PyoObject. Modulator&#8217;s base frequency.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.PVFreqMod.spread">
+<tt class="descname">spread</tt></dt>
+<dd><p>float or PyoObject. Modulator&#8217;s frequencies spreading factor.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.PVFreqMod.depth">
+<tt class="descname">depth</tt></dt>
+<dd><p>float or PyoObject. Amplitude of the modulators.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="pvbufloops">
+<h2><em>PVBufLoops</em></h2>
+<dl class="class">
+<dt id="pyo.PVBufLoops">
+<em class="property">class </em><tt class="descname">PVBufLoops</tt><big>(</big><em>input</em>, <em>low=1.0</em>, <em>high=1.0</em>, <em>mode=0</em>, <em>length=1.0</em><big>)</big></dt>
+<dd><p>Phase vocoder buffer with bin independent speed playback.</p>
+<p>PVBufLoops keeps <cite>length</cite> seconds of pv analysis in memory
+and gives control on playback position independently for
+every frequency bin.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoPVObject" title="pyo.PyoPVObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoPVObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>input <span class="classifier-delimiter">:</span> <span class="classifier">PyoPVObject</span></dt>
+<dd><p class="first last">Phase vocoder streaming object to process.</p>
+</dd>
+<dt>low <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject, optional</span></dt>
+<dd><p class="first last">Lowest bin speed factor. Defaults to 1.0.</p>
+</dd>
+<dt>high <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject, optional</span></dt>
+<dd><p class="first last">Highest bin speed factor. Defaults to 1.0.</p>
+</dd>
+<dt>mode <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><dl class="first last docutils">
+<dt>Speed distribution algorithm. Available algorithms are:</dt>
+<dd><ol class="first last arabic simple" start="0">
+<li>linear, line between <cite>low</cite> and <cite>high</cite> (default)</li>
+<li>exponential, exponential line between <cite>low</cite> and <cite>high</cite></li>
+<li>logarithmic, logarithmic line between <cite>low</cite> and <cite>high</cite></li>
+<li>random, uniform random between <cite>low</cite> and <cite>high</cite></li>
+<li>rand expon min, exponential random from <cite>low</cite> to <cite>high</cite></li>
+<li>rand expon max, exponential random from <cite>high</cite> to <cite>low</cite></li>
+<li>rand bi-expon, bipolar exponential random between <cite>low</cite> and <cite>high</cite></li>
+</ol>
+</dd>
+</dl>
+</dd>
+<dt>length <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Memory length in seconds. Available at initialization
+time only. Defaults to 1.0.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The play() method can be called to start a new recording of
+the current pv input.</p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="n">SNDS_PATH</span><span class="o">+</span><span class="s">&#39;/transparent.aif&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f_len</span> <span class="o">=</span> <span class="n">sndinfo</span><span class="p">(</span><span class="n">f</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">src</span> <span class="o">=</span> <span class="n">SfPlayer</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">mul</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pva</span> <span class="o">=</span> <span class="n">PVAnal</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span> <span class="n">overlaps</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pvb</span> <span class="o">=</span> <span class="n">PVBufLoops</span><span class="p">(</span><span class="n">pva</span><span class="p">,</span> <span class="n">low</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mf">1.1</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="n">f_len</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pvs</span> <span class="o">=</span> <span class="n">PVSynth</span><span class="p">(</span><span class="n">pvb</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.PVBufLoops.setInput">
+<tt class="descname">setInput</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>input</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoPVObject</span></dt>
+<dd><p class="first last">New signal to process.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PVBufLoops.setLow">
+<tt class="descname">setLow</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>low</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">new <cite>low</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PVBufLoops.setHigh">
+<tt class="descname">setHigh</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>high</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">new <cite>high</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PVBufLoops.setMode">
+<tt class="descname">setMode</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>mode</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">new <cite>mode</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PVBufLoops.reset">
+<tt class="descname">reset</tt><big>(</big><big>)</big></dt>
+<dd><p>Reset pointer positions to 0.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.PVBufLoops.input">
+<tt class="descname">input</tt></dt>
+<dd><p>PyoPVObject. Input signal to process.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.PVBufLoops.low">
+<tt class="descname">low</tt></dt>
+<dd><p>float or PyoObject. Lowest bin speed factor.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.PVBufLoops.high">
+<tt class="descname">high</tt></dt>
+<dd><p>float or PyoObject. Highest bin speed factor.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.PVBufLoops.mode">
+<tt class="descname">mode</tt></dt>
+<dd><p>int. Speed distribution algorithm.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="pvbuftabloops">
+<h2><em>PVBufTabLoops</em></h2>
+<dl class="class">
+<dt id="pyo.PVBufTabLoops">
+<em class="property">class </em><tt class="descname">PVBufTabLoops</tt><big>(</big><em>input</em>, <em>speed</em>, <em>length=1.0</em><big>)</big></dt>
+<dd><p>Phase vocoder buffer with bin independent speed playback.</p>
+<p>PVBufTabLoops keeps <cite>length</cite> seconds of pv analysis in memory
+and gives control on playback position, using a PyoTableObject,
+independently for every frequency bin.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoPVObject" title="pyo.PyoPVObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoPVObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>input <span class="classifier-delimiter">:</span> <span class="classifier">PyoPVObject</span></dt>
+<dd><p class="first last">Phase vocoder streaming object to process.</p>
+</dd>
+<dt>speed <span class="classifier-delimiter">:</span> <span class="classifier">PyoTableObject</span></dt>
+<dd><p class="first last">Table which specify the speed of bin playback readers.</p>
+</dd>
+<dt>length <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Memory length in seconds. Available at initialization
+time only. Defaults to 1.0.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The play() method can be called to start a new recording of
+the current pv input.</p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="n">SNDS_PATH</span><span class="o">+</span><span class="s">&#39;/transparent.aif&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f_len</span> <span class="o">=</span> <span class="n">sndinfo</span><span class="p">(</span><span class="n">f</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">src</span> <span class="o">=</span> <span class="n">SfPlayer</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">mul</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">spd</span> <span class="o">=</span> <span class="n">ExpTable</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">512</span><span class="p">,</span><span class="mf">0.5</span><span class="p">)],</span> <span class="n">exp</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">512</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pva</span> <span class="o">=</span> <span class="n">PVAnal</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span> <span class="n">overlaps</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pvb</span> <span class="o">=</span> <span class="n">PVBufTabLoops</span><span class="p">(</span><span class="n">pva</span><span class="p">,</span> <span class="n">spd</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="n">f_len</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pvs</span> <span class="o">=</span> <span class="n">PVSynth</span><span class="p">(</span><span class="n">pvb</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.PVBufTabLoops.setInput">
+<tt class="descname">setInput</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>input</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoPVObject</span></dt>
+<dd><p class="first last">New signal to process.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PVBufTabLoops.setSpeed">
+<tt class="descname">setSpeed</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>speed</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoTableObject</span></dt>
+<dd><p class="first last">new <cite>speed</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PVBufTabLoops.reset">
+<tt class="descname">reset</tt><big>(</big><big>)</big></dt>
+<dd><p>Reset pointer positions to 0.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.PVBufTabLoops.input">
+<tt class="descname">input</tt></dt>
+<dd><p>PyoPVObject. Input signal to process.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.PVBufTabLoops.speed">
+<tt class="descname">speed</tt></dt>
+<dd><p>PyoTableObject. Table which specify the speed of bin playback readers.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="pvmix">
+<h2><em>PVMix</em></h2>
+<dl class="class">
+<dt id="pyo.PVMix">
+<em class="property">class </em><tt class="descname">PVMix</tt><big>(</big><em>input</em>, <em>input2</em><big>)</big></dt>
+<dd><p>Mix the most prominent components from two phase vocoder streaming objects.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoPVObject" title="pyo.PyoPVObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoPVObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>input <span class="classifier-delimiter">:</span> <span class="classifier">PyoPVObject</span></dt>
+<dd><p class="first last">Phase vocoder streaming object 1.</p>
+</dd>
+<dt>input2 <span class="classifier-delimiter">:</span> <span class="classifier">PyoPVObject</span></dt>
+<dd><p class="first last">Phase vocoder streaming object 2.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The two input pv stream must have the same size and overlaps. It is
+the responsibility of the user to be sure they are consistent. To change
+the size (or the overlaps) of the phase vocoder process, one must
+write a function to change both at the same time (see the example below).
+Another possibility is to use channel expansion to analyse both sounds
+with the same PVAnal object.</p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sf</span> <span class="o">=</span> <span class="n">SfPlayer</span><span class="p">(</span><span class="n">SNDS_PATH</span><span class="o">+</span><span class="s">&quot;/transparent.aif&quot;</span><span class="p">,</span> <span class="n">loop</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sf2</span> <span class="o">=</span> <span class="n">SfPlayer</span><span class="p">(</span><span class="n">SNDS_PATH</span><span class="o">+</span><span class="s">&quot;/accord.aif&quot;</span><span class="p">,</span> <span class="n">loop</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pva</span> <span class="o">=</span> <span class="n">PVAnal</span><span class="p">(</span><span class="n">sf</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pva2</span> <span class="o">=</span> <span class="n">PVAnal</span><span class="p">(</span><span class="n">sf2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pvm</span> <span class="o">=</span> <span class="n">PVMix</span><span class="p">(</span><span class="n">pva</span><span class="p">,</span> <span class="n">pva2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pvs</span> <span class="o">=</span> <span class="n">PVSynth</span><span class="p">(</span><span class="n">pvm</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">size</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">pva</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">x</span>
+<span class="gp">... </span>    <span class="n">pva2</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">x</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">olaps</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">pva</span><span class="o">.</span><span class="n">overlaps</span> <span class="o">=</span> <span class="n">x</span>
+<span class="gp">... </span>    <span class="n">pva2</span><span class="o">.</span><span class="n">overlaps</span> <span class="o">=</span> <span class="n">x</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.PVMix.setInput">
+<tt class="descname">setInput</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>input</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoPVObject</span></dt>
+<dd><p class="first last">New signal to process.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PVMix.setInput2">
+<tt class="descname">setInput2</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>input2</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoPVObject</span></dt>
+<dd><p class="first last">New signal to process.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.PVMix.input">
+<tt class="descname">input</tt></dt>
+<dd><p>PyoPVObject. Phase vocoder streaming object 1.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.PVMix.input2">
+<tt class="descname">input2</tt></dt>
+<dd><p>PyoPVObject. Phase vocoder streaming object 2.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Phase Vocoder</a><ul>
+<li><a class="reference internal" href="#pvanal"><em>PVAnal</em></a></li>
+<li><a class="reference internal" href="#pvsynth"><em>PVSynth</em></a></li>
+<li><a class="reference internal" href="#pvaddsynth"><em>PVAddSynth</em></a></li>
+<li><a class="reference internal" href="#pvtranspose"><em>PVTranspose</em></a></li>
+<li><a class="reference internal" href="#pvverb"><em>PVVerb</em></a></li>
+<li><a class="reference internal" href="#pvgate"><em>PVGate</em></a></li>
+<li><a class="reference internal" href="#pvcross"><em>PVCross</em></a></li>
+<li><a class="reference internal" href="#pvmult"><em>PVMult</em></a></li>
+<li><a class="reference internal" href="#pvmorph"><em>PVMorph</em></a></li>
+<li><a class="reference internal" href="#pvfilter"><em>PVFilter</em></a></li>
+<li><a class="reference internal" href="#pvdelay"><em>PVDelay</em></a></li>
+<li><a class="reference internal" href="#pvbuffer"><em>PVBuffer</em></a></li>
+<li><a class="reference internal" href="#pvshift"><em>PVShift</em></a></li>
+<li><a class="reference internal" href="#pvampmod"><em>PVAmpMod</em></a></li>
+<li><a class="reference internal" href="#pvfreqmod"><em>PVFreqMod</em></a></li>
+<li><a class="reference internal" href="#pvbufloops"><em>PVBufLoops</em></a></li>
+<li><a class="reference internal" href="#pvbuftabloops"><em>PVBufTabLoops</em></a></li>
+<li><a class="reference internal" href="#pvmix"><em>PVMix</em></a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="fourier.html"
+                        title="previous chapter">Fast Fourier Transform</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="generators.html"
+                        title="next chapter">Signal Generators</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="generators.html" title="Signal Generators"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="fourier.html" title="Fast Fourier Transform"
+             >previous</a> |</li>
+        <li><a href="../../index.html">Pyo 0.7.9 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >API Documentation</a> &raquo;</li>
+          <li><a href="index.html" >Classes by category</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Olivier Bélanger.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

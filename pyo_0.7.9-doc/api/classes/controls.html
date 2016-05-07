@@ -1,0 +1,983 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Control Signals &mdash; Pyo 0.7.9 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.7.9',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../../_static/E-PyoIcon.ico"/>
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="top" title="Pyo 0.7.9 documentation" href="../../index.html" />
+    <link rel="up" title="Classes by category" href="index.html" />
+    <link rel="next" title="Dynamic management" href="dynamics.html" />
+    <link rel="prev" title="Arithmetic" href="arithmetic.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="dynamics.html" title="Dynamic management"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="arithmetic.html" title="Arithmetic"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">Pyo 0.7.9 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >API Documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Classes by category</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-pyo">
+<span id="control-signals"></span><h1>Control Signals</h1>
+<p>Objects designed to create parameter&#8217;s control at audio rate.</p>
+<p>These objects can be used to create envelopes, line segments
+and conversion from python number to audio signal.</p>
+<p>The audio streams of these objects can&#8217;t be sent to the output
+soundcard.</p>
+<div class="section" id="fader">
+<h2><em>Fader</em></h2>
+<dl class="class">
+<dt id="pyo.Fader">
+<em class="property">class </em><tt class="descname">Fader</tt><big>(</big><em>fadein=0.01</em>, <em>fadeout=0.1</em>, <em>dur=0</em>, <em>mul=1</em>, <em>add=0</em><big>)</big></dt>
+<dd><p>Fadein - fadeout envelope generator.</p>
+<p>Generate an amplitude envelope between 0 and 1 with control on fade
+times and total duration of the envelope.</p>
+<p>The play() method starts the envelope and is not called at the
+object creation time.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoObject" title="pyo.PyoObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>fadein <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Rising time of the envelope in seconds. Defaults to 0.01.</p>
+</dd>
+<dt>fadeout <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Falling time of the envelope in seconds. Defaults to 0.1.</p>
+</dd>
+<dt>dur <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Total duration of the envelope. Defaults to 0, which means wait
+for the stop() method to start the fadeout.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The out() method is bypassed. Fader&#8217;s signal can not be sent to audio outs.</p>
+<p>The play() method starts the envelope.</p>
+<p class="last">The stop() calls the envelope&#8217;s release phase if <cite>dur</cite> = 0.</p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="n">Fader</span><span class="p">(</span><span class="n">fadein</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">fadeout</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">dur</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">BrownNoise</span><span class="p">(</span><span class="n">mul</span><span class="o">=</span><span class="n">f</span><span class="p">)</span><span class="o">.</span><span class="n">mix</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">repeat</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="n">f</span><span class="o">.</span><span class="n">play</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pat</span> <span class="o">=</span> <span class="n">Pattern</span><span class="p">(</span><span class="n">function</span><span class="o">=</span><span class="n">repeat</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">play</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.Fader.setFadein">
+<tt class="descname">setFadein</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>fadein</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">new <cite>fadein</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Fader.setFadeout">
+<tt class="descname">setFadeout</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>fadeout</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">new <cite>fadeout</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Fader.setDur">
+<tt class="descname">setDur</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>dur</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">new <cite>dur</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Fader.fadein">
+<tt class="descname">fadein</tt></dt>
+<dd><p>float. Rising time of the envelope in seconds.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Fader.fadeout">
+<tt class="descname">fadeout</tt></dt>
+<dd><p>float. Falling time of the envelope in seconds.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Fader.dur">
+<tt class="descname">dur</tt></dt>
+<dd><p>float. Total duration of the envelope.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="adsr">
+<h2><em>Adsr</em></h2>
+<dl class="class">
+<dt id="pyo.Adsr">
+<em class="property">class </em><tt class="descname">Adsr</tt><big>(</big><em>attack=0.01</em>, <em>decay=0.05</em>, <em>sustain=0.707</em>, <em>release=0.1</em>, <em>dur=0</em>, <em>mul=1</em>, <em>add=0</em><big>)</big></dt>
+<dd><p>Attack - Decay - Sustain - Release envelope generator.</p>
+<p>Calculates the classical ADSR envelope using linear segments.
+Duration can be set to 0 to give an infinite sustain. In this
+case, the stop() method calls the envelope release part.</p>
+<p>The play() method starts the envelope and is not called at the
+object creation time.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoObject" title="pyo.PyoObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>attack <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Duration of the attack phase in seconds. Defaults to 0.01.</p>
+</dd>
+<dt>decay <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Duration of the decay in seconds. Defaults to 0.05.</p>
+</dd>
+<dt>sustain <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Amplitude of the sustain phase. Defaults to 0.707.</p>
+</dd>
+<dt>release <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Duration of the release in seconds. Defaults to 0.1.</p>
+</dd>
+<dt>dur <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Total duration of the envelope. Defaults to 0, which means wait
+for the stop() method to start the release phase.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The out() method is bypassed. Adsr&#8217;s signal can not be sent to audio outs.</p>
+<p>The play() method starts the envelope.</p>
+<p class="last">The stop() calls the envelope&#8217;s release phase if <cite>dur</cite> = 0.</p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="n">Adsr</span><span class="p">(</span><span class="n">attack</span><span class="o">=.</span><span class="mo">01</span><span class="p">,</span> <span class="n">decay</span><span class="o">=.</span><span class="mi">2</span><span class="p">,</span> <span class="n">sustain</span><span class="o">=.</span><span class="mi">5</span><span class="p">,</span> <span class="n">release</span><span class="o">=.</span><span class="mi">1</span><span class="p">,</span> <span class="n">dur</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">BrownNoise</span><span class="p">(</span><span class="n">mul</span><span class="o">=</span><span class="n">f</span><span class="p">)</span><span class="o">.</span><span class="n">mix</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">repeat</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="n">f</span><span class="o">.</span><span class="n">play</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pat</span> <span class="o">=</span> <span class="n">Pattern</span><span class="p">(</span><span class="n">function</span><span class="o">=</span><span class="n">repeat</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">play</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.Adsr.setAttack">
+<tt class="descname">setAttack</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>attack</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">new <cite>attack</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Adsr.setDecay">
+<tt class="descname">setDecay</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>decay</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">new <cite>decay</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Adsr.setSustain">
+<tt class="descname">setSustain</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>sustain</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">new <cite>sustain</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Adsr.setRelease">
+<tt class="descname">setRelease</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>sustain</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">new <cite>sustain</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Adsr.setDur">
+<tt class="descname">setDur</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>dur</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">new <cite>dur</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Adsr.attack">
+<tt class="descname">attack</tt></dt>
+<dd><p>float. Duration of the attack phase in seconds.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Adsr.decay">
+<tt class="descname">decay</tt></dt>
+<dd><p>float. Duration of the decay phase in seconds.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Adsr.sustain">
+<tt class="descname">sustain</tt></dt>
+<dd><p>float. Amplitude of the sustain phase.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Adsr.release">
+<tt class="descname">release</tt></dt>
+<dd><p>float. Duration of the release phase in seconds.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Adsr.dur">
+<tt class="descname">dur</tt></dt>
+<dd><p>float. Total duration of the envelope.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="linseg">
+<h2><em>Linseg</em></h2>
+<dl class="class">
+<dt id="pyo.Linseg">
+<em class="property">class </em><tt class="descname">Linseg</tt><big>(</big><em>list</em>, <em>loop=False</em>, <em>initToFirstVal=False</em>, <em>mul=1</em>, <em>add=0</em><big>)</big></dt>
+<dd><p>Trace a series of line segments between specified break-points.</p>
+<p>The play() method starts the envelope and is not called at the
+object creation time.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoObject" title="pyo.PyoObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>list <span class="classifier-delimiter">:</span> <span class="classifier">list of tuples</span></dt>
+<dd><p class="first">Points used to construct the line segments. Each tuple is a
+new point in the form (time, value).</p>
+<p class="last">Times are given in seconds and must be in increasing order.</p>
+</dd>
+<dt>loop <span class="classifier-delimiter">:</span> <span class="classifier">boolean, optional</span></dt>
+<dd><p class="first last">Looping mode. Defaults to False.</p>
+</dd>
+<dt>initToFirstVal <span class="classifier-delimiter">:</span> <span class="classifier">boolean, optional</span></dt>
+<dd><p class="first last">If True, audio buffer will be filled at initialization with the
+first value of the line. Defaults to False.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The out() method is bypassed. Linseg&#8217;s signal can not be sent to audio outs.</p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">l</span> <span class="o">=</span> <span class="n">Linseg</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span><span class="mi">500</span><span class="p">),(</span><span class="o">.</span><span class="mo">03</span><span class="p">,</span><span class="mi">1000</span><span class="p">),(</span><span class="o">.</span><span class="mi">1</span><span class="p">,</span><span class="mi">700</span><span class="p">),(</span><span class="mi">1</span><span class="p">,</span><span class="mi">500</span><span class="p">),(</span><span class="mi">2</span><span class="p">,</span><span class="mi">500</span><span class="p">)],</span> <span class="n">loop</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">Sine</span><span class="p">(</span><span class="n">freq</span><span class="o">=</span><span class="n">l</span><span class="p">,</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">mix</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># then call:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">l</span><span class="o">.</span><span class="n">play</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.Linseg.setList">
+<tt class="descname">setList</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>list</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">list of tuples</span></dt>
+<dd><p class="first last">new <cite>list</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Linseg.replace">
+<tt class="descname">replace</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Alias for <cite>setList</cite> method.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">list of tuples</span></dt>
+<dd><p class="first last">new <cite>list</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Linseg.setLoop">
+<tt class="descname">setLoop</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>loop</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
+<dd><p class="first last">new <cite>loop</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Linseg.pause">
+<tt class="descname">pause</tt><big>(</big><big>)</big></dt>
+<dd><p>Toggles between play and stop mode without reset.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Linseg.graph">
+<tt class="descname">graph</tt><big>(</big><em>xlen=None</em>, <em>yrange=None</em>, <em>title=None</em>, <em>wxnoserver=False</em><big>)</big></dt>
+<dd><p>Opens a grapher window to control the shape of the envelope.</p>
+<p>When editing the grapher with the mouse, the new set of points
+will be send to the object on mouse up.</p>
+<p>Ctrl+C with focus on the grapher will copy the list of points to the
+clipboard, giving an easy way to insert the new shape in a script.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>xlen <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Set the maximum value of the X axis of the graph. If None, the
+maximum value is retrieve from the current list of points.</p>
+</dd>
+<dt>yrange <span class="classifier-delimiter">:</span> <span class="classifier">tuple, optional</span></dt>
+<dd><p class="first last">Set the min and max values of the Y axis of the graph. If
+None, min and max are retrieve from the current list of points.</p>
+</dd>
+<dt>title <span class="classifier-delimiter">:</span> <span class="classifier">string, optional</span></dt>
+<dd><p class="first last">Title of the window. If none is provided, the name of the
+class is used.</p>
+</dd>
+<dt>wxnoserver <span class="classifier-delimiter">:</span> <span class="classifier">boolean, optional</span></dt>
+<dd><p class="first last">With wxPython graphical toolkit, if True, tells the
+interpreter that there will be no server window.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p>If <cite>wxnoserver</cite> is set to True, the interpreter will not wait for the
+server GUI before showing the controller window.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Linseg.list">
+<tt class="descname">list</tt></dt>
+<dd><p>float. List of points (time, value).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Linseg.loop">
+<tt class="descname">loop</tt></dt>
+<dd><p>boolean. Looping mode.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="expseg">
+<h2><em>Expseg</em></h2>
+<dl class="class">
+<dt id="pyo.Expseg">
+<em class="property">class </em><tt class="descname">Expseg</tt><big>(</big><em>list</em>, <em>loop=False</em>, <em>exp=10</em>, <em>inverse=True</em>, <em>initToFirstVal=False</em>, <em>mul=1</em>, <em>add=0</em><big>)</big></dt>
+<dd><p>Trace a series of exponential segments between specified break-points.</p>
+<p>The play() method starts the envelope and is not called at the
+object creation time.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoObject" title="pyo.PyoObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>list <span class="classifier-delimiter">:</span> <span class="classifier">list of tuples</span></dt>
+<dd><p class="first">Points used to construct the line segments. Each tuple is a
+new point in the form (time, value).</p>
+<p class="last">Times are given in seconds and must be in increasing order.</p>
+</dd>
+<dt>loop <span class="classifier-delimiter">:</span> <span class="classifier">boolean, optional</span></dt>
+<dd><p class="first last">Looping mode. Defaults to False.</p>
+</dd>
+<dt>exp <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Exponent factor. Used to control the slope of the curves.
+Defaults to 10.</p>
+</dd>
+<dt>inverse <span class="classifier-delimiter">:</span> <span class="classifier">boolean, optional</span></dt>
+<dd><p class="first last">If True, downward slope will be inversed. Useful to create
+biexponential curves. Defaults to True.</p>
+</dd>
+<dt>initToFirstVal <span class="classifier-delimiter">:</span> <span class="classifier">boolean, optional</span></dt>
+<dd><p class="first last">If True, audio buffer will be filled at initialization with the
+first value of the line. Defaults to False.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The out() method is bypassed. Expseg&#8217;s signal can not be sent to audio outs.</p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">l</span> <span class="o">=</span> <span class="n">Expseg</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span><span class="mi">500</span><span class="p">),(</span><span class="o">.</span><span class="mo">03</span><span class="p">,</span><span class="mi">1000</span><span class="p">),(</span><span class="o">.</span><span class="mi">1</span><span class="p">,</span><span class="mi">700</span><span class="p">),(</span><span class="mi">1</span><span class="p">,</span><span class="mi">500</span><span class="p">),(</span><span class="mi">2</span><span class="p">,</span><span class="mi">500</span><span class="p">)],</span> <span class="n">loop</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">Sine</span><span class="p">(</span><span class="n">freq</span><span class="o">=</span><span class="n">l</span><span class="p">,</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">mix</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># then call:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">l</span><span class="o">.</span><span class="n">play</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.Expseg.setList">
+<tt class="descname">setList</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>list</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">list of tuples</span></dt>
+<dd><p class="first last">new <cite>list</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Expseg.setLoop">
+<tt class="descname">setLoop</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>loop</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
+<dd><p class="first last">new <cite>loop</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Expseg.setExp">
+<tt class="descname">setExp</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>exp</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">new <cite>exp</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Expseg.setInverse">
+<tt class="descname">setInverse</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>inverse</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
+<dd><p class="first last">new <cite>inverse</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Expseg.replace">
+<tt class="descname">replace</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Alias for <cite>setList</cite> method.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">list of tuples</span></dt>
+<dd><p class="first last">new <cite>list</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Expseg.pause">
+<tt class="descname">pause</tt><big>(</big><big>)</big></dt>
+<dd><p>Toggles between play and stop mode without reset.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Expseg.graph">
+<tt class="descname">graph</tt><big>(</big><em>xlen=None</em>, <em>yrange=None</em>, <em>title=None</em>, <em>wxnoserver=False</em><big>)</big></dt>
+<dd><p>Opens a grapher window to control the shape of the envelope.</p>
+<p>When editing the grapher with the mouse, the new set of points
+will be send to the object on mouse up.</p>
+<p>Ctrl+C with focus on the grapher will copy the list of points to the
+clipboard, giving an easy way to insert the new shape in a script.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>xlen <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Set the maximum value of the X axis of the graph. If None, the
+maximum value is retrieve from the current list of points.
+Defaults to None.</p>
+</dd>
+<dt>yrange <span class="classifier-delimiter">:</span> <span class="classifier">tuple, optional</span></dt>
+<dd><p class="first last">Set the min and max values of the Y axis of the graph. If
+None, min and max are retrieve from the current list of points.
+Defaults to None.</p>
+</dd>
+<dt>title <span class="classifier-delimiter">:</span> <span class="classifier">string, optional</span></dt>
+<dd><p class="first last">Title of the window. If none is provided, the name of the
+class is used.</p>
+</dd>
+<dt>wxnoserver <span class="classifier-delimiter">:</span> <span class="classifier">boolean, optional</span></dt>
+<dd><p class="first last">With wxPython graphical toolkit, if True, tells the
+interpreter that there will be no server window.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p>If <cite>wxnoserver</cite> is set to True, the interpreter will not wait for the
+server GUI before showing the controller window.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Expseg.list">
+<tt class="descname">list</tt></dt>
+<dd><p>float. List of points (time, value).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Expseg.loop">
+<tt class="descname">loop</tt></dt>
+<dd><p>boolean. Looping mode.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Expseg.exp">
+<tt class="descname">exp</tt></dt>
+<dd><p>float. Exponent factor.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Expseg.inverse">
+<tt class="descname">inverse</tt></dt>
+<dd><p>boolean. Inverse downward slope.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="sig">
+<h2><em>Sig</em></h2>
+<dl class="class">
+<dt id="pyo.Sig">
+<em class="property">class </em><tt class="descname">Sig</tt><big>(</big><em>value</em>, <em>mul=1</em>, <em>add=0</em><big>)</big></dt>
+<dd><p>Convert numeric value to PyoObject signal.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoObject" title="pyo.PyoObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>value <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">Numerical value to convert.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">random</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fr</span> <span class="o">=</span> <span class="n">Sig</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">Port</span><span class="p">(</span><span class="n">fr</span><span class="p">,</span> <span class="n">risetime</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">falltime</span><span class="o">=</span><span class="mf">0.001</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">SineLoop</span><span class="p">(</span><span class="n">freq</span><span class="o">=</span><span class="n">p</span><span class="p">,</span> <span class="n">feedback</span><span class="o">=</span><span class="mf">0.08</span><span class="p">,</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">SineLoop</span><span class="p">(</span><span class="n">freq</span><span class="o">=</span><span class="n">p</span><span class="o">*</span><span class="mf">1.005</span><span class="p">,</span> <span class="n">feedback</span><span class="o">=</span><span class="mf">0.08</span><span class="p">,</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">pick_new_freq</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="n">fr</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randrange</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span><span class="mi">601</span><span class="p">,</span><span class="mi">50</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pat</span> <span class="o">=</span> <span class="n">Pattern</span><span class="p">(</span><span class="n">function</span><span class="o">=</span><span class="n">pick_new_freq</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span><span class="o">.</span><span class="n">play</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.Sig.setValue">
+<tt class="descname">setValue</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Changes the value of the signal stream.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">Numerical value to convert.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Sig.value">
+<tt class="descname">value</tt></dt>
+<dd><p>float or PyoObject. Numerical value to convert.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="sigto">
+<h2><em>SigTo</em></h2>
+<dl class="class">
+<dt id="pyo.SigTo">
+<em class="property">class </em><tt class="descname">SigTo</tt><big>(</big><em>value</em>, <em>time=0.025</em>, <em>init=0.0</em>, <em>mul=1</em>, <em>add=0</em><big>)</big></dt>
+<dd><p>Convert numeric value to PyoObject signal with portamento.</p>
+<p>When <cite>value</cite> is changed, a ramp is applied from the current
+value to the new value. Can be used with PyoObject to apply
+a linear portamento on an audio signal.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoObject" title="pyo.PyoObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>value <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">Numerical value to convert.</p>
+</dd>
+<dt>time <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Ramp time, in seconds, to reach the new value. Defaults to 0.025.</p>
+</dd>
+<dt>init <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Initial value of the internal memory. Defaults to 0.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The out() method is bypassed. SigTo&#8217;s signal can not be sent to audio outs.</p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">random</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fr</span> <span class="o">=</span> <span class="n">SigTo</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">SineLoop</span><span class="p">(</span><span class="n">freq</span><span class="o">=</span><span class="n">fr</span><span class="p">,</span> <span class="n">feedback</span><span class="o">=</span><span class="mf">0.08</span><span class="p">,</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">SineLoop</span><span class="p">(</span><span class="n">freq</span><span class="o">=</span><span class="n">fr</span><span class="o">*</span><span class="mf">1.005</span><span class="p">,</span> <span class="n">feedback</span><span class="o">=</span><span class="mf">0.08</span><span class="p">,</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">pick_new_freq</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="n">fr</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randrange</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span><span class="mi">501</span><span class="p">,</span><span class="mi">50</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pat</span> <span class="o">=</span> <span class="n">Pattern</span><span class="p">(</span><span class="n">function</span><span class="o">=</span><span class="n">pick_new_freq</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">play</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.SigTo.setValue">
+<tt class="descname">setValue</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Changes the value of the signal stream.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">Numerical value to convert.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.SigTo.setTime">
+<tt class="descname">setTime</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Changes the ramp time of the object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">New ramp time.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.SigTo.value">
+<tt class="descname">value</tt></dt>
+<dd><p>float or PyoObject. Numerical value to convert.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.SigTo.time">
+<tt class="descname">time</tt></dt>
+<dd><p>float. Ramp time.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Control Signals</a><ul>
+<li><a class="reference internal" href="#fader"><em>Fader</em></a></li>
+<li><a class="reference internal" href="#adsr"><em>Adsr</em></a></li>
+<li><a class="reference internal" href="#linseg"><em>Linseg</em></a></li>
+<li><a class="reference internal" href="#expseg"><em>Expseg</em></a></li>
+<li><a class="reference internal" href="#sig"><em>Sig</em></a></li>
+<li><a class="reference internal" href="#sigto"><em>SigTo</em></a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="arithmetic.html"
+                        title="previous chapter">Arithmetic</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="dynamics.html"
+                        title="next chapter">Dynamic management</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="dynamics.html" title="Dynamic management"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="arithmetic.html" title="Arithmetic"
+             >previous</a> |</li>
+        <li><a href="../../index.html">Pyo 0.7.9 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >API Documentation</a> &raquo;</li>
+          <li><a href="index.html" >Classes by category</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Olivier Bélanger.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

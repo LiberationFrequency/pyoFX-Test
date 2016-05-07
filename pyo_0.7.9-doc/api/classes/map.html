@@ -1,0 +1,571 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Value Converters (SLMap) &mdash; Pyo 0.7.9 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.7.9',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../../_static/E-PyoIcon.ico"/>
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="top" title="Pyo 0.7.9 documentation" href="../../index.html" />
+    <link rel="up" title="Classes by category" href="index.html" />
+    <link rel="next" title="Additional WxPython widgets" href="wxgui.html" />
+    <link rel="prev" title="Matrices" href="matrices.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="wxgui.html" title="Additional WxPython widgets"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="matrices.html" title="Matrices"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">Pyo 0.7.9 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >API Documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Classes by category</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-pyo">
+<span id="value-converters-slmap"></span><h1>Value Converters (SLMap)</h1>
+<p>These objects are used to convert values between different ranges.</p>
+<div class="section" id="map">
+<h2><em>Map</em></h2>
+<dl class="class">
+<dt id="pyo.Map">
+<em class="property">class </em><tt class="descname">Map</tt><big>(</big><em>min</em>, <em>max</em>, <em>scale</em><big>)</big></dt>
+<dd><p>Converts value between 0 and 1 on various scales.</p>
+<p>Base class for Map objects.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>min <span class="classifier-delimiter">:</span> <span class="classifier">int or float</span></dt>
+<dd><p class="first last">Lowest value of the range.</p>
+</dd>
+<dt>max <span class="classifier-delimiter">:</span> <span class="classifier">int or float</span></dt>
+<dd><p class="first last">Highest value of the range.</p>
+</dd>
+<dt>scale <span class="classifier-delimiter">:</span> <span class="classifier">string {&#8216;lin&#8217;, &#8216;log&#8217;}</span></dt>
+<dd><p class="first last">Method used to scale the input value on the specified range.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="n">Map</span><span class="p">(</span><span class="mf">20.</span><span class="p">,</span> <span class="mf">20000.</span><span class="p">,</span> <span class="s">&#39;log&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">m</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="o">.</span><span class="mi">5</span><span class="p">)</span>
+<span class="go">632.455532034</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">m</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mi">12000</span><span class="p">)</span>
+<span class="go">0.926050416795</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.Map.get">
+<tt class="descname">get</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Takes <cite>x</cite> between 0 and 1 and returns scaled value.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Map.set">
+<tt class="descname">set</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Takes <cite>x</cite> in the real range and returns value unscaled
+(between 0 and 1).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Map.setMin">
+<tt class="descname">setMin</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>min</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">New <cite>min</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Map.setMax">
+<tt class="descname">setMax</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>max</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">New <cite>max</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Map.setScale">
+<tt class="descname">setScale</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>scale</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
+<dd><p class="first last">New <cite>scale</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Map.min">
+<tt class="descname">min</tt></dt>
+<dd><p>int or float. Lowest value of the range.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Map.max">
+<tt class="descname">max</tt></dt>
+<dd><p>int or float. Highest value of the range.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Map.scale">
+<tt class="descname">scale</tt></dt>
+<dd><p>string. Method used to scale the input value.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="slmap">
+<h2><em>SLMap</em></h2>
+<dl class="class">
+<dt id="pyo.SLMap">
+<em class="property">class </em><tt class="descname">SLMap</tt><big>(</big><em>min</em>, <em>max</em>, <em>scale</em>, <em>name</em>, <em>init</em>, <em>res='float'</em>, <em>ramp=0.025</em>, <em>dataOnly=False</em><big>)</big></dt>
+<dd><p>Base Map class used to manage control sliders.</p>
+<p>Derived from Map class, a few parameters are added for sliders
+initialization.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="#pyo.Map" title="pyo.Map"><tt class="xref py py-class docutils literal"><span class="pre">Map</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>min <span class="classifier-delimiter">:</span> <span class="classifier">int or float</span></dt>
+<dd><p class="first last">Smallest value of the range.</p>
+</dd>
+<dt>max <span class="classifier-delimiter">:</span> <span class="classifier">int or float</span></dt>
+<dd><p class="first last">Highest value of the range.</p>
+</dd>
+<dt>scale <span class="classifier-delimiter">:</span> <span class="classifier">string {&#8216;lin&#8217;, &#8216;log&#8217;}</span></dt>
+<dd><p class="first last">Method used to scale the input value on the specified range.</p>
+</dd>
+<dt>name <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
+<dd><p class="first last">Name of the attributes the slider is affected to.</p>
+</dd>
+<dt>init <span class="classifier-delimiter">:</span> <span class="classifier">int or float</span></dt>
+<dd><p class="first last">Initial value. Specified in the real range, not between 0 and 1. Use
+the <cite>set</cite> method to retreive the normalized corresponding value.</p>
+</dd>
+<dt>res <span class="classifier-delimiter">:</span> <span class="classifier">string {&#8216;int&#8217;, &#8216;float&#8217;}, optional</span></dt>
+<dd><p class="first last">Sets the resolution of the slider. Defaults to &#8216;float&#8217;.</p>
+</dd>
+<dt>ramp <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Ramp time, in seconds, used to smooth the signal sent from slider
+to object&#8217;s attribute. Defaults to 0.025.</p>
+</dd>
+<dt>dataOnly <span class="classifier-delimiter">:</span> <span class="classifier">boolean, optional</span></dt>
+<dd><p class="first last">Set this argument to True if the parameter does not accept audio
+signal as control but discreet values. If True, label will be
+marked with a star symbol (*). Defaults to False.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ifs</span> <span class="o">=</span> <span class="p">[</span><span class="mi">350</span><span class="p">,</span><span class="mi">360</span><span class="p">,</span><span class="mi">375</span><span class="p">,</span><span class="mi">388</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">maps</span> <span class="o">=</span> <span class="p">[</span><span class="n">SLMap</span><span class="p">(</span><span class="mf">20.</span><span class="p">,</span> <span class="mf">2000.</span><span class="p">,</span> <span class="s">&#39;log&#39;</span><span class="p">,</span> <span class="s">&#39;freq&#39;</span><span class="p">,</span> <span class="n">ifs</span><span class="p">),</span> <span class="n">SLMap</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="s">&#39;lin&#39;</span><span class="p">,</span> <span class="s">&#39;feedback&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">SLMapMul</span><span class="p">(</span><span class="o">.</span><span class="mi">1</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">SineLoop</span><span class="p">(</span><span class="n">freq</span><span class="o">=</span><span class="n">ifs</span><span class="p">,</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">ctrl</span><span class="p">(</span><span class="n">maps</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="attribute">
+<dt id="pyo.SLMap.name">
+<tt class="descname">name</tt></dt>
+<dd><p>string. Name of the parameter to control.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.SLMap.init">
+<tt class="descname">init</tt></dt>
+<dd><p>float. Initial value of the slider.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.SLMap.res">
+<tt class="descname">res</tt></dt>
+<dd><p>string. Slider resolution {int or float}.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.SLMap.ramp">
+<tt class="descname">ramp</tt></dt>
+<dd><p>float. Ramp time in seconds.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.SLMap.dataOnly">
+<tt class="descname">dataOnly</tt></dt>
+<dd><p>boolean. True if argument does not accept audio stream.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="slmapfreq">
+<h2><em>SLMapFreq</em></h2>
+<dl class="class">
+<dt id="pyo.SLMapFreq">
+<em class="property">class </em><tt class="descname">SLMapFreq</tt><big>(</big><em>init=1000</em><big>)</big></dt>
+<dd><p>SLMap with normalized values for a &#8216;freq&#8217; slider.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="#pyo.SLMap" title="pyo.SLMap"><tt class="xref py py-class docutils literal"><span class="pre">SLMap</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>init <span class="classifier-delimiter">:</span> <span class="classifier">int or float, optional</span></dt>
+<dd><p class="first last">Initial value. Specified in the real range, not between 0 and 1.
+Defaults to 1000.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>SLMapFreq values are:</p>
+<ul class="last simple">
+<li>min = 20.0</li>
+<li>max = 20000.0</li>
+<li>scale = &#8216;log&#8217;</li>
+<li>name = &#8216;freq&#8217;</li>
+<li>res = &#8216;float&#8217;</li>
+<li>ramp = 0.025</li>
+</ul>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="slmapmul">
+<h2><em>SLMapMul</em></h2>
+<dl class="class">
+<dt id="pyo.SLMapMul">
+<em class="property">class </em><tt class="descname">SLMapMul</tt><big>(</big><em>init=1.0</em><big>)</big></dt>
+<dd><p>SLMap with normalized values for a &#8216;mul&#8217; slider.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="#pyo.SLMap" title="pyo.SLMap"><tt class="xref py py-class docutils literal"><span class="pre">SLMap</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>init <span class="classifier-delimiter">:</span> <span class="classifier">int or float, optional</span></dt>
+<dd><p class="first last">Initial value. Specified in the real range, not between 0 and 1.
+Defaults to 1.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>SLMapMul values are:</p>
+<ul class="last simple">
+<li>min = 0.0</li>
+<li>max = 2.0</li>
+<li>scale = &#8216;lin&#8217;</li>
+<li>name = &#8216;mul&#8217;</li>
+<li>res = &#8216;float&#8217;</li>
+<li>ramp = 0.025</li>
+</ul>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="slmapphase">
+<h2><em>SLMapPhase</em></h2>
+<dl class="class">
+<dt id="pyo.SLMapPhase">
+<em class="property">class </em><tt class="descname">SLMapPhase</tt><big>(</big><em>init=0.0</em><big>)</big></dt>
+<dd><p>SLMap with normalized values for a &#8216;phase&#8217; slider.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="#pyo.SLMap" title="pyo.SLMap"><tt class="xref py py-class docutils literal"><span class="pre">SLMap</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>init <span class="classifier-delimiter">:</span> <span class="classifier">int or float, optional</span></dt>
+<dd><p class="first last">Initial value. Specified in the real range, not between 0 and 1.
+Defaults to 0.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>SLMapPhase values are:</p>
+<ul class="last simple">
+<li>min = 0.0</li>
+<li>max = 1.0</li>
+<li>scale = &#8216;lin&#8217;</li>
+<li>name = &#8216;phase&#8217;</li>
+<li>res = &#8216;float&#8217;</li>
+<li>ramp = 0.025</li>
+</ul>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="slmapq">
+<h2><em>SLMapQ</em></h2>
+<dl class="class">
+<dt id="pyo.SLMapQ">
+<em class="property">class </em><tt class="descname">SLMapQ</tt><big>(</big><em>init=1.0</em><big>)</big></dt>
+<dd><p>SLMap with normalized values for a &#8216;q&#8217; slider.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="#pyo.SLMap" title="pyo.SLMap"><tt class="xref py py-class docutils literal"><span class="pre">SLMap</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>init <span class="classifier-delimiter">:</span> <span class="classifier">int or float, optional</span></dt>
+<dd><p class="first last">Initial value. Specified in the real range, not between 0 and 1.
+Defaults to 1.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>SLMapQ values are:</p>
+<ul class="last simple">
+<li>min = 0.1</li>
+<li>max = 100.0</li>
+<li>scale = &#8216;log&#8217;</li>
+<li>name = &#8216;q&#8217;</li>
+<li>res = &#8216;float&#8217;</li>
+<li>ramp = 0.025</li>
+</ul>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="slmapdur">
+<h2><em>SLMapDur</em></h2>
+<dl class="class">
+<dt id="pyo.SLMapDur">
+<em class="property">class </em><tt class="descname">SLMapDur</tt><big>(</big><em>init=1.0</em><big>)</big></dt>
+<dd><p>SLMap with normalized values for a &#8216;dur&#8217; slider.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="#pyo.SLMap" title="pyo.SLMap"><tt class="xref py py-class docutils literal"><span class="pre">SLMap</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>init <span class="classifier-delimiter">:</span> <span class="classifier">int or float, optional</span></dt>
+<dd><p class="first last">Initial value. Specified in the real range, not between 0 and 1.
+Defaults to 1.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>SLMapDur values are:</p>
+<ul class="last simple">
+<li>min = 0.</li>
+<li>max = 60.0</li>
+<li>scale = &#8216;lin&#8217;</li>
+<li>name = &#8216;dur&#8217;</li>
+<li>res = &#8216;float&#8217;</li>
+<li>ramp = 0.025</li>
+</ul>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="slmappan">
+<h2><em>SLMapPan</em></h2>
+<dl class="class">
+<dt id="pyo.SLMapPan">
+<em class="property">class </em><tt class="descname">SLMapPan</tt><big>(</big><em>init=0.0</em><big>)</big></dt>
+<dd><p>SLMap with normalized values for a &#8216;pan&#8217; slider.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="#pyo.SLMap" title="pyo.SLMap"><tt class="xref py py-class docutils literal"><span class="pre">SLMap</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>init <span class="classifier-delimiter">:</span> <span class="classifier">int or float, optional</span></dt>
+<dd><p class="first last">Initial value. Specified in the real range, not between 0 and 1.
+Defaults to 0.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>SLMapPhase values are:</p>
+<ul class="last simple">
+<li>min = 0.0</li>
+<li>max = 1.0</li>
+<li>scale = &#8216;lin&#8217;</li>
+<li>name = &#8216;pan&#8217;</li>
+<li>res = &#8216;float&#8217;</li>
+<li>ramp = 0.025</li>
+</ul>
+</div>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Value Converters (SLMap)</a><ul>
+<li><a class="reference internal" href="#map"><em>Map</em></a></li>
+<li><a class="reference internal" href="#slmap"><em>SLMap</em></a></li>
+<li><a class="reference internal" href="#slmapfreq"><em>SLMapFreq</em></a></li>
+<li><a class="reference internal" href="#slmapmul"><em>SLMapMul</em></a></li>
+<li><a class="reference internal" href="#slmapphase"><em>SLMapPhase</em></a></li>
+<li><a class="reference internal" href="#slmapq"><em>SLMapQ</em></a></li>
+<li><a class="reference internal" href="#slmapdur"><em>SLMapDur</em></a></li>
+<li><a class="reference internal" href="#slmappan"><em>SLMapPan</em></a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="matrices.html"
+                        title="previous chapter">Matrices</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="wxgui.html"
+                        title="next chapter">Additional WxPython widgets</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="wxgui.html" title="Additional WxPython widgets"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="matrices.html" title="Matrices"
+             >previous</a> |</li>
+        <li><a href="../../index.html">Pyo 0.7.9 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >API Documentation</a> &raquo;</li>
+          <li><a href="index.html" >Classes by category</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Olivier Bélanger.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

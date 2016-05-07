@@ -1,0 +1,1408 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Base Classes &mdash; Pyo 0.7.9 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.7.9',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../../_static/E-PyoIcon.ico"/>
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="top" title="Pyo 0.7.9 documentation" href="../../index.html" />
+    <link rel="up" title="Classes by category" href="index.html" />
+    <link rel="next" title="Audio Signal Analysis" href="analysis.html" />
+    <link rel="prev" title="Controller listeners" href="listener.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="analysis.html" title="Audio Signal Analysis"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="listener.html" title="Controller listeners"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">Pyo 0.7.9 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >API Documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Classes by category</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-pyo">
+<span id="base-classes"></span><h1>Base Classes</h1>
+<p>Here are defined the base classes implementing common behaviors for
+the different kinds of objects in the library.</p>
+<div class="section" id="pyoobjectbase">
+<h2><em>PyoObjectBase</em></h2>
+<dl class="class">
+<dt id="pyo.PyoObjectBase">
+<em class="property">class </em><tt class="descname">PyoObjectBase</tt></dt>
+<dd><p>Base class for all pyo objects.</p>
+<p>This object encapsulates some common behaviors for all pyo objects.</p>
+<p>One typically inherits from a more specific subclass of this class
+instead of using it directly.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p><strong>Operations allowed on all PyoObjectBase</strong></p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span> <span class="c"># Return the number of streams managed by the object.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="c"># Return stream `x` of the object. `x` is a number from 0 to len(obj)-1.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">dir</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span> <span class="c"># Return the list of attributes of the object.</span>
+</pre></div>
+</div>
+</div>
+<dl class="method">
+<dt id="pyo.PyoObjectBase.dump">
+<tt class="descname">dump</tt><big>(</big><big>)</big></dt>
+<dd><p>Print infos about the current state of the object.</p>
+<p>Print the number of Stream objects managed by the instance
+and the current status of the object&#8217;s attributes.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoObjectBase.getBaseObjects">
+<tt class="descname">getBaseObjects</tt><big>(</big><big>)</big></dt>
+<dd><p>Return a list of Stream objects managed by the instance.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoObjectBase.getServer">
+<tt class="descname">getServer</tt><big>(</big><big>)</big></dt>
+<dd><p>Return a reference to the current Server object.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoObjectBase.getSamplingRate">
+<tt class="descname">getSamplingRate</tt><big>(</big><big>)</big></dt>
+<dd><p>Return the current sampling rate (samples per second), as a float.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoObjectBase.getBufferSize">
+<tt class="descname">getBufferSize</tt><big>(</big><big>)</big></dt>
+<dd><p>Return the current buffer size (samples per buffer), as an integer.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="pyoobject">
+<h2><em>PyoObject</em></h2>
+<dl class="class">
+<dt id="pyo.PyoObject">
+<em class="property">class </em><tt class="descname">PyoObject</tt><big>(</big><em>mul=1.0</em>, <em>add=0.0</em><big>)</big></dt>
+<dd><p>Base class for all pyo objects that manipulate vectors of samples.</p>
+<p>The user should never instantiate an object of this class.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="#pyo.PyoObjectBase" title="pyo.PyoObjectBase"><tt class="xref py py-class docutils literal"><span class="pre">PyoObjectBase</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>mul <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject, optional</span></dt>
+<dd><p class="first last">Multiplication factor. Defaults to 1.</p>
+</dd>
+<dt>add <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject, optional</span></dt>
+<dd><p class="first last">Addition factor. Defaults to 0.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p><strong>Arithmetics</strong></p>
+<p>Multiplication, addition, division and substraction can be applied
+between pyo objects or between pyo objects and numbers. Doing so
+returns a Dummy object with the result of the operation.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># creates a Dummy object `b` with `mul` set to 0.5 and leave `a` unchanged.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="mf">0.5</span>
+</pre></div>
+</div>
+<p>Inplace multiplication, addition, division and substraction can be
+applied between pyo objects or between pyo objects and numbers.
+These operations will replace the <cite>mul</cite> or <cite>add</cite> factor of the object.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">*=</span> <span class="mf">0.5</span> <span class="c"># replaces the `mul` attribute of `a`.</span>
+</pre></div>
+</div>
+<p>The next operators can be used with PyoObject (not with XXX_base objects).</p>
+<p><strong>Exponent</strong> and <strong>modulo</strong></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">**</span> <span class="mi">10</span> <span class="c"># returns a Pow object created as : Pow(a, 10)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="mi">10</span> <span class="o">**</span> <span class="n">a</span> <span class="c"># returns a Pow object created as : Pow(10, a)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">%</span> <span class="mi">4</span> <span class="c"># returns a Wrap object created as : Wrap(a, 0, 4)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">%</span> <span class="n">b</span> <span class="c"># returns a Wrap object created as : Wrap(a, 0, b)</span>
+</pre></div>
+</div>
+<p><strong>Unary negative</strong> (<strong>-</strong>)</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="o">-</span><span class="n">a</span> <span class="c"># returns a Dummy object with negative values of streams in `a`.</span>
+</pre></div>
+</div>
+<p><strong>Comparison operators</strong></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">&lt;</span> <span class="n">b</span> <span class="c"># returns a Compare object created as : Compare(a, comp=b, mode=&quot;&lt;&quot;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">&lt;=</span> <span class="n">b</span> <span class="c"># returns a Compare object created as : Compare(a, comp=b, mode=&quot;&lt;=&quot;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">==</span> <span class="n">b</span> <span class="c"># returns a Compare object created as : Compare(a, comp=b, mode=&quot;==&quot;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">!=</span> <span class="n">b</span> <span class="c"># returns a Compare object created as : Compare(a, comp=b, mode=&quot;!=&quot;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">&gt;</span> <span class="n">b</span> <span class="c"># returns a Compare object created as : Compare(a, comp=b, mode=&quot;&gt;&quot;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">&gt;=</span> <span class="n">b</span> <span class="c"># returns a Compare object created as : Compare(a, comp=b, mode=&quot;&gt;=&quot;)</span>
+</pre></div>
+</div>
+<p class="last">A special case concerns the comparison of a PyoObject with None. All operators
+return False except <cite>a != None</cite>, which returns True.</p>
+</div>
+<dl class="method">
+<dt id="pyo.PyoObject.isPlaying">
+<tt class="descname">isPlaying</tt><big>(</big><em>all=False</em><big>)</big></dt>
+<dd><p>Returns True if the object is playing, otherwise, returns False.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>all <span class="classifier-delimiter">:</span> <span class="classifier">boolean, optional</span></dt>
+<dd><p class="first">If True, the object returns a list with the state of all
+streams managed by the object.</p>
+<p class="last">If False, it return a boolean corresponding to the state
+of the first stream.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoObject.isOutputting">
+<tt class="descname">isOutputting</tt><big>(</big><em>all=False</em><big>)</big></dt>
+<dd><p>Returns True if the object is sending samples to dac, otherwise, returns False.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>all <span class="classifier-delimiter">:</span> <span class="classifier">boolean, optional</span></dt>
+<dd><p class="first">If True, the object returns a list with the state of all
+streams managed by the object.</p>
+<p class="last">If False, it return a boolean corresponding to the state
+of the first stream.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoObject.get">
+<tt class="descname">get</tt><big>(</big><em>all=False</em><big>)</big></dt>
+<dd><p>Return the first sample of the current buffer as a float.</p>
+<p>Can be used to convert audio stream to usable Python data.</p>
+<p>Object that implements string identifier for specific audio
+streams must use the corresponding string to specify the stream
+from which to get the value. See get() method definition in these
+object&#8217;s man pages.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>all <span class="classifier-delimiter">:</span> <span class="classifier">boolean, optional</span></dt>
+<dd><p class="first">If True, the first value of each object&#8217;s stream
+will be returned as a list.</p>
+<p class="last">If False, only the value of the first object&#8217;s stream
+will be returned as a float.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoObject.play">
+<tt class="descname">play</tt><big>(</big><em>dur=0</em>, <em>delay=0</em><big>)</big></dt>
+<dd><p>Start processing without sending samples to output.
+This method is called automatically at the object creation.</p>
+<p>This method returns <cite>self</cite>, allowing it to be applied at the object
+creation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>dur <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Duration, in seconds, of the object&#8217;s activation. The default is 0
+and means infinite duration.</p>
+</dd>
+<dt>delay <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Delay, in seconds, before the object&#8217;s activation. Defaults to 0.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoObject.out">
+<tt class="descname">out</tt><big>(</big><em>chnl=0</em>, <em>inc=1</em>, <em>dur=0</em>, <em>delay=0</em><big>)</big></dt>
+<dd><p>Start processing and send samples to audio output beginning at <cite>chnl</cite>.</p>
+<p>This method returns <cite>self</cite>, allowing it to be applied at the object
+creation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>chnl <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">Physical output assigned to the first audio stream of the object.
+Defaults to 0.</p>
+</dd>
+<dt>inc <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">Output channel increment value. Defaults to 1.</p>
+</dd>
+<dt>dur <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Duration, in seconds, of the object&#8217;s activation. The default is 0
+and means infinite duration.</p>
+</dd>
+<dt>delay <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Delay, in seconds, before the object&#8217;s activation. Defaults to 0.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p>If <cite>chnl</cite> &gt;= 0, successive streams increment the output number by
+<cite>inc</cite> and wrap around the global number of channels.</p>
+<p>If <cite>chnl</cite> is negative, streams begin at 0, increment
+the output number by <cite>inc</cite> and wrap around the global number of
+channels. Then, the list of streams is scrambled.</p>
+<p>If <cite>chnl</cite> is a list, successive values in the list will be
+assigned to successive streams.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoObject.stop">
+<tt class="descname">stop</tt><big>(</big><big>)</big></dt>
+<dd><p>Stop processing.</p>
+<p>This method returns <cite>self</cite>, allowing it to be applied at the object
+creation.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoObject.mix">
+<tt class="descname">mix</tt><big>(</big><em>voices=1</em><big>)</big></dt>
+<dd><p>Mix the object&#8217;s audio streams into <cite>voices</cite> streams and return
+a Mix object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>voices <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first">Number of audio streams of the Mix object created by this method.
+Defaults to 1.</p>
+<p class="last">If more than 1, object&#8217;s streams are alternated and added into
+Mix object&#8217;s streams.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoObject.range">
+<tt class="descname">range</tt><big>(</big><em>min</em>, <em>max</em><big>)</big></dt>
+<dd><p>Adjust <cite>mul</cite> and <cite>add</cite> attributes according to a given range.</p>
+<p>This function assumes a signal between -1 and 1. Arguments may be
+list of floats for multi-streams objects.</p>
+<p>This method returns <cite>self</cite>, allowing it to be applied at the object
+creation:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">lfo</span> <span class="o">=</span> <span class="n">Sine</span><span class="p">(</span><span class="n">freq</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">range</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>min <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">Minimum value of the output signal.</p>
+</dd>
+<dt>max <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">Maximum value of the output signal.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoObject.setMul">
+<tt class="descname">setMul</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>mul</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">New <cite>mul</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoObject.setAdd">
+<tt class="descname">setAdd</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>add</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">New <cite>add</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoObject.setSub">
+<tt class="descname">setSub</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace and inverse the <cite>add</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">New inversed <cite>add</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoObject.setDiv">
+<tt class="descname">setDiv</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace and inverse the <cite>mul</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">New inversed <cite>mul</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoObject.set">
+<tt class="descname">set</tt><big>(</big><em>attr</em>, <em>value</em>, <em>port=0.025</em><big>)</big></dt>
+<dd><p>Replace any attribute with portamento.</p>
+<p>This method is intended to be applied on attributes that are not
+already assigned to PyoObjects. It will work only with floats or
+list of floats.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>attr <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
+<dd><p class="first last">Name of the attribute as a string.</p>
+</dd>
+<dt>value <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">New value.</p>
+</dd>
+<dt>port <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Time, in seconds, to reach the new value.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoObject.ctrl">
+<tt class="descname">ctrl</tt><big>(</big><em>map_list=None</em>, <em>title=None</em>, <em>wxnoserver=False</em><big>)</big></dt>
+<dd><p>Opens a sliders window to control the parameters of the object.
+Only parameters that can be set to a PyoObject are allowed
+to be mapped on a slider.</p>
+<p>If a list of values are given to a parameter, a multisliders
+will be used to control each stream independently.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>map_list <span class="classifier-delimiter">:</span> <span class="classifier">list of SLMap objects, optional</span></dt>
+<dd><p class="first last">Users defined set of parameters scaling. There is default
+scaling for each object that accept <cite>ctrl</cite> method.</p>
+</dd>
+<dt>title <span class="classifier-delimiter">:</span> <span class="classifier">string, optional</span></dt>
+<dd><p class="first last">Title of the window. If none is provided, the name of the
+class is used.</p>
+</dd>
+<dt>wxnoserver <span class="classifier-delimiter">:</span> <span class="classifier">boolean, optional</span></dt>
+<dd><p class="first last">With wxPython graphical toolkit, if True, tells the
+interpreter that there will be no server window.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p>If <cite>wxnoserver</cite> is set to True, the interpreter will not wait for
+the server GUI before showing the controller window.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.PyoObject.mul">
+<tt class="descname">mul</tt></dt>
+<dd><p>float or PyoObject. Multiplication factor.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.PyoObject.add">
+<tt class="descname">add</tt></dt>
+<dd><p>float or PyoObject. Addition factor.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="pyotableobject">
+<h2><em>PyoTableObject</em></h2>
+<dl class="class">
+<dt id="pyo.PyoTableObject">
+<em class="property">class </em><tt class="descname">PyoTableObject</tt><big>(</big><em>size=0</em><big>)</big></dt>
+<dd><p>Base class for all pyo table objects.</p>
+<p>A table object is a buffer memory to store precomputed samples.</p>
+<p>The user should never instantiate an object of this class.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="#pyo.PyoObjectBase" title="pyo.PyoObjectBase"><tt class="xref py py-class docutils literal"><span class="pre">PyoObjectBase</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>size <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">Length of the table in samples. Usually provided by the child object.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pyo.PyoTableObject.save">
+<tt class="descname">save</tt><big>(</big><em>path</em>, <em>format=0</em>, <em>sampletype=0</em><big>)</big></dt>
+<dd><p>Writes the content of the table in an audio file.</p>
+<p>The sampling rate of the file is the sampling rate of the server
+and the number of channels is the number of table streams of the
+object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>path <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
+<dd><p class="first last">Full path (including extension) of the new file.</p>
+</dd>
+<dt>format <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><dl class="first last docutils">
+<dt>Format type of the new file. Supported formats are:</dt>
+<dd><ol class="first last arabic simple" start="0">
+<li>WAVE - Microsoft WAV format (little endian) {.wav, .wave}</li>
+<li>AIFF - Apple/SGI AIFF format (big endian) {.aif, .aiff}</li>
+<li>AU - Sun/NeXT AU format (big endian) {.au}</li>
+<li>RAW - RAW PCM data {no extension}</li>
+<li>SD2 - Sound Designer 2 {.sd2}</li>
+<li>FLAC - FLAC lossless file format {.flac}</li>
+<li>CAF - Core Audio File format {.caf}</li>
+<li>OGG - Xiph OGG container {.ogg}</li>
+</ol>
+</dd>
+</dl>
+</dd>
+<dt>sampletype <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first">Bit depth encoding of the audio file.</p>
+<dl class="last docutils">
+<dt>SD2 and FLAC only support 16 or 24 bit int. Supported types are:</dt>
+<dd><ol class="first last arabic simple" start="0">
+<li>16 bit int (default)</li>
+<li>24 bit int</li>
+<li>32 bit int</li>
+<li>32 bit float</li>
+<li>64 bit float</li>
+<li>U-Law encoded</li>
+<li>A-Law encoded</li>
+</ol>
+</dd>
+</dl>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoTableObject.write">
+<tt class="descname">write</tt><big>(</big><em>path</em>, <em>oneline=True</em><big>)</big></dt>
+<dd><p>Writes the content of the table in a text file.</p>
+<p>This function can be used to store the table data as a
+list of floats into a text file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>path <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
+<dd><p class="first last">Full path of the generated file.</p>
+</dd>
+<dt>oneline <span class="classifier-delimiter">:</span> <span class="classifier">boolean, optional</span></dt>
+<dd><p class="first">If True, list of samples will inserted on one line.</p>
+<p class="last">If False, list of samples will be truncated to 8 floats
+per line.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoTableObject.read">
+<tt class="descname">read</tt><big>(</big><em>path</em><big>)</big></dt>
+<dd><p>Reads the content of a text file and replaces the table data
+with the values stored in the file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>path <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
+<dd><p class="first last">Full path of the file to read.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The format is a list of lists of floats. For example, A two
+tablestreams object must be given a content like this:</p>
+<p>[ [ 0.0, 1.0, 0.5, ... ], [ 1.0, 0.99, 0.98, 0.97, ... ] ]</p>
+<p>Each object&#8217;s tablestream will be resized according to the
+length of the lists.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoTableObject.setSize">
+<tt class="descname">setSize</tt><big>(</big><em>size</em><big>)</big></dt>
+<dd><p>Change the size of the table.</p>
+<p>This will erase the previously drawn waveform.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>size <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">New table size in samples.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoTableObject.getSize">
+<tt class="descname">getSize</tt><big>(</big><em>all=False</em><big>)</big></dt>
+<dd><p>Return table size in samples.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>all <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
+<dd><p class="first last">If the table contains more than one stream and <cite>all</cite> is True,
+returns a list of all sizes. Otherwise, returns only the
+first size as an int. Defaults to False.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoTableObject.put">
+<tt class="descname">put</tt><big>(</big><em>value</em>, <em>pos=0</em><big>)</big></dt>
+<dd><p>Puts a value at specified sample position in the table.</p>
+<p>If the object has more than 1 tablestream, the default is to
+record the value in each table. User can call obj[x].put()
+to record into a specific table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>value <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">Value, as floating-point, to record in the table.</p>
+</dd>
+<dt>pos <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">Position, in samples, where to record value. Defaults to 0.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoTableObject.get">
+<tt class="descname">get</tt><big>(</big><em>pos</em><big>)</big></dt>
+<dd><p>Returns the value, as float, stored at a specified position in the table.</p>
+<p>If the object has more than 1 tablestream, the default is to
+return a list with the value of each tablestream. User can call
+obj[x].get() to get the value of a specific table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>pos <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">Position, in samples, where to read the value. Defaults to 0.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoTableObject.getTable">
+<tt class="descname">getTable</tt><big>(</big><em>all=False</em><big>)</big></dt>
+<dd><p>Returns the content of the table as list of floats.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>all <span class="classifier-delimiter">:</span> <span class="classifier">boolean, optional</span></dt>
+<dd><p class="first">If True, all sub tables are retrieved and returned as a list
+of list of floats.</p>
+<p class="last">If False, a single list containing the content of the first
+subtable (or the only one) is returned.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoTableObject.normalize">
+<tt class="descname">normalize</tt><big>(</big><big>)</big></dt>
+<dd><p>Normalize table samples between -1 and 1.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoTableObject.reset">
+<tt class="descname">reset</tt><big>(</big><big>)</big></dt>
+<dd><p>Resets table samples to 0.0.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoTableObject.removeDC">
+<tt class="descname">removeDC</tt><big>(</big><big>)</big></dt>
+<dd><p>Filter out DC offset from the table&#8217;s data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoTableObject.reverse">
+<tt class="descname">reverse</tt><big>(</big><big>)</big></dt>
+<dd><p>Reverse the table&#8217;s data in time.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoTableObject.invert">
+<tt class="descname">invert</tt><big>(</big><big>)</big></dt>
+<dd><p>Reverse the table&#8217;s data in amplitude.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoTableObject.rectify">
+<tt class="descname">rectify</tt><big>(</big><big>)</big></dt>
+<dd><p>Positive rectification of the table&#8217;s data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoTableObject.pow">
+<tt class="descname">pow</tt><big>(</big><em>exp=10</em><big>)</big></dt>
+<dd><p>Apply a power function on each sample in the table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>exp <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Exponent factor. Defaults to 10.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoTableObject.bipolarGain">
+<tt class="descname">bipolarGain</tt><big>(</big><em>gpos=1</em>, <em>gneg=1</em><big>)</big></dt>
+<dd><p>Apply different gain factor for positive and negative samples.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>gpos <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Gain factor for positive samples. Defaults to 1.</p>
+</dd>
+<dt>gneg <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Gain factor for negative samples. Defaults to 1.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoTableObject.lowpass">
+<tt class="descname">lowpass</tt><big>(</big><em>freq=1000</em><big>)</big></dt>
+<dd><p>Apply a one-pole lowpass filter on table&#8217;s samples.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>freq <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Filter&#8217;s cutoff, in Hertz. Defaults to 1000.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoTableObject.fadein">
+<tt class="descname">fadein</tt><big>(</big><em>dur=0.1</em><big>)</big></dt>
+<dd><p>Apply a gradual increase in the level of the table&#8217;s samples.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>dur <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Fade in duration, in seconds. Defaults to 0.1.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoTableObject.fadeout">
+<tt class="descname">fadeout</tt><big>(</big><em>dur=0.1</em><big>)</big></dt>
+<dd><p>Apply a gradual decrease in the level of the table&#8217;s samples.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>dur <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Fade out duration, in seconds. Defaults to 0.1.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoTableObject.add">
+<tt class="descname">add</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Performs addition on the table values.</p>
+<p>Adds the argument to each table values, position by position
+if the argument is a list or another PyoTableObject.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float, list or PyoTableObject</span></dt>
+<dd><p class="first last">value(s) to add.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoTableObject.sub">
+<tt class="descname">sub</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Performs substraction on the table values.</p>
+<p>Substracts the argument to each table values, position by position
+if the argument is a list or another PyoTableObject.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float, list or PyoTableObject</span></dt>
+<dd><p class="first last">value(s) to substract.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoTableObject.mul">
+<tt class="descname">mul</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Performs multiplication on the table values.</p>
+<p>Multiply each table values by the argument, position by position
+if the argument is a list or another PyoTableObject.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float, list or PyoTableObject</span></dt>
+<dd><p class="first last">value(s) to multiply.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoTableObject.copy">
+<tt class="descname">copy</tt><big>(</big><big>)</big></dt>
+<dd><p>Returns a deep copy of the object.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoTableObject.view">
+<tt class="descname">view</tt><big>(</big><em>title='Table waveform'</em>, <em>wxnoserver=False</em><big>)</big></dt>
+<dd><p>Opens a window showing the contents of the table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>title <span class="classifier-delimiter">:</span> <span class="classifier">string, optional</span></dt>
+<dd><p class="first last">Window title. Defaults to &#8220;Table waveform&#8221;.</p>
+</dd>
+<dt>wxnoserver <span class="classifier-delimiter">:</span> <span class="classifier">boolean, optional</span></dt>
+<dd><p class="first last">With wxPython graphical toolkit, if True, tells the
+interpreter that there will be no server window.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p>If <cite>wxnoserver</cite> is set to True, the interpreter will not wait for
+the server GUI before showing the controller window.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoTableObject.refreshView">
+<tt class="descname">refreshView</tt><big>(</big><big>)</big></dt>
+<dd><p>Updates the graphical display of the table, if applicable.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.PyoTableObject.size">
+<tt class="descname">size</tt></dt>
+<dd><p>int. Table size in samples.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="pyomatrixobject">
+<h2><em>PyoMatrixObject</em></h2>
+<dl class="class">
+<dt id="pyo.PyoMatrixObject">
+<em class="property">class </em><tt class="descname">PyoMatrixObject</tt></dt>
+<dd><p>Base class for all pyo matrix objects.</p>
+<p>A matrix object is a 2 dimensions buffer memory to store
+precomputed samples.</p>
+<p>The user should never instantiate an object of this class.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><a class="reference internal" href="#pyo.PyoObjectBase" title="pyo.PyoObjectBase"><tt class="xref py py-class docutils literal"><span class="pre">PyoObjectBase</span></tt></a></td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pyo.PyoMatrixObject.write">
+<tt class="descname">write</tt><big>(</big><em>path</em><big>)</big></dt>
+<dd><p>Writes the content of the matrix into a text file.</p>
+<p>This function can be used to store the matrix data as a
+list of list of floats into a text file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>path <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
+<dd><p class="first last">Full path of the generated file.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoMatrixObject.read">
+<tt class="descname">read</tt><big>(</big><em>path</em><big>)</big></dt>
+<dd><p>Reads the content of a text file and replaces the matrix data
+with the values in the file.</p>
+<p>Format is a list of lists of floats. For example, A two
+matrixstreams object must be given a content like this:</p>
+<p>[ [ [0.0 ,1.0, 0.5, ... ], [1.0, 0.99, 0.98, 0.97, ... ] ],
+[ [0.0, 1.0, 0.5, ... ], [1.0, 0.99, 0.98, 0.97, ... ] ] ]</p>
+<p>Each object&#8217;s matrixstream will be resized according to the
+length of the lists, but the number of matrixstreams must be
+the same.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>path <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
+<dd><p class="first last">Full path of the file to read.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoMatrixObject.getSize">
+<tt class="descname">getSize</tt><big>(</big><big>)</big></dt>
+<dd><p>Returns matrix size in samples. Size is a tuple (x, y).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoMatrixObject.normalize">
+<tt class="descname">normalize</tt><big>(</big><big>)</big></dt>
+<dd><p>Normalize matrix samples between -1 and 1.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoMatrixObject.blur">
+<tt class="descname">blur</tt><big>(</big><big>)</big></dt>
+<dd><p>Apply a simple gaussian blur on the matrix.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoMatrixObject.boost">
+<tt class="descname">boost</tt><big>(</big><em>min=-1.0</em>, <em>max=1.0</em>, <em>boost=0.01</em><big>)</big></dt>
+<dd><p>Boost the constrast of values in the matrix.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>min <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Minimum value. Defaults to -1.0.</p>
+</dd>
+<dt>max <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Maximum value. Defaults to 1.0.</p>
+</dd>
+<dt>boost <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Amount of boost applied on each value. Defaults to 0.01.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoMatrixObject.put">
+<tt class="descname">put</tt><big>(</big><em>value</em>, <em>x=0</em>, <em>y=0</em><big>)</big></dt>
+<dd><p>Puts a value at specified position in the matrix.</p>
+<p>If the object has more than 1 matrixstream, the default is to
+record the value in each matrix. User can call obj[x].put()
+to record in a specific matrix.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>value <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">Value, as floating-point, to record in the matrix.</p>
+</dd>
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">X position where to record value. Defaults to 0.</p>
+</dd>
+<dt>y <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">Y position where to record value. Defaults to 0.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoMatrixObject.get">
+<tt class="descname">get</tt><big>(</big><em>x</em>, <em>y</em><big>)</big></dt>
+<dd><p>Returns the value, as float, at specified position in the matrix.</p>
+<p>If the object has more than 1 matrixstream, the default is to
+return a list with the value of each matrixstream. User can call
+obj[x].get() to get the value of a specific matrix.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">X position where to get value. Defaults to 0.</p>
+</dd>
+<dt>y <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">Y position where to get value. Defaults to 0.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoMatrixObject.view">
+<tt class="descname">view</tt><big>(</big><em>title='Matrix viewer'</em>, <em>wxnoserver=False</em><big>)</big></dt>
+<dd><p>Opens a window showing the contents of the matrix.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>title <span class="classifier-delimiter">:</span> <span class="classifier">string, optional</span></dt>
+<dd><p class="first last">Window title. Defaults to &#8220;Matrix viewer&#8221;.</p>
+</dd>
+<dt>wxnoserver <span class="classifier-delimiter">:</span> <span class="classifier">boolean, optional</span></dt>
+<dd><p class="first last">With wxPython graphical toolkit, if True, tells the
+interpreter that there will be no server window.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p>If <cite>wxnoserver</cite> is set to True, the interpreter will not wait for
+the server GUI before showing the controller window.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoMatrixObject.refreshView">
+<tt class="descname">refreshView</tt><big>(</big><big>)</big></dt>
+<dd><p>Updates the graphical display of the matrix, if applicable.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="pyopvobject">
+<h2><em>PyoPVObject</em></h2>
+<dl class="class">
+<dt id="pyo.PyoPVObject">
+<em class="property">class </em><tt class="descname">PyoPVObject</tt></dt>
+<dd><p>Base class for objects working with phase vocoder&#8217;s magnitude and frequency streams.</p>
+<p>The user should never instantiate an object of this class.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><a class="reference internal" href="#pyo.PyoObjectBase" title="pyo.PyoObjectBase"><tt class="xref py py-class docutils literal"><span class="pre">PyoObjectBase</span></tt></a></td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pyo.PyoPVObject.isPlaying">
+<tt class="descname">isPlaying</tt><big>(</big><em>all=False</em><big>)</big></dt>
+<dd><p>Returns True if the object is playing, otherwise, returns False.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>all <span class="classifier-delimiter">:</span> <span class="classifier">boolean, optional</span></dt>
+<dd><p class="first">If True, the object returns a list with the state of all
+streams managed by the object.</p>
+<p class="last">If False, it return a boolean corresponding to the state
+of the first stream.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoPVObject.play">
+<tt class="descname">play</tt><big>(</big><em>dur=0</em>, <em>delay=0</em><big>)</big></dt>
+<dd><p>Start processing without sending samples to output.
+This method is called automatically at the object creation.</p>
+<p>This method returns <cite>self</cite>, allowing it to be applied at the object
+creation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>dur <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Duration, in seconds, of the object&#8217;s activation. The default is 0
+and means infinite duration.</p>
+</dd>
+<dt>delay <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Delay, in seconds, before the object&#8217;s activation. Defaults to 0.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoPVObject.stop">
+<tt class="descname">stop</tt><big>(</big><big>)</big></dt>
+<dd><p>Stop processing.</p>
+<p>This method returns <cite>self</cite>, allowing it to be applied at the object
+creation.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoPVObject.set">
+<tt class="descname">set</tt><big>(</big><em>attr</em>, <em>value</em>, <em>port=0.025</em><big>)</big></dt>
+<dd><p>Replace any attribute with portamento.</p>
+<p>This method is intended to be applied on attributes that are not
+already assigned to PyoObjects. It will work only with floats or
+list of floats.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>attr <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
+<dd><p class="first last">Name of the attribute as a string.</p>
+</dd>
+<dt>value <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">New value.</p>
+</dd>
+<dt>port <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Time, in seconds, to reach the new value.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.PyoPVObject.ctrl">
+<tt class="descname">ctrl</tt><big>(</big><em>map_list=None</em>, <em>title=None</em>, <em>wxnoserver=False</em><big>)</big></dt>
+<dd><p>Opens a sliders window to control the parameters of the object.
+Only parameters that can be set to a PyoObject are allowed
+to be mapped on a slider.</p>
+<p>If a list of values are given to a parameter, a multisliders
+will be used to control each stream independently.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>map_list <span class="classifier-delimiter">:</span> <span class="classifier">list of SLMap objects, optional</span></dt>
+<dd><p class="first last">Users defined set of parameters scaling. There is default
+scaling for each object that accept <cite>ctrl</cite> method.</p>
+</dd>
+<dt>title <span class="classifier-delimiter">:</span> <span class="classifier">string, optional</span></dt>
+<dd><p class="first last">Title of the window. If none is provided, the name of the
+class is used.</p>
+</dd>
+<dt>wxnoserver <span class="classifier-delimiter">:</span> <span class="classifier">boolean, optional</span></dt>
+<dd><p class="first last">With wxPython graphical toolkit, if True, tells the
+interpreter that there will be no server window.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p>If <cite>wxnoserver</cite> is set to True, the interpreter will not wait for
+the server GUI before showing the controller window.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Base Classes</a><ul>
+<li><a class="reference internal" href="#pyoobjectbase"><em>PyoObjectBase</em></a></li>
+<li><a class="reference internal" href="#pyoobject"><em>PyoObject</em></a></li>
+<li><a class="reference internal" href="#pyotableobject"><em>PyoTableObject</em></a></li>
+<li><a class="reference internal" href="#pyomatrixobject"><em>PyoMatrixObject</em></a></li>
+<li><a class="reference internal" href="#pyopvobject"><em>PyoPVObject</em></a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="listener.html"
+                        title="previous chapter">Controller listeners</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="analysis.html"
+                        title="next chapter">Audio Signal Analysis</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="analysis.html" title="Audio Signal Analysis"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="listener.html" title="Controller listeners"
+             >previous</a> |</li>
+        <li><a href="../../index.html">Pyo 0.7.9 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >API Documentation</a> &raquo;</li>
+          <li><a href="index.html" >Classes by category</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Olivier Bélanger.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

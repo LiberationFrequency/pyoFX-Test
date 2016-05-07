@@ -30,7 +30,7 @@ instr = Input(chnl=0)
 # Processing
 fol = Follower(instr, freq=30, mul=4000, add=40)
 fol.ctrl()
-f = Biquad(instr, freq=fol, q=5, type=2).out()
+f = Biquad(instr, freq=fol, q=5, type=2).out() 
 f.ctrl()
 
 

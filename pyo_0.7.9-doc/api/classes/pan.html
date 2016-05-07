@@ -1,0 +1,801 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Routing &mdash; Pyo 0.7.9 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.7.9',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../../_static/E-PyoIcon.ico"/>
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="top" title="Pyo 0.7.9 documentation" href="../../index.html" />
+    <link rel="up" title="Classes by category" href="index.html" />
+    <link rel="next" title="Event Sequencing" href="pattern.html" />
+    <link rel="prev" title="Open Sound Control" href="opensndctrl.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="pattern.html" title="Event Sequencing"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="opensndctrl.html" title="Open Sound Control"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">Pyo 0.7.9 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >API Documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Classes by category</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-pyo">
+<span id="routing"></span><h1>Routing</h1>
+<p>Set of objects to manage audio voice routing and spread of a sound
+signal into a stereo or multi-channel sound field.</p>
+<div class="section" id="mixer">
+<h2><em>Mixer</em></h2>
+<dl class="class">
+<dt id="pyo.Mixer">
+<em class="property">class </em><tt class="descname">Mixer</tt><big>(</big><em>outs=2</em>, <em>chnls=1</em>, <em>time=0.025</em>, <em>mul=1</em>, <em>add=0</em><big>)</big></dt>
+<dd><p>Audio mixer.</p>
+<p>Mixer mixes multiple inputs to an arbitrary number of outputs
+with independant amplitude values per mixing channel and a
+user defined portamento applied on amplitude changes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoObject" title="pyo.PyoObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>outs <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">Number of outputs of the mixer. Available at initialization
+time only. Defaults to 2.</p>
+</dd>
+<dt>chnls <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">Number of channels per output. Available at initialization
+time only. Defaults to 1.</p>
+</dd>
+<dt>time <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Duration, in seconds, of a portamento applied on
+a new amplitude value for a mixing channel.
+Defaults to 0.025.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">User can retrieve each of the output channels by calling the Mixer
+object with the desired channel between square brackets (see example).</p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">SfPlayer</span><span class="p">(</span><span class="n">SNDS_PATH</span><span class="o">+</span><span class="s">&quot;/transparent.aif&quot;</span><span class="p">,</span> <span class="n">loop</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">FM</span><span class="p">(</span><span class="n">carrier</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">ratio</span><span class="o">=</span><span class="p">[</span><span class="o">.</span><span class="mi">5013</span><span class="p">,</span><span class="o">.</span><span class="mi">4998</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mm</span> <span class="o">=</span> <span class="n">Mixer</span><span class="p">(</span><span class="n">outs</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">chnls</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">time</span><span class="o">=.</span><span class="mo">025</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fx1</span> <span class="o">=</span> <span class="n">Disto</span><span class="p">(</span><span class="n">mm</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">drive</span><span class="o">=.</span><span class="mi">9</span><span class="p">,</span> <span class="n">slope</span><span class="o">=.</span><span class="mi">9</span><span class="p">,</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fx2</span> <span class="o">=</span> <span class="n">Freeverb</span><span class="p">(</span><span class="n">mm</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">size</span><span class="o">=.</span><span class="mi">8</span><span class="p">,</span> <span class="n">damp</span><span class="o">=.</span><span class="mi">8</span><span class="p">,</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fx3</span> <span class="o">=</span> <span class="n">Harmonizer</span><span class="p">(</span><span class="n">mm</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">transpo</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">feedback</span><span class="o">=.</span><span class="mi">75</span><span class="p">,</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mm</span><span class="o">.</span><span class="n">addInput</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mm</span><span class="o">.</span><span class="n">addInput</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mm</span><span class="o">.</span><span class="n">setAmp</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">.</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mm</span><span class="o">.</span><span class="n">setAmp</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="o">.</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mm</span><span class="o">.</span><span class="n">setAmp</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="o">.</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mm</span><span class="o">.</span><span class="n">setAmp</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="o">.</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.Mixer.setTime">
+<tt class="descname">setTime</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Sets the portamento duration in seconds.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">New portamento duration.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Mixer.addInput">
+<tt class="descname">addInput</tt><big>(</big><em>voice</em>, <em>input</em><big>)</big></dt>
+<dd><p>Adds an audio object in the mixer&#8217;s inputs.</p>
+<p>This method returns the key (voice argument or generated key if voice=None).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>voice <span class="classifier-delimiter">:</span> <span class="classifier">int or string</span></dt>
+<dd><p class="first last">Key in the mixer dictionary for this input. If None, a unique key
+between 0 and 32767 will be automatically generated.</p>
+</dd>
+<dt>input <span class="classifier-delimiter">:</span> <span class="classifier">PyoObject</span></dt>
+<dd><p class="first last">Audio object to add to the mixer.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Mixer.delInput">
+<tt class="descname">delInput</tt><big>(</big><em>voice</em><big>)</big></dt>
+<dd><p>Removes an audio object from the mixer&#8217;s inputs.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>voice <span class="classifier-delimiter">:</span> <span class="classifier">int or string</span></dt>
+<dd><p class="first last">Key in the mixer dictionary assigned to the input to remove.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Mixer.setAmp">
+<tt class="descname">setAmp</tt><big>(</big><em>vin</em>, <em>vout</em>, <em>amp</em><big>)</big></dt>
+<dd><p>Sets the amplitude of a mixing channel.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>vin <span class="classifier-delimiter">:</span> <span class="classifier">int or string</span></dt>
+<dd><p class="first last">Key in the mixer dictionary of the desired input.</p>
+</dd>
+<dt>vout <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">Ouput channel where to send the signal.</p>
+</dd>
+<dt>amp <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">Amplitude value for this mixing channel.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Mixer.getChannels">
+<tt class="descname">getChannels</tt><big>(</big><big>)</big></dt>
+<dd><p>Returns the Mixer&#8217;s channels dictionary.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Mixer.getKeys">
+<tt class="descname">getKeys</tt><big>(</big><big>)</big></dt>
+<dd><p>Returns the list of current keys in the Mixer&#8217;s channels dictionary.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Mixer.time">
+<tt class="descname">time</tt></dt>
+<dd><p>float. Portamento.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="pan">
+<h2><em>Pan</em></h2>
+<dl class="class">
+<dt id="pyo.Pan">
+<em class="property">class </em><tt class="descname">Pan</tt><big>(</big><em>input</em>, <em>outs=2</em>, <em>pan=0.5</em>, <em>spread=0.5</em>, <em>mul=1</em>, <em>add=0</em><big>)</big></dt>
+<dd><p>Cosinus panner with control on the spread factor.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoObject" title="pyo.PyoObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>input <span class="classifier-delimiter">:</span> <span class="classifier">PyoObject</span></dt>
+<dd><p class="first last">Input signal to process.</p>
+</dd>
+<dt>outs <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">Number of channels on the panning circle. Available at
+initialization time only. Defaults to 2.</p>
+</dd>
+<dt>pan <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">Position of the sound on the panning circle, between 0 and 1.
+Defaults to 0.5.</p>
+</dd>
+<dt>spread <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">Amount of sound leaking to the surrounding channels,
+between 0 and 1. Defaults to 0.5.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">(</span><span class="n">nchnls</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">Noise</span><span class="p">(</span><span class="n">mul</span><span class="o">=.</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lfo</span> <span class="o">=</span> <span class="n">Sine</span><span class="p">(</span><span class="n">freq</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">5</span><span class="p">,</span> <span class="n">add</span><span class="o">=.</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">Pan</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">outs</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">pan</span><span class="o">=</span><span class="n">lfo</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.Pan.setInput">
+<tt class="descname">setInput</tt><big>(</big><em>x</em>, <em>fadetime=0.05</em><big>)</big></dt>
+<dd><p>Replace the <cite>input</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoObject</span></dt>
+<dd><p class="first last">New signal to process.</p>
+</dd>
+<dt>fadetime <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Crossfade time between old and new input. Default to 0.05.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Pan.setPan">
+<tt class="descname">setPan</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>pan</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">new <cite>pan</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Pan.setSpread">
+<tt class="descname">setSpread</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>spread</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">new <cite>spread</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Pan.input">
+<tt class="descname">input</tt></dt>
+<dd><p>PyoObject. Input signal to process.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Pan.pan">
+<tt class="descname">pan</tt></dt>
+<dd><p>float or PyoObject. Position of the sound on the panning circle.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Pan.spread">
+<tt class="descname">spread</tt></dt>
+<dd><p>float or PyoObject. Amount of sound leaking to the surrounding channels.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="span">
+<h2><em>SPan</em></h2>
+<dl class="class">
+<dt id="pyo.SPan">
+<em class="property">class </em><tt class="descname">SPan</tt><big>(</big><em>input</em>, <em>outs=2</em>, <em>pan=0.5</em>, <em>mul=1</em>, <em>add=0</em><big>)</big></dt>
+<dd><p>Simple equal power panner.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoObject" title="pyo.PyoObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>input <span class="classifier-delimiter">:</span> <span class="classifier">PyoObject</span></dt>
+<dd><p class="first last">Input signal to process.</p>
+</dd>
+<dt>outs <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">Number of channels on the panning circle. Available at
+initialization time only. Defaults to 2.</p>
+</dd>
+<dt>pan <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">Position of the sound on the panning circle, between 0 and 1.
+Defaults to 0.5.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">(</span><span class="n">nchnls</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">Noise</span><span class="p">(</span><span class="n">mul</span><span class="o">=.</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lfo</span> <span class="o">=</span> <span class="n">Sine</span><span class="p">(</span><span class="n">freq</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">5</span><span class="p">,</span> <span class="n">add</span><span class="o">=.</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">SPan</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">outs</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">pan</span><span class="o">=</span><span class="n">lfo</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.SPan.setInput">
+<tt class="descname">setInput</tt><big>(</big><em>x</em>, <em>fadetime=0.05</em><big>)</big></dt>
+<dd><p>Replace the <cite>input</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoObject</span></dt>
+<dd><p class="first last">New signal to process.</p>
+</dd>
+<dt>fadetime <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Crossfade time between old and new input. Default to 0.05.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.SPan.setPan">
+<tt class="descname">setPan</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>pan</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">new <cite>pan</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.SPan.input">
+<tt class="descname">input</tt></dt>
+<dd><p>PyoObject. Input signal to process.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.SPan.pan">
+<tt class="descname">pan</tt></dt>
+<dd><p>float or PyoObject. Position of the sound on the panning circle.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="selector">
+<h2><em>Selector</em></h2>
+<dl class="class">
+<dt id="pyo.Selector">
+<em class="property">class </em><tt class="descname">Selector</tt><big>(</big><em>inputs</em>, <em>voice=0.0</em>, <em>mul=1</em>, <em>add=0</em><big>)</big></dt>
+<dd><p>Audio selector.</p>
+<p>Selector takes multiple PyoObjects in input and interpolates between
+them to generate a single output.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoObject" title="pyo.PyoObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>inputs <span class="classifier-delimiter">:</span> <span class="classifier">list of PyoObject</span></dt>
+<dd><p class="first last">Audio objects to interpolate from.</p>
+</dd>
+<dt>voice <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject, optional</span></dt>
+<dd><p class="first last">Voice position pointer, between 0 and len(inputs)-1.
+Defaults to 0.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">SfPlayer</span><span class="p">(</span><span class="n">SNDS_PATH</span> <span class="o">+</span> <span class="s">&quot;/transparent.aif&quot;</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="p">[</span><span class="o">.</span><span class="mi">999</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">loop</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">Noise</span><span class="p">(</span><span class="n">mul</span><span class="o">=.</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">SfPlayer</span><span class="p">(</span><span class="n">SNDS_PATH</span> <span class="o">+</span> <span class="s">&quot;/accord.aif&quot;</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="p">[</span><span class="o">.</span><span class="mi">999</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">loop</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lf</span> <span class="o">=</span> <span class="n">Sine</span><span class="p">(</span><span class="n">freq</span><span class="o">=.</span><span class="mi">1</span><span class="p">,</span> <span class="n">add</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="n">Selector</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="p">[</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">],</span> <span class="n">voice</span><span class="o">=</span><span class="n">lf</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.Selector.setInputs">
+<tt class="descname">setInputs</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>inputs</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">list of PyoObject</span></dt>
+<dd><p class="first last">new <cite>inputs</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Selector.setVoice">
+<tt class="descname">setVoice</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>voice</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">new <cite>voice</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Selector.inputs">
+<tt class="descname">inputs</tt></dt>
+<dd><p>List of PyoObjects. Audio objects to interpolate from.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Selector.voice">
+<tt class="descname">voice</tt></dt>
+<dd><p>float or PyoObject. Voice position pointer.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="switch">
+<h2><em>Switch</em></h2>
+<dl class="class">
+<dt id="pyo.Switch">
+<em class="property">class </em><tt class="descname">Switch</tt><big>(</big><em>input</em>, <em>outs=2</em>, <em>voice=0.0</em>, <em>mul=1</em>, <em>add=0</em><big>)</big></dt>
+<dd><p>Audio switcher.</p>
+<p>Switch takes an audio input and interpolates between multiple outputs.</p>
+<p>User can retrieve the different streams by calling the output number
+between brackets. obj[0] retrieve the first stream, obj[outs-1] the
+last one.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoObject" title="pyo.PyoObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>input <span class="classifier-delimiter">:</span> <span class="classifier">PyoObject</span></dt>
+<dd><p class="first last">Input signal to process.</p>
+</dd>
+<dt>outs <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">Number of outputs. Available at initialization time only.
+Defaults to 2.</p>
+</dd>
+<dt>voice <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">Voice position pointer, between 0 and (outs-1) / len(input).
+Defaults to 0.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">(</span><span class="n">nchnls</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">SfPlayer</span><span class="p">(</span><span class="n">SNDS_PATH</span> <span class="o">+</span> <span class="s">&quot;/transparent.aif&quot;</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="p">[</span><span class="o">.</span><span class="mi">999</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">loop</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lf</span> <span class="o">=</span> <span class="n">Sine</span><span class="p">(</span><span class="n">freq</span><span class="o">=.</span><span class="mi">25</span><span class="p">,</span> <span class="n">mul</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">add</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">Switch</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">outs</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">voice</span><span class="o">=</span><span class="n">lf</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">WGVerb</span><span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">],</span> <span class="n">feedback</span><span class="o">=.</span><span class="mi">8</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="n">Disto</span><span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">],</span> <span class="n">drive</span><span class="o">=.</span><span class="mi">9</span><span class="p">,</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">e</span> <span class="o">=</span> <span class="n">Delay</span><span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="mi">4</span><span class="p">:</span><span class="mi">6</span><span class="p">],</span> <span class="n">delay</span><span class="o">=.</span><span class="mi">2</span><span class="p">,</span> <span class="n">feedback</span><span class="o">=.</span><span class="mi">6</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.Switch.setInput">
+<tt class="descname">setInput</tt><big>(</big><em>x</em>, <em>fadetime=0.05</em><big>)</big></dt>
+<dd><p>Replace the <cite>input</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoObject</span></dt>
+<dd><p class="first last">New signal to process.</p>
+</dd>
+<dt>fadetime <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Crossfade time between old and new input. Default to 0.05.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Switch.setVoice">
+<tt class="descname">setVoice</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>voice</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">float or PyoObject</span></dt>
+<dd><p class="first last">new <cite>voice</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Switch.input">
+<tt class="descname">input</tt></dt>
+<dd><p>PyoObject. Input signal to process.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Switch.voice">
+<tt class="descname">voice</tt></dt>
+<dd><p>float or PyoObject. Voice position pointer.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="voicemanager">
+<h2><em>VoiceManager</em></h2>
+<dl class="class">
+<dt id="pyo.VoiceManager">
+<em class="property">class </em><tt class="descname">VoiceManager</tt><big>(</big><em>input</em>, <em>triggers=None</em>, <em>mul=1</em>, <em>add=0</em><big>)</big></dt>
+<dd><p>Polyphony voice manager.</p>
+<p>A trigger in input ask the object for a voice number and the object returns
+the first free one. The voice number is then disable until a trig comes at
+the same position in the list of triggers given at the argument <cite>triggers</cite>.</p>
+<p>Usually, the trigger enabling the voice number will come from the process
+started with the object output. So, it&#8217;s common to leave the <cite>triggers</cite>
+argument to None and set the list of triggers afterward with the <cite>setTriggers</cite>
+method. The maximum number of voices generated by the object is the length
+of the trigger list.</p>
+<p>If there is no free voice, the object outputs -1.0 continuously.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoObject" title="pyo.PyoObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>input <span class="classifier-delimiter">:</span> <span class="classifier">PyoObject</span></dt>
+<dd><p class="first last">Trigger stream asking for new voice numbers.</p>
+</dd>
+<dt>triggers <span class="classifier-delimiter">:</span> <span class="classifier">PyoObject or list of PyoObject, optional</span></dt>
+<dd><p class="first">List of mono PyoObject sending triggers. Can be a multi-streams
+PyoObject but not a mix of both.</p>
+<p class="last">Ordering in the list corresponds to voice numbers. Defaults to None.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">env</span> <span class="o">=</span> <span class="n">CosTable</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),(</span><span class="mi">100</span><span class="p">,</span><span class="mi">1</span><span class="p">),(</span><span class="mi">500</span><span class="p">,</span><span class="o">.</span><span class="mi">5</span><span class="p">),(</span><span class="mi">8192</span><span class="p">,</span><span class="mi">0</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">delta</span> <span class="o">=</span> <span class="n">RandDur</span><span class="p">(</span><span class="nb">min</span><span class="o">=.</span><span class="mo">05</span><span class="p">,</span> <span class="nb">max</span><span class="o">=.</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vm</span> <span class="o">=</span> <span class="n">VoiceManager</span><span class="p">(</span><span class="n">Change</span><span class="p">(</span><span class="n">delta</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sel</span> <span class="o">=</span> <span class="n">Select</span><span class="p">(</span><span class="n">vm</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pit</span> <span class="o">=</span> <span class="n">TrigChoice</span><span class="p">(</span><span class="n">sel</span><span class="p">,</span> <span class="n">choice</span><span class="o">=</span><span class="p">[</span><span class="n">midiToHz</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">60</span><span class="p">,</span><span class="mi">63</span><span class="p">,</span><span class="mi">67</span><span class="p">,</span><span class="mi">70</span><span class="p">,</span><span class="mi">72</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">amp</span> <span class="o">=</span> <span class="n">TrigEnv</span><span class="p">(</span><span class="n">sel</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="n">env</span><span class="p">,</span> <span class="n">dur</span><span class="o">=.</span><span class="mi">5</span><span class="p">,</span> <span class="n">mul</span><span class="o">=.</span><span class="mi">25</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">synth1</span> <span class="o">=</span> <span class="n">SineLoop</span><span class="p">(</span><span class="n">pit</span><span class="p">,</span> <span class="n">feedback</span><span class="o">=.</span><span class="mo">07</span><span class="p">,</span> <span class="n">mul</span><span class="o">=</span><span class="n">amp</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vm</span><span class="o">.</span><span class="n">setTriggers</span><span class="p">(</span><span class="n">amp</span><span class="p">[</span><span class="s">&quot;trig&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.VoiceManager.setInput">
+<tt class="descname">setInput</tt><big>(</big><em>x</em>, <em>fadetime=0.05</em><big>)</big></dt>
+<dd><p>Replace the <cite>input</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoObject</span></dt>
+<dd><p class="first last">New signal to process.</p>
+</dd>
+<dt>fadetime <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Crossfade time between old and new input. Defaults to 0.05.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.VoiceManager.setTriggers">
+<tt class="descname">setTriggers</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>triggers</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoObject or list of PyoObject</span></dt>
+<dd><p class="first last">New <cite>triggers</cite> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.VoiceManager.input">
+<tt class="descname">input</tt></dt>
+<dd><p>PyoObject. Trigger stream asking for new voice numbers.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.VoiceManager.triggers">
+<tt class="descname">triggers</tt></dt>
+<dd><p>list of PyoObject. Trigger streams enabling voices.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Routing</a><ul>
+<li><a class="reference internal" href="#mixer"><em>Mixer</em></a></li>
+<li><a class="reference internal" href="#pan"><em>Pan</em></a></li>
+<li><a class="reference internal" href="#span"><em>SPan</em></a></li>
+<li><a class="reference internal" href="#selector"><em>Selector</em></a></li>
+<li><a class="reference internal" href="#switch"><em>Switch</em></a></li>
+<li><a class="reference internal" href="#voicemanager"><em>VoiceManager</em></a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="opensndctrl.html"
+                        title="previous chapter">Open Sound Control</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="pattern.html"
+                        title="next chapter">Event Sequencing</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="pattern.html" title="Event Sequencing"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="opensndctrl.html" title="Open Sound Control"
+             >previous</a> |</li>
+        <li><a href="../../index.html">Pyo 0.7.9 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >API Documentation</a> &raquo;</li>
+          <li><a href="index.html" >Classes by category</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Olivier Bélanger.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

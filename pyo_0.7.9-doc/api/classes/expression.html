@@ -1,0 +1,485 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Prefix expression evaluators &mdash; Pyo 0.7.9 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.7.9',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../../_static/E-PyoIcon.ico"/>
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="top" title="Pyo 0.7.9 documentation" href="../../index.html" />
+    <link rel="up" title="Classes by category" href="index.html" />
+    <link rel="next" title="Filters" href="filters.html" />
+    <link rel="prev" title="Special Effects" href="effects.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="filters.html" title="Filters"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="effects.html" title="Special Effects"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">Pyo 0.7.9 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >API Documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Classes by category</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-pyo">
+<span id="prefix-expression-evaluators"></span><h1>Prefix expression evaluators</h1>
+<p>Prefix audio expression evaluator.</p>
+<p>This family implements a tiny functional programming language that
+can be used to write synthesis or signal processing algorithms.</p>
+<div class="section" id="api-documentation">
+<h2><strong>API documentation</strong></h2>
+<p>This API is in alpha stage and subject to future changes!</p>
+</div>
+<div class="section" id="builtin-functions">
+<h2>Builtin functions</h2>
+<p><strong>Arithmetic operators</strong></p>
+<ul class="simple">
+<li>(+ x y) : returns the sum of two values.</li>
+<li>(- x y) : substracts the second value to the first and returns the result.</li>
+<li>(* x y) : returns the multiplication of two values.</li>
+<li>(/ x y) : returns the quotient of x/y.</li>
+<li>(^ x y) : returns x to the power y.</li>
+<li>(% x y) : returns the floating-point remainder of x/y.</li>
+<li>(neg x) : returns the negative of x.</li>
+</ul>
+<p><strong>Moving phase operators</strong></p>
+<ul class="simple">
+<li>(++ x y) : increments its internal state by x and wrap around 0.0 and y.</li>
+<li>(&#8211; x y) : decrements its internal state by x and wrap around 0.0 and y.</li>
+<li>(~ x y) : generates a periodic ramp from 0 to 1 with frequency x and phase y.</li>
+</ul>
+<p><strong>Conditional operators</strong></p>
+<ul class="simple">
+<li>(&lt; x y) : returns 1 if x is less than y, otherwise returns 0.</li>
+<li>(&lt;= x y) : returns 1 if x is less than or equal to y, otherwise returns 0.</li>
+<li>(&gt; x y) : returns 1 if x is greater than y, otherwise returns 0.</li>
+<li>(&gt;= x y) : returns 1 if x is greater than or equal to y, otherwise returns 0.</li>
+<li>(== x y) : returns 1 if x is equal to y, otherwise returns 0.</li>
+<li>(!= x y) : returns 1 if x is not equal to y, otherwise returns 0.</li>
+<li>(if (cond) (then) (else)) : returns then for any non-zero value of cond, otherwise returns else.</li>
+<li>(and x y) : returns 1 if both x and y are not 0, otherwise returns 0.</li>
+<li>(or x y) : returns 1 if one of x or y are not 0, otherwise returns 0.</li>
+</ul>
+<p><strong>Trigonometric functions</strong></p>
+<ul class="simple">
+<li>(sin x) : returns the sine of an angle of x radians.</li>
+<li>(cos x) : returns the cosine of an angle of x radians.</li>
+<li>(tan x) : returns the tangent of x radians.</li>
+<li>(tanh x) : returns the hyperbolic tangent of x radians.</li>
+<li>(atan x) : returns the principal value of the arc tangent of x, expressed in radians.</li>
+<li>(atan2 x y) : returns the principal value of the arc tangent of y/x, expressed in radians.</li>
+</ul>
+<p><strong>Power and logarithmic functions</strong></p>
+<ul class="simple">
+<li>(sqrt x) : returns the square root of x.</li>
+<li>(log x) : returns the natural logarithm of x.</li>
+<li>(log2 x) : returns the binary (base-2) logarithm of x.</li>
+<li>(log10 x) : returns the common (base-10) logarithm of x.</li>
+<li>(pow x y) : returns x to the power y.</li>
+</ul>
+<p><strong>Clipping functions</strong></p>
+<ul class="simple">
+<li>(abs x) : returns the absolute value of x.</li>
+<li>(floor x) : rounds x downward, returning the largest integral value that is not greater than x.</li>
+<li>(ceil x) : rounds x upward, returning the smallest integral value that is not less than x.</li>
+<li>(exp  x) : returns the constant e to the power x.</li>
+<li>(round x) : returns the integral value that is nearest to x.</li>
+<li>(min x y) : returns the smaller of its arguments: either x or y.</li>
+<li>(max x y) : returns the larger of its arguments: either x or y.</li>
+<li>(wrap x) : wraps x between 0 and 1.</li>
+</ul>
+<p><strong>Random fuctions</strong></p>
+<ul class="simple">
+<li>(randf x y) : returns a pseudo-random floating-point number in the range between x and y.</li>
+<li>(randi x y) : returns a pseudo-random integral number in the range between x and y.</li>
+</ul>
+<p><strong>Filter functions</strong></p>
+<ul class="simple">
+<li>(sah x y) : samples and holds x value whenever y is smaller than its previous state.</li>
+<li>(rpole x y) : real one-pole recursive filter. returns x + last_out * y.</li>
+<li>(rzero x y) : real one-zero non-recursive filter. returns x - last_x * y.</li>
+</ul>
+<p><strong>Constants</strong></p>
+<ul class="simple">
+<li>(const x) : returns x.</li>
+<li>(pi) : returns an approximated value of pi.</li>
+<li>(twopi) : returns a constant with value pi*2.</li>
+<li>(e) : returns an approximated value of e.</li>
+</ul>
+</div>
+<div class="section" id="comments">
+<h2>Comments</h2>
+<p>A comment starts with two slashs ( // ) and ends at the end of the line:</p>
+<div class="highlight-python"><div class="highlight"><pre>// This is a comment!
+</pre></div>
+</div>
+</div>
+<div class="section" id="input-and-output-signals">
+<h2>Input and Output signals</h2>
+<p>User has access to the last buffer size of input and output samples.</p>
+<p>To use samples from past input, use $x[n] notation, where n is the position
+from the current time. $x[0] is the current input, $x[-1] is the previous
+one and $x[-buffersize] is the last available input sample.</p>
+<p>To use samples from past output, use $y[n] notation, where n is the position
+from the current time. $y[-1] is the previous output and $y[-buffersize] is
+the last available output sample.</p>
+<p>Here an example of a first-order IIR lowpass filter expression:</p>
+<div class="highlight-python"><div class="highlight"><pre>// A first-order IIR lowpass filter
++ $x[0] (* (- $y[-1] $x[0]) 0.99)
+</pre></div>
+</div>
+</div>
+<div class="section" id="defining-custom-functions">
+<h2>Defining custom functions</h2>
+<p>The define keyword starts the definition of a custom function:</p>
+<div class="highlight-python"><div class="highlight"><pre>(define funcname (body))
+</pre></div>
+</div>
+<p>funcname is the name used to call the function in the expression and body
+is the sequence of functions to execute. Arguments of the function are
+extracted directly from the body. They must be named $1, $2, $3, ..., $9.</p>
+<p>Example of a sine wave function:</p>
+<div class="highlight-python"><div class="highlight"><pre>(define osc (
+    sin (* (twopi) (~ $1))
+    )
+)
+// play a sine wave
+* (osc 440) 0.3
+</pre></div>
+</div>
+</div>
+<div class="section" id="state-variables">
+<h2>State variables</h2>
+<p>User can create state variable with the keyword &#8220;let&#8221;. This is useful
+to set an intermediate state to be used in multiple places in the
+processing chain. The syntax is:</p>
+<div class="highlight-python"><div class="highlight"><pre>(let #var (body))
+</pre></div>
+</div>
+<p>The variable name must begin with a &#8220;#&#8221;:</p>
+<div class="highlight-python"><div class="highlight"><pre>(let #sr 44100)
+(let #freq 1000)
+(let #coeff (
+    ^ (e) (/ (* (* -2 (pi)) #freq) #sr)
+    )
+)
++ $x[0] (* (- $y[-1] $x[0]) #coeff)
+</pre></div>
+</div>
+<p>The variable is private to a function if created inside a custom function:</p>
+<div class="highlight-python"><div class="highlight"><pre>(let #freq 250) // global #freq variable
+(define osc (
+    (let #freq (* $1 $2)) // local #freq variable
+    sin (* (twopi) (~ #freq))
+    )
+)
+* (+ (osc 1 #freq) (osc 2 #freq)) 0.2
+</pre></div>
+</div>
+<p>State variables can be used to do 1 sample feedback if used before created.
+Undefined variables are initialized to 0:</p>
+<div class="highlight-python"><div class="highlight"><pre>(define oscloop (
+        (let #xsin
+            (sin (+ (* (~ $1) (twopi)) (* #xsin $2))) // #xsin used before...
+        ) // ... &quot;let&quot; statement finished!
+        #xsin // oscloop function outputs #xsin variable
+    )
+)
+* (oscloop 200 0.7) 0.3
+</pre></div>
+</div>
+</div>
+<div class="section" id="user-variables">
+<h2>User variables</h2>
+<p>User variables are created with the keyword &#8220;var&#8221;:</p>
+<div class="highlight-python"><div class="highlight"><pre>(var #var (init))
+</pre></div>
+</div>
+<p>The variable name must begin with a &#8220;#&#8221;.</p>
+<p>They are computed only at initialization, but can be changed from the python
+script with method calls (varname is a string and value is a float):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">obj</span><span class="o">.</span><span class="n">setVar</span><span class="p">(</span><span class="n">varname</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="library-importation">
+<h2>Library importation</h2>
+<p>Custom functions can be defined in an external file and imported with the
+&#8220;load&#8221; function:</p>
+<div class="highlight-python"><div class="highlight"><pre>(load path/to/the/file)
+</pre></div>
+</div>
+<p>The content of the file will be inserted where the load function is called
+and all functions defined inside the file will then be accessible. The path
+can be absolute or relative to the current working directory.</p>
+</div>
+<div class="section" id="examples">
+<h2>Examples</h2>
+<p>Here is some expression examples.</p>
+<p>A first-order IIR lowpass filter:</p>
+<div class="highlight-python"><div class="highlight"><pre>(var #sr 44100)
+(var #cutoff 1000)
+(let #coeff (exp (/ (* (* -2 (pi)) #cutoff) #sr)))
++ $x[0] (* (- $y[-1] $x[0]) #coeff)
+</pre></div>
+</div>
+<p>A LFO&#8217;ed hyperbolic tangent distortion:</p>
+<div class="highlight-python"><div class="highlight"><pre>// $1 = lfo frequency, $2 = lfo depth
+(define lfo (
+        (+ (* (sin (* (twopi) (~ $1))) (- $2 1)) $2)
+    )
+)
+tanh (* $x[0] (lfo .25 10))
+</pre></div>
+</div>
+<p>A triangle waveform generator (use Sig(0) as input argument to bypass input):</p>
+<div class="highlight-python"><div class="highlight"><pre>(var #freq 440)
+// $1 = oscillator frequency
+(define triangle (
+        (let #ph (~ $1))
+        (- (* (min #ph (- 1 #ph)) 4) 1)
+    )
+)
+triangle #freq
+</pre></div>
+</div>
+</div>
+<div class="section" id="objects">
+<h2><strong>Objects</strong></h2>
+</div>
+<div class="section" id="expr">
+<h2><em>Expr</em></h2>
+<dl class="class">
+<dt id="pyo.Expr">
+<em class="property">class </em><tt class="descname">Expr</tt><big>(</big><em>input</em>, <em>expr=''</em>, <em>mul=1</em>, <em>add=0</em><big>)</big></dt>
+<dd><p>Prefix audio expression evaluator.</p>
+<p>Expr implements a tiny functional programming language that can be 
+used to write synthesis or signal processing algorithms.</p>
+<p>For documentation about the language, see the module&#8217;s documentation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parent:</th><td class="field-body"><p class="first"><a class="reference internal" href="_core.html#pyo.PyoObject" title="pyo.PyoObject"><tt class="xref py py-class docutils literal"><span class="pre">PyoObject</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>input <span class="classifier-delimiter">:</span> <span class="classifier">PyoObject</span></dt>
+<dd><p class="first last">Input signal to process.</p>
+</dd>
+<dt>expr <span class="classifier-delimiter">:</span> <span class="classifier">str, optional</span></dt>
+<dd><p class="first last">Expression to evaluate as a string.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">proc</span> <span class="o">=</span> <span class="s">&#39;&#39;&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s">(var #boost 1)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s">(tanh (* $x[0] #boost)) </span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s">&#39;&#39;&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sf</span> <span class="o">=</span> <span class="n">SfPlayer</span><span class="p">(</span><span class="n">SNDS_PATH</span> <span class="o">+</span> <span class="s">&quot;/transparent.aif&quot;</span><span class="p">,</span> <span class="n">loop</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ex</span> <span class="o">=</span> <span class="n">Expr</span><span class="p">(</span><span class="n">sf</span><span class="p">,</span> <span class="n">proc</span><span class="p">,</span> <span class="n">mul</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span><span class="o">.</span><span class="n">out</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lfo</span> <span class="o">=</span> <span class="n">Sine</span><span class="p">(</span><span class="n">freq</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">change</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="n">ex</span><span class="o">.</span><span class="n">setVar</span><span class="p">(</span><span class="s">&quot;#boost&quot;</span><span class="p">,</span> <span class="n">lfo</span><span class="o">.</span><span class="n">get</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pat</span> <span class="o">=</span> <span class="n">Pattern</span><span class="p">(</span><span class="n">change</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">)</span><span class="o">.</span><span class="n">play</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyo.Expr.setInput">
+<tt class="descname">setInput</tt><big>(</big><em>x</em>, <em>fadetime=0.05</em><big>)</big></dt>
+<dd><p>Replace the <cite>input</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">PyoObject</span></dt>
+<dd><p class="first last">New signal to process.</p>
+</dd>
+<dt>fadetime <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Crossfade time between old and new input. Defaults to 0.05.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Expr.setExpr">
+<tt class="descname">setExpr</tt><big>(</big><em>x</em><big>)</big></dt>
+<dd><p>Replace the <cite>expr</cite> attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
+<dd><p class="first last">New expression to process.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Expr.printNodes">
+<tt class="descname">printNodes</tt><big>(</big><big>)</big></dt>
+<dd><p>Print the list of current nodes.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyo.Expr.editor">
+<tt class="descname">editor</tt><big>(</big><em>title='Expr Editor'</em>, <em>wxnoserver=False</em><big>)</big></dt>
+<dd><p>Opens the text editor for this object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><dl class="first last docutils">
+<dt>title <span class="classifier-delimiter">:</span> <span class="classifier">string, optional</span></dt>
+<dd><p class="first last">Title of the window. If none is provided, the name of the
+class is used.</p>
+</dd>
+<dt>wxnoserver <span class="classifier-delimiter">:</span> <span class="classifier">boolean, optional</span></dt>
+<dd><p class="first last">With wxPython graphical toolkit, if True, tells the
+interpreter that there will be no server window.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p>If <cite>wxnoserver</cite> is set to True, the interpreter will not wait for
+the server GUI before showing the controller window.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Expr.input">
+<tt class="descname">input</tt></dt>
+<dd><p>PyoObject. Input signal to process.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyo.Expr.expr">
+<tt class="descname">expr</tt></dt>
+<dd><p>string. New expression to process.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Prefix expression evaluators</a><ul>
+<li><a class="reference internal" href="#api-documentation"><strong>API documentation</strong></a></li>
+<li><a class="reference internal" href="#builtin-functions">Builtin functions</a></li>
+<li><a class="reference internal" href="#comments">Comments</a></li>
+<li><a class="reference internal" href="#input-and-output-signals">Input and Output signals</a></li>
+<li><a class="reference internal" href="#defining-custom-functions">Defining custom functions</a></li>
+<li><a class="reference internal" href="#state-variables">State variables</a></li>
+<li><a class="reference internal" href="#user-variables">User variables</a></li>
+<li><a class="reference internal" href="#library-importation">Library importation</a></li>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+<li><a class="reference internal" href="#objects"><strong>Objects</strong></a></li>
+<li><a class="reference internal" href="#expr"><em>Expr</em></a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="effects.html"
+                        title="previous chapter">Special Effects</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="filters.html"
+                        title="next chapter">Filters</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="filters.html" title="Filters"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="effects.html" title="Special Effects"
+             >previous</a> |</li>
+        <li><a href="../../index.html">Pyo 0.7.9 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >API Documentation</a> &raquo;</li>
+          <li><a href="index.html" >Classes by category</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Olivier Bélanger.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>
